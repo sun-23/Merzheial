@@ -9,23 +9,25 @@ export const Button = ({
   activeOpacity = 0.3,
   borderless = false,
   title,
-  style
+  style,
+  disabled
 }) => {
   const _style = useCallback(({ pressed }) => [
     style,
-    { opacity: pressed ? activeOpacity : 1 }
+    { opacity: pressed ? activeOpacity : 1 },
+    { opacity: disabled ? 0.5 : 1}
   ]);
 
   if (borderless) {
     return (
-      <Pressable onPress={onPress} style={_style}>
+      <Pressable onPress={onPress} style={_style} disabled={disabled ? disabled : false}>
         <Text style={styles.borderlessButtonText}>{title}</Text>
       </Pressable>
     );
   }
 
   return (
-    <Pressable onPress={onPress} style={_style}>
+    <Pressable onPress={onPress} style={_style} disabled={disabled ? disabled : false}>
       {children}
     </Pressable>
   );

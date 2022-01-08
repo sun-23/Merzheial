@@ -1,3 +1,4 @@
 export const Images = {
-  logo: require('../assets/flame.png')
+  logo: require('../assets/flame.png'),
 };
+

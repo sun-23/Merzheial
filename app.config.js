@@ -2,8 +2,17 @@ import 'dotenv/config';
 
 export default {
   expo: {
-    name: 'Expo Firebase Starter',
-    slug: 'expo-firebase',
+    name: 'Merzheial',
+    plugins: [
+      [
+        "expo-image-picker",
+        {
+          photosPermission: "Allow Merzheial to access your photos",
+          cameraPermission: "Allow Merzheial to access your camera"
+        }
+      ]
+    ],
+    slug: 'merzheial',
     privacy: 'public',
     platforms: ['ios', 'android'],
     version: '0.15.0',

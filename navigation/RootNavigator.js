@@ -17,13 +17,16 @@ export const RootNavigator = () => {
     const unsubscribeAuthStateChanged = onAuthStateChanged(
       auth,
       authenticatedUser => {
+        // cannot use recoil with onAuthStateChanged
         authenticatedUser ? setUser(authenticatedUser) : setUser(null);
         setIsLoading(false);
       }
     );
 
     // unsubscribe auth listener on unmount
-    return unsubscribeAuthStateChanged;
+    return () => {
+      unsubscribeAuthStateChanged();
+    }
   }, [user]);
 
   if (isLoading) {

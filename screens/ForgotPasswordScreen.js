@@ -44,7 +44,7 @@ export const ForgotPasswordScreen = ({ navigation }) => {
             <TextInput
               name='email'
               leftIconName='email'
-              placeholder='Enter email'
+              placeholder='กรุณาใส่ email'
               autoCapitalize='none'
               keyboardType='email-address'
               textContentType='emailAddress'
@@ -59,7 +59,7 @@ export const ForgotPasswordScreen = ({ navigation }) => {
             ) : null}
             {/* Password Reset Send Email  button */}
             <Button style={styles.button} onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Send Reset Email</Text>
+              <Text style={styles.buttonText}>ส่ง link เปลี่ยนรหัสผ่าน</Text>
             </Button>
           </>
         )}
@@ -68,7 +68,7 @@ export const ForgotPasswordScreen = ({ navigation }) => {
       <Button
         style={styles.borderlessButtonContainer}
         borderless
-        title={'Go back to Login'}
+        title={'ลงชื่อเข้าใช้'}
         onPress={() => navigation.navigate('Login')}
       />
     </View>

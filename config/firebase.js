@@ -1,6 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import Constants from 'expo-constants';
+import { initializeFirestore } from "firebase/firestore";
+import { getStorage } from '@firebase/storage';
+import Constants from 'expo-constants'; 
+
 
 // add firebase config
 const firebaseConfig = {
@@ -13,9 +16,17 @@ const firebaseConfig = {
 };
 
 // initialize firebase
-initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
 
 // initialize auth
 const auth = getAuth();
 
-export { auth };
+// bug with react-native work only react
+// const db = getFirestore();
+
+// fix https://github.com/firebase/firebase-js-sdk/issues/5667#issuecomment-952079600
+const db = initializeFirestore(firebaseApp, {useFetchStreams: false})
+
+const storage = getStorage(firebaseApp);
+
+export { auth, db, storage };

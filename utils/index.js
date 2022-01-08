@@ -10,8 +10,20 @@ export const signupValidationSchema = Yup.object().shape({
   password: Yup.string().required().min(6).label('Password'),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password')], 'Confirm Password must match password.')
-    .required('Confirm Password is required.')
+    .required('Confirm Password is required.'),
+  age: Yup.number().required(),
+  person_type: Yup.string().required(),
+  sex_type: Yup.string().required(),
+  name: Yup.string().required(),
+  lastname: Yup.string().required()
 });
+
+export const updateUserSchema = Yup.object().shape({
+  age: Yup.number().required(),
+  sex_type: Yup.string().required(),
+  name: Yup.string().required(),
+  lastname: Yup.string().required()
+})
 
 export const passwordResetSchema = Yup.object().shape({
   email: Yup.string()

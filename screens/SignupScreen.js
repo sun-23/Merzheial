@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
 import { View, TextInput, Logo, Button, FormErrorMessage } from '../components';
-import { Images, Colors, auth } from '../config';
+import { DropdownList } from 'react-native-ultimate-modal-picker';
+
 import { useTogglePasswordVisibility } from '../hooks';
 import { signupValidationSchema } from '../utils';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { Images, Colors, auth, db } from '../config';
+import { doc, setDoc } from "firebase/firestore"; 
 
 export const SignupScreen = ({ navigation }) => {
   const [errorState, setErrorState] = useState('');
@@ -22,11 +24,38 @@ export const SignupScreen = ({ navigation }) => {
   } = useTogglePasswordVisibility();
 
   const handleSignup = async values => {
-    const { email, password } = values;
+    const { email, password, person_type, age, sex_type, name, lastname } = values;
+    await createUserWithEmailAndPassword(auth, email, password).then(async (userCredential) => {
+      const docRef = doc(db, "users", auth.currentUser.uid)
+      const payload = {
+        firstname: name,
+        lastname: lastname,
+        age: age,
+        sex_type: sex_type,
+        person_type: person_type,
+        email: auth.currentUser.email,
+        uid: auth.currentUser.uid,
+        urlImage: ''
+      };
+      console.log(payload);
+      console.log('click');
+      if (person_type == 'patient') {
+        // add test point
+        await setDoc(docRef, { test_point: 0 }, { merge: true }).then(() => {
+          console.log('add patient test point');
+        }).catch(error => setErrorState(error.message));
+      }
+      // bug
+      // fix https://github.com/firebase/firebase-js-sdk/issues/5667#issuecomment-952079600
+      // fix bug with const db = initializeFirestore(firebaseApp, {useFetchStreams: false})
+      await setDoc(docRef, payload, { merge: true }).then(() => {
+        console.log('create user success');
+      }).catch(error => setErrorState(error.message));
 
-    createUserWithEmailAndPassword(auth, email, password).catch(error =>
-      setErrorState(error.message)
-    );
+    }).catch(error =>{
+      console.log('create user error', error.message);
+      setErrorState(error.message);
+    });
   };
 
   return (
@@ -35,14 +64,19 @@ export const SignupScreen = ({ navigation }) => {
         {/* LogoContainer: consits app logo and screen title */}
         <View style={styles.logoContainer}>
           <Logo uri={Images.logo} />
-          <Text style={styles.screenTitle}>Create a new account!</Text>
+          <Text style={styles.screenTitle}>สร้างบัญชีผู้ใช้ใหม่</Text>
         </View>
         {/* Formik Wrapper */}
         <Formik
           initialValues={{
             email: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            person_type: '',
+            age: '',
+            sex_type: '',
+            name: '',
+            lastname: ''
           }}
           validationSchema={signupValidationSchema}
           onSubmit={values => handleSignup(values)}
@@ -56,7 +90,6 @@ export const SignupScreen = ({ navigation }) => {
             handleBlur
           }) => (
             <>
-              {/* Input fields */}
               <TextInput
                 name='email'
                 leftIconName='email'
@@ -106,13 +139,78 @@ export const SignupScreen = ({ navigation }) => {
                 error={errors.confirmPassword}
                 visible={touched.confirmPassword}
               />
+              <TextInput
+                name='name_lastname'
+                placeholder='กรุณาระบุชื่อ'
+                autoCapitalize='none'
+                autoFocus={true}
+                value={values.name}
+                onChangeText={handleChange('name')}
+                onBlur={handleBlur('name')}
+              />
+              <FormErrorMessage
+                error={errors.name}
+                visible={touched.name}
+              />
+              <TextInput
+                name='lastname'
+                placeholder='กรุณาระบุนามสกุล'
+                autoCapitalize='none'
+                autoFocus={true}
+                value={values.lastname}
+                onChangeText={handleChange('lastname')}
+                onBlur={handleBlur('lastname')}
+              />
+              <FormErrorMessage
+                error={errors.lastname}
+                visible={touched.lastname}
+              />
+              <TextInput
+                name='age'
+                placeholder='ใส่อายุของคุณ'
+                autoCapitalize='none'
+                autoFocus={true}
+                value={values.age}
+                onChangeText={handleChange('age')}
+                onBlur={handleBlur('age')}
+              />
+              <FormErrorMessage
+                error={errors.age}
+                visible={touched.age}
+              />
+              <DropdownList
+                items={[
+                  { label: 'แพทย์', value: 'doctor' },
+                  { label: 'ผุ้ป่วย', value: 'patient' },
+                  { label: 'ผุ้ดูแล', value: 'caretaker' },
+                ]}
+                title="เลือกหน้าที่"
+                onChange={handleChange('person_type')}
+              />
+              <FormErrorMessage
+                error={errors.person_type}
+                visible={touched.person_type}
+              />
+              <DropdownList
+                title="เลือกเพศ"
+                items={[
+                  { label: 'หญิง', value: 'female' },
+                  { label: 'ชาย', value: 'male' },
+                ]}
+                onChange={handleChange('sex_type')}
+              />
+              <FormErrorMessage
+                error={errors.sex_type}
+                visible={touched.sex_type}
+              />
               {/* Display Screen Error Mesages */}
               {errorState !== '' ? (
                 <FormErrorMessage error={errorState} visible={true} />
               ) : null}
+              
               {/* Signup button */}
               <Button style={styles.button} onPress={handleSubmit}>
-                <Text style={styles.buttonText}>Signup</Text>
+                <Text style={styles.buttonText}>สร้างบัญชีผู้ใช้</Text>
               </Button>
             </>
           )}
@@ -121,7 +219,7 @@ export const SignupScreen = ({ navigation }) => {
         <Button
           style={styles.borderlessButtonContainer}
           borderless
-          title={'Already have an account?'}
+          title={'เป็นสมาชิกแล้ว'}
           onPress={() => navigation.navigate('Login')}
         />
       </KeyboardAwareScrollView>
@@ -160,6 +258,7 @@ const styles = StyleSheet.create({
   },
   borderlessButtonContainer: {
     marginTop: 16,
+    marginBottom: 32,
     alignItems: 'center',
     justifyContent: 'center'
   }
