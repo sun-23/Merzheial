@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { UserStack } from './UserStack';
 
-// home screen
-import { DoctorHomeScreen, PatientSocialScreen, CaretakerHomeScreen } from '../screens';
+// caretaker screen
+import { CaretakerHomeScreen } from '../screens';
 
-// patient test
+// doctor screen
+import DoctorHomeStack from './DoctorHomeStack';
+
+// patient screen
+import { PatientSocialScreen } from '../screens';
 import { PatientSimpleTest } from '../screens/patient/PatientSimpleTest';
 import { PatientTest2 } from '../screens/patient/Test2Page/PatientTest2';
-
-// patient list
 import PatientListStack from './PatientListStack';
 import PatientStatStack from './PatiantStatStack';
 import { FamilyStack } from './PatientFamilyStack';
@@ -57,7 +59,7 @@ export const AppStack = () => {
   if (userInfo.person_type === 'doctor') {
     return (
       <Tab.Navigator screenOptions={{ headerShown: false }}>
-        <Tab.Screen name='หน้าแรก' component={DoctorHomeScreen} />
+        <Tab.Screen name='หน้าแรก' component={DoctorHomeStack} />
         <Tab.Screen name='ผู้ใช้' component={UserStack} />
       </Tab.Navigator>
     );
