@@ -39,12 +39,15 @@ export const SignupScreen = ({ navigation }) => {
       };
       console.log(payload);
       console.log('click');
+
+      //custom
       if (person_type == 'patient') {
         // add test point
-        await setDoc(docRef, { test_point: 0 }, { merge: true }).then(() => {
+        await setDoc(docRef, { test_point: 0, allergy: ' ', address: ' ', like: ' ', unlike: ' ' }, { merge: true }).then(() => {
           console.log('add patient test point');
         }).catch(error => setErrorState(error.message));
       }
+      
       // bug
       // fix https://github.com/firebase/firebase-js-sdk/issues/5667#issuecomment-952079600
       // fix bug with const db = initializeFirestore(firebaseApp, {useFetchStreams: false})

@@ -10,12 +10,21 @@ import { updateUserSchema } from '../utils';
 import { doc, setDoc } from "firebase/firestore"; 
 import { Images, Colors, auth, db, storage } from '../config';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useRecoilValue } from 'recoil';
+import { userInfoAtom } from '../store';
 
 export const UpdateUser = ({ navigation }) => {
+
+  const userInfo = useRecoilValue(userInfoAtom)
+
   const [errorState, setErrorState] = useState('');
   const [image, setImage] = useState(null);
   const [btnEnable, setBtnEnable] = useState(true);
   const [uploadProgess, setUpLoadProgess] = useState(0);
+  const [allergy, setAllergy] = useState('');
+  const [address, setAddress] = useState('');
+  const [like, setLike] = useState('');
+  const [unlike, setUnlike] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -78,25 +87,34 @@ export const UpdateUser = ({ navigation }) => {
     const docRef = doc(db, "users", auth.currentUser.uid)
     console.log('click updateUser');
     await uploadImageAsync(image, async (result) => {
-      var URL;
-
       if (result === '') {
+        const imageRef = ref(storage, 'images-user/'+ auth.currentUser.uid);
         // user did not pick image but have allready upload image before
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        getDownloadURL(imageRef).then(async (downloadURL) => {
           console.log('File available at', downloadURL);
-          URL = downloadURL;
-        }).catch(() => URL = '');
+          await setDoc(docRef, {urlImage: downloadURL}, { merge: true })
+        })
       } else {
-        URL = result;
+        await setDoc(docRef, {urlImage: result}, { merge: true })
       }
       const payload = {
         firstname: name,
         lastname: lastname,
         age: age,
         sex_type: sex_type,
-        urlImage: URL
       };
       console.log(payload);
+
+      if (userInfo.person_type === 'patient') {
+        const payload = {
+          allergy: (allergy != '') ? allergy : userInfo.allergy,
+          address: (address != '') ? address : userInfo.address,
+          like: (like != '') ? like : userInfo.like,
+          unlike: (unlike != '') ? unlike : userInfo.unlike,
+        };
+        await setDoc(docRef, payload, { merge: true })
+      }
+
       // bug
       // fix https://github.com/firebase/firebase-js-sdk/issues/5667#issuecomment-952079600
       // fix bug with const db = initializeFirestore(firebaseApp, {useFetchStreams: false})
@@ -190,6 +208,46 @@ export const UpdateUser = ({ navigation }) => {
                 error={errors.age}
                 visible={touched.age}
               />
+
+              {/* patient */}
+              {userInfo.person_type === 'patient' ?
+                <>
+                <TextInput
+                  name='สิ่งที่แพ้'
+                  placeholder='กรุณาระบุสิ่งที่แพ้'
+                  autoCapitalize='none'
+                  autoFocus={true}
+                  value={allergy}
+                  onChangeText={setAllergy}
+                />
+                <TextInput
+                  name='สิ่งที่ชอบ'
+                  placeholder='กรุณาระบุสิ่งที่ชอบ'
+                  autoCapitalize='none'
+                  autoFocus={true}
+                  value={like}
+                  onChangeText={setLike}
+                />
+                <TextInput
+                  name='สิ่งที่ไม่ชอบ'
+                  placeholder='กรุณาระบุสิ่งที่ไม่ชอบ'
+                  autoCapitalize='none'
+                  autoFocus={true}
+                  value={unlike}
+                  onChangeText={setUnlike}
+                />
+                <TextInput
+                  name='ที่อยู่'
+                  placeholder='กรุณาระบุที่อยู่'
+                  autoCapitalize='none'
+                  autoFocus={true}
+                  value={address}
+                  onChangeText={setAddress}
+                />
+                </> 
+              : null}
+
+
               {/* picker sex type */}
               <DropdownList
                 title="เลือกเพศ"

@@ -15,10 +15,20 @@ export const UserScreen = ({ navigation }) => {
             <Text style={styles.screenTitle}>ข้อมูลผู้ใช้</Text>
             {/* <Text>{JSON.stringify(userInfo)}</Text> */}
             {userInfo.urlImage ? <Image source={{ uri: userInfo.urlImage }} style={{ width: 200, height: 200, borderRadius: 100, marginVertical: 10 }} /> : <Logo uri={Images.logo} />}
-            <Text>{userInfo.firstname} {userInfo.lastname}</Text>
-            <Text>{userInfo.email}</Text>
-            <Text>อายุ {userInfo.age} ปี</Text>
-            <Text>เพศ {userInfo.sex_type == 'female' ? 'หญิง' : 'ชาย'}</Text>
+            <Text style={styles.text}>{userInfo.firstname} {userInfo.lastname}</Text>
+            <Text style={styles.text}>{userInfo.email}</Text>
+            <Text style={styles.text}>อายุ {userInfo.age} ปี</Text>
+            <Text style={styles.text}>เพศ {userInfo.sex_type == 'female' ? 'หญิง' : 'ชาย'}</Text>
+
+            {/* patient */}
+            {userInfo.person_type === 'patient' ? 
+              <>
+                <Text style={styles.text}>ที่อยู่ {userInfo.address}</Text>
+                <Text style={styles.text}>สิ่งที่ชอบ {userInfo.like}</Text>
+                <Text style={styles.text}>สิ่งที่ไม่ชอบ {userInfo.unlike}</Text>
+                <Text style={styles.text}>สิ่งที่แพ้ {userInfo.allergy}</Text>
+              </> :
+            null}
 
             {/* patient test */}
             {userInfo.person_type === 'patient' ? 
@@ -76,6 +86,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   text: {
-    fontSize: 20
+    fontSize: 20,
   }
 });

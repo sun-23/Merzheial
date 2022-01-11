@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, Image, Dimensions, ScrollView, TextInput, Pressable, Alert } from 'react-native'
 import { View, LoadingIndicator } from '../../components'
 import { Colors, db, auth } from '../../config';
-import { collection, query, startAt, endAt, orderBy, getDocs, onSnapshot, doc, setDoc } from "firebase/firestore";
+import { collection, query, startAt, endAt, orderBy, onSnapshot, doc, setDoc, getDoc, getDocs } from "firebase/firestore";
 import { allPatientsAtom } from '../../store';
 import { useRecoilState } from 'recoil';
 const {width, height} = Dimensions.get('window');
@@ -30,7 +30,16 @@ export const DoctorHomeScreen = ({navigation}) => {
     setLoadingPatients(true)
     const patientsRef = collection(db ,"users", auth.currentUser.uid, "all-patients")
     const unsubPatients = onSnapshot(patientsRef, (snapshot) => {
-      setAllPatients(snapshot.docs.map((doc) => doc.data()))
+      setAllPatients([]);
+      console.log("data",snapshot.docs.map((item) => item.data()));
+      snapshot.docs.map(async (item) => {
+        const patient_uid = item.data().uid
+        const patientRef = doc(db ,"users", patient_uid)
+        const docsnap = await getDoc(patientRef)
+        console.log('docsnap', docsnap.data());
+        setAllPatients((prev) => [...prev, {...docsnap.data()}]);
+      })
+      console.log('fetch patients', allPatients);
       setLoadingPatients(false)
     });
 
@@ -48,16 +57,20 @@ export const DoctorHomeScreen = ({navigation}) => {
     const q = query(userRef, orderBy("uid"), startAt(inputValue), endAt(inputValue+"\uf8ff"));
     const querySnapshot = await getDocs(q);
     const users = querySnapshot.docs.filter(doc => doc.data().person_type == "patient")
-    // console.log(setSearchPatient(users.map((doc) => {
-    //   return {
-    //     "firstname": doc.data().firstname, 
-    //     "lastname": doc.data().lastname,
-    //     "uid": doc.data().uid,
-    //     "urlImage": doc.data().urlImage,
-    //     "age": doc.data().age,
-    //     "sex_type": doc.data().sex_type,
-    //   }
-    // })));
+    console.log('found user',users.map((doc) => {
+      return {
+        "firstname": doc.data().firstname, 
+        "lastname": doc.data().lastname,
+        "uid": doc.data().uid,
+        "urlImage": doc.data().urlImage,
+        "age": doc.data().age,
+        "sex_type": doc.data().sex_type,
+        "allergy": doc.data().allergy,
+        "like": doc.data().like,
+        "unlike": doc.data().unlike,
+        "address": doc.data().address,
+      }
+    }));
     setSearchPatient(users.map((doc) => {
       return {
         "firstname": doc.data().firstname, 
@@ -66,6 +79,10 @@ export const DoctorHomeScreen = ({navigation}) => {
         "urlImage": doc.data().urlImage,
         "age": doc.data().age,
         "sex_type": doc.data().sex_type,
+        "allergy": doc.data().allergy,
+        "like": doc.data().like,
+        "unlike": doc.data().unlike,
+        "address": doc.data().address,
       }
     }))
     setLoading(false);
@@ -77,7 +94,7 @@ export const DoctorHomeScreen = ({navigation}) => {
     }
 
     const findPatient = allPatients.filter(e => e.uid === uid);
-    console.log("find patient ==>",findPatient);
+    // console.log("find patient ==>",findPatient);
 
     if (findPatient.length === 0) {
       return true
@@ -90,10 +107,9 @@ export const DoctorHomeScreen = ({navigation}) => {
     // check patient that is not added in lists
     console.log('clicked patient ==> ', patient.firstname, '\n        uid ==> ', patient.uid);
     const r = checkSelectPatientInPatients(patient.uid)
-    console.log(r);
     if (r === true) {
       const docRef = doc(db ,"users", auth.currentUser.uid, "all-patients", patient.uid);
-      await setDoc(docRef, patient, {merge: true}).then(() => {
+      await setDoc(docRef, {uid: patient.uid}, {merge: true}).then(() => {
         alertMessage("เสร็จสิ้น", "ผู้ป่วยถูกเพิ่มแล้ว");
       })
     } else {
@@ -114,6 +130,7 @@ export const DoctorHomeScreen = ({navigation}) => {
 
   const gotoPatientInfo = (patient) => {
     console.log("naviagte to ", patient);
+    navigation.navigate("Info", {patientInfo: patient});
   }
 
   const RenderPatients = () => {
@@ -138,6 +155,7 @@ export const DoctorHomeScreen = ({navigation}) => {
                 <View style={styles.itemViewText}>
                   <Text style={styles.itemTitle}>{patient.firstname} {patient.lastname}</Text>
                   <Text style={styles.itemTitle}>อายุ: {patient.age}ปี เพศ: {patient.sex_type === "female" ? "หญิง" : "ชาย"}</Text>
+                  <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>uid: {patient.uid}</Text>
                 </View>
         </Pressable>
     })
