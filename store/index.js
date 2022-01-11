@@ -82,3 +82,22 @@ export const allPatientsAtom = atom({
   key: 'all-patients',
   default: []
 })
+
+export const currentPatientMeetDocs = atom({
+  key: 'current-patient-meet-doctor',
+  default: []
+})
+
+export const sortcurrentPatientMeetDocs = selector({
+  key: 'sort-current-patient-meet-doctor',
+  get: ({get}) => {
+      const temp = get(currentPatientMeetDocs)
+      const lists = temp.filter(e => e) // create new array for fix attemped read only property
+      return lists.sort((a,b) => {
+        if (a && b) {
+          return b.time.seconds - a.time.seconds
+        }
+        return 1
+      })
+    }
+})
