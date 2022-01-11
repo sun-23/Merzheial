@@ -66,6 +66,9 @@ export const AppStack = () => {
   } else if (userInfo.person_type === 'caretaker') {
     return (
       <Tab.Navigator screenOptions={{ headerShown: false }}>
+        {/* todo
+          1. meet all
+         */}
         <Tab.Screen name='หน้าแรก' component={CaretakerHomeScreen} />
         <Tab.Screen name='ผู้ใช้' component={UserStack} />
       </Tab.Navigator>
