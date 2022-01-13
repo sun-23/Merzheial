@@ -225,6 +225,7 @@ const PatientInfo = ({navigation, route}) => {
                     <View style={styles.itemViewText}>
                         <Text style={styles.itemTitle}>ชื่อ: {patientInfo.firstname}</Text>
                         <Text style={styles.itemTitle}>นามสกุล: {patientInfo.lastname}</Text>
+                        <Text style={styles.itemTitle}>อายุ: {patientInfo.age}ปี เพศ: {patientInfo.sex_type === "female" ? "หญิง" : "ชาย"}</Text>
                         <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ชอบ {patientInfo.like}</Text>
                         <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ไม่ชอบ {patientInfo.unlike}</Text>
                         <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่แพ้ {patientInfo.allergy}</Text>

@@ -46,8 +46,6 @@ export const DoctorHomeScreen = ({navigation}) => {
       setLoadingPatients(false)
     });
 
-    console.log('refesh');
-
     return () => {
       // cleanup
       unsubPatients();
@@ -62,13 +60,14 @@ export const DoctorHomeScreen = ({navigation}) => {
   }, []);
 
   const refreshUserData = () => {
+    console.log('refesh');
     setLoadingPatients(true)
     setAllPatients([]);
     allPatientsUid.map(async (item) => {
       const patient_uid = item.uid
       const patientRef = doc(db ,"users", patient_uid)
       const docsnap = await getDoc(patientRef)
-      console.log('docsnap', docsnap.data());
+      console.log('refresh snap', docsnap.data());
       setAllPatients((prev) => [...prev, {...docsnap.data()}]);
     })
     console.log('fetch patients', allPatients);
