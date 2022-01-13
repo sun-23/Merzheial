@@ -12,7 +12,6 @@ export const DoctorHomeScreen = ({navigation}) => {
 
   // patients of doctor
   const [allPatients, setAllPatients] = useRecoilState(allPatientsAtom);
-  const [allPatientsUid, setAllPatientsUid] = useState([]);
   const doctorInfo = useRecoilValue(userInfoAtom);
 
   const [isLoading, setLoading] = useState(false);
@@ -34,7 +33,7 @@ export const DoctorHomeScreen = ({navigation}) => {
     const patientsRef = collection(db ,"users", auth.currentUser.uid, "all-patients")
     const unsubPatients = onSnapshot(patientsRef, (snapshot) => {
       setAllPatients([]);
-      setAllPatientsUid(snapshot.docs.map((item) => item.data()));
+      // console.log(snapshot.docs.map((item) => item.data()));
       snapshot.docs.map(async (item) => {
         const patient_uid = item.data().uid
         const patientRef = doc(db ,"users", patient_uid)
@@ -42,7 +41,7 @@ export const DoctorHomeScreen = ({navigation}) => {
         console.log('docsnap', docsnap.data());
         setAllPatients((prev) => [...prev, {...docsnap.data()}]);
       })
-      console.log('fetch patients', allPatients);
+      // console.log('fetch patients', allPatients);
       setLoadingPatients(false)
     });
 
@@ -59,18 +58,20 @@ export const DoctorHomeScreen = ({navigation}) => {
     setRefreshing(false);
   }, []);
 
-  const refreshUserData = () => {
+  const refreshUserData = async () => {
     console.log('refesh');
     setLoadingPatients(true)
     setAllPatients([]);
-    allPatientsUid.map(async (item) => {
-      const patient_uid = item.uid
-      const patientRef = doc(db ,"users", patient_uid)
-      const docsnap = await getDoc(patientRef)
-      console.log('refresh snap', docsnap.data());
-      setAllPatients((prev) => [...prev, {...docsnap.data()}]);
-    })
-    console.log('fetch patients', allPatients);
+    const patientsRef = collection(db ,"users", auth.currentUser.uid, "all-patients")
+    const allpatients = await getDocs(patientsRef);
+    allpatients.docs.map(async (item) => {
+        const patient_uid = item.data().uid
+        const patientRef = doc(db ,"users", patient_uid)
+        const docsnap = await getDoc(patientRef)
+        // console.log('docsnap', docsnap.data());
+        setAllPatients((prev) => [...prev, {...docsnap.data()}]);
+      })
+    // console.log('refetch patients', allPatients);
     setLoadingPatients(false)
   }
 
@@ -82,7 +83,7 @@ export const DoctorHomeScreen = ({navigation}) => {
     const q = query(userRef, orderBy("uid"), startAt(inputValue), endAt(inputValue+"\uf8ff"));
     const querySnapshot = await getDocs(q);
     const users = querySnapshot.docs.filter(doc => doc.data().person_type == "patient")
-    console.log('found user',users.map((doc) => doc.data()));
+    // console.log('found user',users.map((doc) => doc.data()));
     setSearchPatient(users.map((doc) => {
       return {
         id: doc.id,
