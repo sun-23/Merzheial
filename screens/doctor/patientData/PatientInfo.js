@@ -75,7 +75,9 @@ const PatientInfo = ({navigation, route}) => {
                         style={{paddingLeft: 5}} 
                         title='ผลแบบทดสอบ'
                         borderless
-                        onPress={() => navigation.goBack()}
+                        onPress={() => navigation.navigate("Tests", { patientInfo: patientInfo })}
+                        // ทำ screen list all test
+                        // ทำ test info
                     />
                     <Button 
                         style={{paddingHorizontal: 5}} 

@@ -23,10 +23,11 @@ export const UserScreen = ({ navigation }) => {
             {/* patient */}
             {userInfo.person_type === 'patient' ? 
               <>
-                <Text style={styles.text}>ที่อยู่ {userInfo.address}</Text>
-                <Text style={styles.text}>สิ่งที่ชอบ {userInfo.like}</Text>
-                <Text style={styles.text}>สิ่งที่ไม่ชอบ {userInfo.unlike}</Text>
-                <Text style={styles.text}>สิ่งที่แพ้ {userInfo.allergy}</Text>
+                <Text style={[styles.text, {color: (userInfo.address !== "") ? "black" : "red"}]}>ที่อยู่: {userInfo.address !== "" ? userInfo.address : "กรุณาระบุ"}</Text>
+                <Text style={[styles.text, {color: (userInfo.like !== "") ? "black" : "red"}]}>สิ่งที่ชอบ: {userInfo.like !== "" ? userInfo.like : "กรุณาระบุ"}</Text>
+                <Text style={[styles.text, {color: (userInfo.unlike !== "") ? "black" : "red"}]}>สิ่งที่ไม่ชอบ: {userInfo.unlike !== "" ? userInfo.unlike : "กรุณาระบุ"}</Text>
+                <Text style={[styles.text, {color: (userInfo.allergy !== "") ? "black" : "red"}]}>สิ่งที่แพ้: {userInfo.allergy !== "" ? userInfo.allergy : "กรุณาระบุ"}</Text>
+                <Text style={[styles.text, {color: (userInfo.alzheimer_lv !== "") ? "black" : "red"}]}>ระยะอาการ: {userInfo.alzheimer_lv !== "" ? userInfo.alzheimer_lv : "ให้แพทย์ประเมิณ"}</Text>
               </> :
             null}
 

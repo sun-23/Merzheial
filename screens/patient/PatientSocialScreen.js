@@ -19,7 +19,7 @@ export const PatientSocialScreen = () => {
         {/* facebook */}
         <Pressable style={styles.link_item} onPress={openFaceBook}>
           <Text style={styles.link_item_text}>FACEBOOK</Text>
-          <Text style={styles.link_item_text}>คุยยามช้าว</Text>
+          <Text style={styles.link_item_text}>คุยยามเช้า</Text>
         </Pressable>
       </View>
     </View>

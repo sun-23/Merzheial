@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { DoctorHomeScreen } from '../screens'
 import PatientInfo from '../screens/doctor/patientData/PatientInfo'
 import DoctorMeetItem from '../screens/doctor/patientData/DoctorMeetItem'
+import PatientTests from '../screens/doctor/patientData/PatientTests'
+import TestInfo from '../screens/doctor/patientData/TestInfo'
 
 const Stack = createStackNavigator()
 
@@ -13,12 +15,10 @@ export default function DoctorHomeStack() {
         <Stack.Screen name='Home' component={DoctorHomeScreen} />
         <Stack.Screen name='Info' component={PatientInfo} />
         <Stack.Screen name='MeetInfo' component={DoctorMeetItem} />
+        <Stack.Screen name='Tests' component={PatientTests} />
+        <Stack.Screen name='TestInfo' component={TestInfo} />
         {/* todo
-            D 1. patient info screen
-                1.1 patient test info 
-                1.2 patient todo(lists) stat(done not done)
-            D 2. create meet 
-            D 3. all meet with patient
+            P 1.2 ระยะอาการ
          */}
         {/* <Stack.Screen name='PatientInfo' component={} /> */}
       </Stack.Navigator>

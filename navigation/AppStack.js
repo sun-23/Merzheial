@@ -27,7 +27,7 @@ const Tab = createBottomTabNavigator();
 
 export const AppStack = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
-  const setDay = useSetRecoilState(dayAtom);
+  const [curDay, setDay] = useRecoilState(dayAtom);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -46,6 +46,9 @@ export const AppStack = () => {
         d.setSeconds(0)
         return d.getTime()
     })
+
+    var a = curDay
+    console.log("curDay ==>", a.toString());
 
     return () => {
       unsubscribeUserInfo();
