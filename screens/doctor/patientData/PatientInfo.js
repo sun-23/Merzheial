@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, Text, Image, Dimensions, ScrollView, Modal, TextInput, Pressable } from 'react-native'
+import { StyleSheet, Text, Image, Dimensions, ScrollView, Modal, TextInput, Pressable, Alert } from 'react-native'
 import { View, Button } from '../../../components'
 import { Colors, db } from '../../../config';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { collection, addDoc, query, where, onSnapshot } from 'firebase/firestore';
+import { collection, addDoc, query, where, onSnapshot, doc, setDoc } from 'firebase/firestore';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { sortcurrentPatientMeetDocs, currentPatientMeetDocs } from '../../../store';
 
@@ -17,6 +17,8 @@ const PatientInfo = ({navigation, route}) => {
     const currentPatientMeet = useRecoilValue(sortcurrentPatientMeetDocs);
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalAl, setModalAl] = useState(false);
+    const [description_al_lv, setDescription_al_lv] = useState('');
     const [enable, setEnable] = useState(true);
     const [show, setShow] = useState(false);
     const [title, setTitle] = useState('');
@@ -44,6 +46,10 @@ const PatientInfo = ({navigation, route}) => {
     };
 
     const createMeet = async () => {
+        if (title === "" || description === "") {
+            Alert.alert("ระบุข้อความ","ระบุข้อความในช่องว่าง")
+            return
+        }
         const docRef = collection(db, 'meet_doctor')
         setEnable(false)
         await addDoc(docRef, {
@@ -55,9 +61,24 @@ const PatientInfo = ({navigation, route}) => {
             title: title
         })
         setDescription('');
-        setShow(false);
         setTitle('');
+        setShow(false);
         setModalVisible(false)
+        setEnable(true)
+    }
+
+    const update_lv = async () => {
+        if (description_al_lv === "") {
+            Alert.alert("ระบุข้อความ","ระบุข้อความในช่องว่าง")
+            return
+        }
+        const docRef = doc(db, 'users', patientInfo.uid)
+        setEnable(false)
+        await setDoc(docRef, {
+            alzheimer_lv: description_al_lv
+        }, {merge: true})
+        setDescription_al_lv('');
+        setModalAl(false)
         setEnable(true)
     }
 
@@ -72,12 +93,18 @@ const PatientInfo = ({navigation, route}) => {
                 <Text style={styles.textHeader}>คนไข้</Text>
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                     <Button
-                        style={{paddingLeft: 5}} 
+                        style={{paddingRight: 5}} 
                         title='ผลแบบทดสอบ'
                         borderless
                         onPress={() => navigation.navigate("Tests", { patientInfo: patientInfo })}
                         // ทำ screen list all test
                         // ทำ test info
+                    />
+                    <Button 
+                        style={{paddingHorizontal: 5}} 
+                        title='อัพเดตระยะอาการ'
+                        borderless
+                        onPress={() => setModalAl(true)}
                     />
                     <Button 
                         style={{paddingHorizontal: 5}} 
@@ -87,7 +114,39 @@ const PatientInfo = ({navigation, route}) => {
                     />
                 </View>
             </View>
-            {/* modal */}
+            {/* modal 1 */}
+            <Modal
+                animationType="slide"
+                visible={modalAl}
+            >
+                <KeyboardAwareScrollView enableOnAndroid={true}>
+                <View isSafe style={[styles.container, {height: height, width: width}]}>
+                    <View style={styles.viewHeader}>
+                        <Button 
+                            title='กลับ'
+                            borderless
+                            onPress={() => setModalAl(false)}
+                        />
+                        <Text style={styles.textHeader}>เปลี่ยนแปลงอาการ</Text>
+                    </View>
+                    <TextInput 
+                        placeholder='รายละเอียด'
+                        multiline={true}
+                        style={styles.multiInput}
+                        value={description_al_lv}
+                        onChangeText={setDescription_al_lv}
+                    />
+                    <Pressable
+                        style={[styles.button, styles.buttonSummit, {marginBottom: 100, opacity: enable ? 1 : 0.5}]}
+                        onPress={update_lv}
+                        >
+                        <Text style={[styles.textStyle, {color: 'white'}]}>ตกลง</Text>
+                    </Pressable>
+                </View>
+                </KeyboardAwareScrollView>
+            </Modal>
+
+            {/* modal 2 */}
             <Modal
                 animationType="slide"
                 visible={modalVisible}
@@ -171,6 +230,7 @@ const PatientInfo = ({navigation, route}) => {
                         <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่แพ้ {patientInfo.allergy}</Text>
                         <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>ที่อยู่ {patientInfo.address}</Text>
                         <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>uid: {patientInfo.uid}</Text>
+                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientInfo.alzheimer_lv !== "") ? "black" : "red"}]}>ระยะอาการ: {patientInfo.alzheimer_lv !== "" ? patientInfo.alzheimer_lv : "ให้แพทย์ประเมิณ"}</Text>
                     </View>
                 </View>
             </View>

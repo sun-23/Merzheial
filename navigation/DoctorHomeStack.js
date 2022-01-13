@@ -17,10 +17,6 @@ export default function DoctorHomeStack() {
         <Stack.Screen name='MeetInfo' component={DoctorMeetItem} />
         <Stack.Screen name='Tests' component={PatientTests} />
         <Stack.Screen name='TestInfo' component={TestInfo} />
-        {/* todo
-            P 1.2 ระยะอาการ
-         */}
-        {/* <Stack.Screen name='PatientInfo' component={} /> */}
       </Stack.Navigator>
     )
 }

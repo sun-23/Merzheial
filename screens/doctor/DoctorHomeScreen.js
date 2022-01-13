@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, Image, Dimensions, ScrollView, TextInput, Pressable, Alert } from 'react-native'
+import { StyleSheet, Text, Image, Dimensions, ScrollView, TextInput, Pressable, Alert, RefreshControl } from 'react-native'
 import { View, LoadingIndicator } from '../../components'
 import { Colors, db, auth } from '../../config';
 import { collection, query, startAt, endAt, orderBy, onSnapshot, doc, setDoc, getDoc, getDocs } from "firebase/firestore";
@@ -7,12 +7,12 @@ import { allPatientsAtom, userInfoAtom } from '../../store';
 import { useRecoilState, useRecoilValue } from 'recoil';
 const {width, height} = Dimensions.get('window');
 
-
 // add patient and list patient
 export const DoctorHomeScreen = ({navigation}) => {
 
   // patients of doctor
   const [allPatients, setAllPatients] = useRecoilState(allPatientsAtom);
+  const [allPatientsUid, setAllPatientsUid] = useState([]);
   const doctorInfo = useRecoilValue(userInfoAtom);
 
   const [isLoading, setLoading] = useState(false);
@@ -20,6 +20,8 @@ export const DoctorHomeScreen = ({navigation}) => {
 
   const [searchPatient, setSearchPatient] = useState([]);
   const [search, setSearch] = useState('');
+
+  const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
     // effect
@@ -32,7 +34,7 @@ export const DoctorHomeScreen = ({navigation}) => {
     const patientsRef = collection(db ,"users", auth.currentUser.uid, "all-patients")
     const unsubPatients = onSnapshot(patientsRef, (snapshot) => {
       setAllPatients([]);
-      console.log("data",snapshot.docs.map((item) => item.data()));
+      setAllPatientsUid(snapshot.docs.map((item) => item.data()));
       snapshot.docs.map(async (item) => {
         const patient_uid = item.data().uid
         const patientRef = doc(db ,"users", patient_uid)
@@ -44,11 +46,34 @@ export const DoctorHomeScreen = ({navigation}) => {
       setLoadingPatients(false)
     });
 
+    console.log('refesh');
+
     return () => {
       // cleanup
       unsubPatients();
     }
   }, [])
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    loadOptions(search);
+    refreshUserData()
+    setRefreshing(false);
+  }, []);
+
+  const refreshUserData = () => {
+    setLoadingPatients(true)
+    setAllPatients([]);
+    allPatientsUid.map(async (item) => {
+      const patient_uid = item.uid
+      const patientRef = doc(db ,"users", patient_uid)
+      const docsnap = await getDoc(patientRef)
+      console.log('docsnap', docsnap.data());
+      setAllPatients((prev) => [...prev, {...docsnap.data()}]);
+    })
+    console.log('fetch patients', allPatients);
+    setLoadingPatients(false)
+  }
 
   const loadOptions = async (inputValue) => {
     setLoading(true);
@@ -58,32 +83,11 @@ export const DoctorHomeScreen = ({navigation}) => {
     const q = query(userRef, orderBy("uid"), startAt(inputValue), endAt(inputValue+"\uf8ff"));
     const querySnapshot = await getDocs(q);
     const users = querySnapshot.docs.filter(doc => doc.data().person_type == "patient")
-    console.log('found user',users.map((doc) => {
-      return {
-        "firstname": doc.data().firstname, 
-        "lastname": doc.data().lastname,
-        "uid": doc.data().uid,
-        "urlImage": doc.data().urlImage,
-        "age": doc.data().age,
-        "sex_type": doc.data().sex_type,
-        "allergy": doc.data().allergy,
-        "like": doc.data().like,
-        "unlike": doc.data().unlike,
-        "address": doc.data().address,
-      }
-    }));
+    console.log('found user',users.map((doc) => doc.data()));
     setSearchPatient(users.map((doc) => {
       return {
-        "firstname": doc.data().firstname, 
-        "lastname": doc.data().lastname,
-        "uid": doc.data().uid,
-        "urlImage": doc.data().urlImage,
-        "age": doc.data().age,
-        "sex_type": doc.data().sex_type,
-        "allergy": doc.data().allergy,
-        "like": doc.data().like,
-        "unlike": doc.data().unlike,
-        "address": doc.data().address,
+        id: doc.id,
+        ...doc.data()
       }
     }))
     setLoading(false);
@@ -227,9 +231,17 @@ export const DoctorHomeScreen = ({navigation}) => {
           }
       </View>: <View style={styles.scrollView}><LoadingIndicator/></View>}
       <View style={{height: 5, width: width, backgroundColor: '#1597e5'}}></View>
-      {!loadingPatients ? (<ScrollView>
-        <View style={{height: 4, width: width, backgroundColor: '#f0f0f0'}}></View>
-        <RenderPatients/>
+      {!loadingPatients ? 
+      (<ScrollView 
+        refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        >
+          <View style={{height: 4, width: width, backgroundColor: '#f0f0f0'}}></View>
+          <RenderPatients/>
         </ScrollView>) : <LoadingIndicator/>}
     </View>
   );
