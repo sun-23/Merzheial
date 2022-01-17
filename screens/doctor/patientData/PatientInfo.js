@@ -230,7 +230,7 @@ const PatientInfo = ({navigation, route}) => {
             </Modal>
             <View style={styles.content}>
                 <Text style={[styles.textHeader, {alignSelf: 'flex-start'}]}>คนไข้</Text>
-                <View style={[styles.item, styles.itemPatient]}>
+                {patientFireInfo && <View style={[styles.item, styles.itemPatient]}>
                     {!patientFireInfo.urlImage ? 
                         <Image 
                             style={[styles.image, styles.imagePatient]}  
@@ -251,7 +251,7 @@ const PatientInfo = ({navigation, route}) => {
                         <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>uid: {patientFireInfo.uid}</Text>
                         <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.alzheimer_lv !== "") ? "black" : "red"}]}>ระยะอาการ: {patientFireInfo.alzheimer_lv !== "" ? patientFireInfo.alzheimer_lv : "ให้แพทย์ประเมิณ"}</Text>
                     </View>
-                </View>
+                </View>}
             </View>
             <Text style={styles.textStyle}>รายการนัดหมาย</Text>
             <ScrollView style={{height: 'auto', width: width}}>
