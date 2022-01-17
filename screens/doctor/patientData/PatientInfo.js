@@ -25,6 +25,7 @@ const PatientInfo = ({navigation, route}) => {
     const [show, setShow] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [medicine, setMedicine] = useState('');
     const [time, setTime] = useState(new Date());
 
     useEffect(() => {
@@ -69,7 +70,8 @@ const PatientInfo = ({navigation, route}) => {
             time: time,
             uid_doctor: doctorInfo.uid,
             uid_patient: patientInfo.uid,
-            title: title
+            title: title,
+            note: ""
         })
         setDescription('');
         setTitle('');
@@ -79,16 +81,18 @@ const PatientInfo = ({navigation, route}) => {
     }
 
     const update_lv = async () => {
-        if (description_al_lv === "") {
+        if (description_al_lv === "" || medicine === "") {
             Alert.alert("ระบุข้อความ","ระบุข้อความในช่องว่าง")
             return
         }
         const docRef = doc(db, 'users', patientInfo.uid)
         setEnable(false)
         await setDoc(docRef, {
-            alzheimer_lv: description_al_lv
+            alzheimer_lv: description_al_lv,
+            medicine: medicine
         }, {merge: true})
         setDescription_al_lv('');
+        setMedicine('');
         setModalAl(false)
         setEnable(true)
     }
@@ -112,7 +116,7 @@ const PatientInfo = ({navigation, route}) => {
                     />
                     <Button 
                         style={{paddingHorizontal: 5}} 
-                        title='อัพเดตระยะอาการ'
+                        title='อัพเดตข้อมูลผุ้ป่วย'
                         borderless
                         onPress={() => setModalAl(true)}
                     />
@@ -138,10 +142,12 @@ const PatientInfo = ({navigation, route}) => {
                             onPress={() => {
                                 setModalAl(false)
                                 setDescription_al_lv('');
+                                setMedicine('');
                             }}
                         />
                         <Text style={styles.textHeader}>เปลี่ยนแปลงอาการ</Text>
                     </View>
+                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>รายละเอียดอาการ</Text>
                     <TextInput 
                         placeholder='รายละเอียด'
                         multiline={true}
@@ -149,8 +155,16 @@ const PatientInfo = ({navigation, route}) => {
                         value={description_al_lv}
                         onChangeText={setDescription_al_lv}
                     />
+                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>รายละเอียดยาที่ต้องรับประธาน</Text>
+                    <TextInput 
+                        placeholder='รายละเอียด'
+                        multiline={true}
+                        style={styles.multiInput}
+                        value={medicine}
+                        onChangeText={setMedicine}
+                    />
                     <Pressable
-                        style={[styles.button, styles.buttonSummit, {opacity: enable ? 1 : 0.5}]}
+                        style={[styles.button, styles.buttonSummit, {marginBottom: 100, opacity: enable ? 1 : 0.5}]}
                         onPress={update_lv}
                         >
                         <Text style={[styles.textStyle, {color: 'white'}]}>ตกลง</Text>
@@ -178,12 +192,14 @@ const PatientInfo = ({navigation, route}) => {
                         />
                         <Text style={styles.textHeader}>สร้างนัด</Text>
                     </View>
+                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>หัวข้อ</Text>
                     <TextInput 
                         placeholder='หัวข้อ'
                         style={styles.titleInput}
                         value={title}
                         onChangeText={setTitle}
                     />
+                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>รายละเอียด</Text>
                     <TextInput 
                         placeholder='รายละเอียด'
                         multiline={true}
@@ -250,6 +266,7 @@ const PatientInfo = ({navigation, route}) => {
                         <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>ที่อยู่ {patientFireInfo.address}</Text>
                         <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>uid: {patientFireInfo.uid}</Text>
                         <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.alzheimer_lv !== "") ? "black" : "red"}]}>ระยะอาการ: {patientFireInfo.alzheimer_lv !== "" ? patientFireInfo.alzheimer_lv : "ให้แพทย์ประเมิณ"}</Text>
+                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.medicine !== "") ? "black" : "red"}]}>ระยะอาการ: {patientFireInfo.medicine !== "" ? patientFireInfo.medicine : "ให้แพทย์ประเมิณ"}</Text>
                     </View>
                 </View>}
             </View>

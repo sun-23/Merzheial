@@ -70,7 +70,8 @@ export const AppStack = () => {
     return (
       <Tab.Navigator screenOptions={{ headerShown: false }}>
         {/* todo
-          1. meet all
+          1. see meet all
+          2. add patient
          */}
         <Tab.Screen name='หน้าแรก' component={CaretakerHomeScreen} />
         <Tab.Screen name='ผู้ใช้' component={UserStack} />
