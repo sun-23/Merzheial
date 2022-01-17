@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, Image } from 'react-native'
+import { StyleSheet, Text, Image, ScrollView, Dimensions } from 'react-native'
 import { Colors } from '../config';
 import { Button, View, Logo } from '../components'
 
@@ -8,9 +8,12 @@ import { userInfoAtom } from '../store';
 import { auth, Images } from '../config';
 import { signOut } from '@firebase/auth';
 
+const {width, height} = Dimensions.get('window');
+
 export const UserScreen = ({ navigation }) => {
     const userInfo = useRecoilValue(userInfoAtom);
     return (
+      <ScrollView>
         <View isSafe style={styles.container}>
             <Text style={styles.screenTitle}>ข้อมูลผู้ใช้</Text>
             {/* <Text>{JSON.stringify(userInfo)}</Text> */}
@@ -64,6 +67,7 @@ export const UserScreen = ({ navigation }) => {
                 title={"ออกจากระบบ"}
             />
         </View>
+      </ScrollView>
     )
 }
 
@@ -73,6 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     paddingHorizontal: 12,
     alignItems: 'center',
+    minHeight: height
   },
   screenTitle: {
     fontSize: 32,

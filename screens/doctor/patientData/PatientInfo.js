@@ -16,6 +16,8 @@ const PatientInfo = ({navigation, route}) => {
     const [e,setCurrentPatientMeet] = useRecoilState(currentPatientMeetDocs);
     const currentPatientMeet = useRecoilValue(sortcurrentPatientMeetDocs);
 
+    const [patientFireInfo, setPatientFireInfo] = useState();
+
     const [modalVisible, setModalVisible] = useState(false);
     const [modalAl, setModalAl] = useState(false);
     const [description_al_lv, setDescription_al_lv] = useState('');
@@ -27,6 +29,14 @@ const PatientInfo = ({navigation, route}) => {
 
     useEffect(() => {
         // effect
+
+        const docRef = doc(db, "users", patientInfo.uid);
+
+        const unsubscribeUserRef = onSnapshot(docRef, (doc) => {
+            // console.log("ddddd",/**/({id: doc.id, ...doc.data()})/**/);
+            setPatientFireInfo(/**/({id: doc.id, ...doc.data()})/**/);
+        });
+
         const collectionMeetRef = collection(db, "meet_doctor");
         const q = query(collectionMeetRef, where("uid_patient", "==", patientInfo.uid), where("uid_doctor", "==", doctorInfo.uid))
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -35,6 +45,7 @@ const PatientInfo = ({navigation, route}) => {
         return () => {
             // cleanup
             unsubscribe()
+            unsubscribeUserRef()
         }
     }, [])
 
@@ -90,7 +101,6 @@ const PatientInfo = ({navigation, route}) => {
                     borderless
                     onPress={() => navigation.goBack()}
                 />
-                <Text style={styles.textHeader}>คนไข้</Text>
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                     <Button
                         style={{paddingRight: 5}} 
@@ -125,7 +135,10 @@ const PatientInfo = ({navigation, route}) => {
                         <Button 
                             title='กลับ'
                             borderless
-                            onPress={() => setModalAl(false)}
+                            onPress={() => {
+                                setModalAl(false)
+                                setDescription_al_lv('');
+                            }}
                         />
                         <Text style={styles.textHeader}>เปลี่ยนแปลงอาการ</Text>
                     </View>
@@ -157,7 +170,11 @@ const PatientInfo = ({navigation, route}) => {
                         <Button 
                             title='กลับ'
                             borderless
-                            onPress={() => setModalVisible(false)}
+                            onPress={() => {
+                                setModalVisible(false)
+                                setDescription('')
+                                setTitle('')
+                            }}
                         />
                         <Text style={styles.textHeader}>สร้างนัด</Text>
                     </View>
@@ -212,26 +229,27 @@ const PatientInfo = ({navigation, route}) => {
                 </KeyboardAwareScrollView>
             </Modal>
             <View style={styles.content}>
+                <Text style={[styles.textHeader, {alignSelf: 'flex-start'}]}>คนไข้</Text>
                 <View style={[styles.item, styles.itemPatient]}>
-                    {!patientInfo.urlImage ? 
+                    {!patientFireInfo.urlImage ? 
                         <Image 
                             style={[styles.image, styles.imagePatient]}  
                             source={require('../../../assets/avatar.webp')}
                         /> : 
                         <Image 
                             style={[styles.image, styles.imagePatient]} 
-                            source={{uri: patientInfo.urlImage}}
+                            source={{uri: patientFireInfo.urlImage}}
                     />}
                     <View style={styles.itemViewText}>
-                        <Text style={styles.itemTitle}>ชื่อ: {patientInfo.firstname}</Text>
-                        <Text style={styles.itemTitle}>นามสกุล: {patientInfo.lastname}</Text>
-                        <Text style={styles.itemTitle}>อายุ: {patientInfo.age}ปี เพศ: {patientInfo.sex_type === "female" ? "หญิง" : "ชาย"}</Text>
-                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ชอบ {patientInfo.like}</Text>
-                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ไม่ชอบ {patientInfo.unlike}</Text>
-                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่แพ้ {patientInfo.allergy}</Text>
-                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>ที่อยู่ {patientInfo.address}</Text>
-                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>uid: {patientInfo.uid}</Text>
-                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientInfo.alzheimer_lv !== "") ? "black" : "red"}]}>ระยะอาการ: {patientInfo.alzheimer_lv !== "" ? patientInfo.alzheimer_lv : "ให้แพทย์ประเมิณ"}</Text>
+                        <Text style={styles.itemTitle}>ชื่อ: {patientFireInfo.firstname}</Text>
+                        <Text style={styles.itemTitle}>นามสกุล: {patientFireInfo.lastname}</Text>
+                        <Text style={styles.itemTitle}>อายุ: {patientFireInfo.age}ปี เพศ: {patientFireInfo.sex_type === "female" ? "หญิง" : "ชาย"}</Text>
+                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ชอบ {patientFireInfo.like}</Text>
+                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ไม่ชอบ {patientFireInfo.unlike}</Text>
+                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่แพ้ {patientFireInfo.allergy}</Text>
+                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>ที่อยู่ {patientFireInfo.address}</Text>
+                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>uid: {patientFireInfo.uid}</Text>
+                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.alzheimer_lv !== "") ? "black" : "red"}]}>ระยะอาการ: {patientFireInfo.alzheimer_lv !== "" ? patientFireInfo.alzheimer_lv : "ให้แพทย์ประเมิณ"}</Text>
                     </View>
                 </View>
             </View>

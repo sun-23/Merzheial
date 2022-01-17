@@ -34,7 +34,7 @@ export const sortListsSelector = selector({
 
 export const listLastSevenDays = selector({
   key: 'lists-last-7-days',
-  get: ({get}) => (get(sortListsSelector).filter(e => get(dayAtom) - e.day.seconds * 1000 >= 60 * 60 * 24 * 7))
+  get: ({get}) => (get(sortListsSelector).filter(e => get(dayAtom) - (e.day.seconds * 1000) >= (60 * 60 * 24 * 7)))
 });
 
 export const listAfterCurrent = selector({

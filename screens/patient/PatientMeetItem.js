@@ -7,7 +7,7 @@ const {width, height} = Dimensions.get('window');
 const PatientMeetItem = ({navigation, route}) => {
 
     const { data } = route.params;
-
+    
     return (
         <ScrollView>
             <View isSafe style={styles.container}>
@@ -23,7 +23,7 @@ const PatientMeetItem = ({navigation, route}) => {
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
                     <Text style={styles.textStyle}>แพทย์: {data.doctor_name}</Text>
                     <Text style={styles.textStyle}>รายละเอียด: {data.description}</Text>
-                    <Text style={[styles.textStyle, {color : data.note !== '' ? "black" : "red"}]}>note ของแพทย์: {data.note !== "" ? data.note : "รอแพทย์ประเมิณหลังนัดพบ"}</Text>
+                    <Text style={[styles.textStyle, {color : (data.note.length > 0) ? "black" : "red"}]}>note ของแพทย์: {(data.note.length > 0) ? data.note : "รอแพทย์ประเมิณหลังนัดพบ"}</Text>
                 </View>
             </View>
         </ScrollView>
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center', 
         backgroundColor: 'white',
-        height: height
+        minHeight: height
         // justifyContent: 'center'
     }, 
     content: {
