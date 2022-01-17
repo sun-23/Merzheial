@@ -5,6 +5,9 @@ import { Colors } from '../../config';
 const {width, height} = Dimensions.get('window');
 
 const PatientMeetItem = ({navigation, route}) => {
+
+    const { data } = route.params;
+
     return (
         <ScrollView>
             <View isSafe style={styles.container}>
@@ -14,12 +17,13 @@ const PatientMeetItem = ({navigation, route}) => {
                         borderless
                         onPress={() => navigation.goBack()}
                     />
-                    <Text style={styles.textHeader}>{route.params.data.title}</Text>
+                    <Text style={styles.textHeader}>{data.title}</Text>
                 </View>
                 <View style={styles.content}>
-                    <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(route.params.data.time.seconds * 1000)))).toString()}</Text>
-                    <Text style={styles.textStyle}>แพทย์: {route.params.data.doctor_name}</Text>
-                    <Text style={styles.textStyle}>รายละเอียด: {route.params.data.description}</Text>
+                    <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
+                    <Text style={styles.textStyle}>แพทย์: {data.doctor_name}</Text>
+                    <Text style={styles.textStyle}>รายละเอียด: {data.description}</Text>
+                    <Text style={[styles.textStyle, {color : data.note !== '' ? "black" : "red"}]}>note ของแพทย์: {data.note !== "" ? data.note : "รอแพทย์ประเมิณหลังนัดพบ"}</Text>
                 </View>
             </View>
         </ScrollView>

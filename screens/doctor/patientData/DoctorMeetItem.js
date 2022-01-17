@@ -19,6 +19,7 @@ const DoctorMeetItem = ({navigation, route}) => {
                 <View style={styles.content}>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(route.params.data.time.seconds * 1000)))).toString()}</Text>
                     <Text style={styles.textStyle}>รายละเอียด: {route.params.data.description}</Text>
+                    {/* todo add doctor note after meet */}
                 </View>
             </View>
         </ScrollView>
