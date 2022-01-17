@@ -17,7 +17,7 @@ import PatientStatStack from './PatiantStatStack';
 import { FamilyStack } from './PatientFamilyStack';
 
 import { userInfoAtom, dayAtom } from '../store';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from '../config';
 import { LoadingIndicator, View } from '../components';
@@ -85,8 +85,11 @@ export const AppStack = () => {
   } else if (userInfo.person_type === 'patient' && userInfo.isTest) {
     return (
       <Tab.Navigator screenOptions={{ headerShown: false }} initialRouteName="หน้าแรก">
-        <Tab.Screen name='สถิติ' component={PatientStatStack}/>
+        {/* todo
+          create web game and like to it
+         */}
         <Tab.Screen name='social' component={PatientSocialScreen}/>
+        <Tab.Screen name='สถิติ' component={PatientStatStack}/>
         <Tab.Screen name='หน้าแรก' component={PatientListStack}/>
         <Tab.Screen name='ญาติ' component={FamilyStack}/>
         <Tab.Screen name='ผู้ใช้' component={UserStack}/>

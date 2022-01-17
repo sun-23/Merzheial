@@ -7,19 +7,21 @@ import { onSnapshot, orderBy, query, where, collection } from "firebase/firestor
 import { Colors, db, auth } from '../../../config';
 const {width, height} = Dimensions.get('window');
 
-import { userListsAtom, userListsDone, userListsNotDone, listAfterCurrent } from '../../../store';
+import { userListsAtom, userListsDone, userListsNotDone, sortListsSelector, dayAtom } from '../../../store';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 export default function PatientList({ navigation }) {
 
     const setListAtom = useSetRecoilState(userListsAtom)
-    const sortLists = useRecoilValue(listAfterCurrent)
+    const sortLists = useRecoilValue(sortListsSelector)
     const doneLists = useRecoilValue(userListsDone)
     const notDoneLists = useRecoilValue(userListsNotDone)
+    const curDay = useRecoilValue(dayAtom)
+
 
     const [indexSelect, setIndex] = useState(2)
     const [loading, setLoading] = useState(true)
-    const buttonsSelect = ['ทำเสร็จแล้ว', 'ยังไม่ได้ทำ', 'ทั้งหมด']
+    const buttonsSelect = ['ทำเสร็จแล้ว', 'ยังไม่ได้ทำ', 'รวมทั้งหมดตั้งแต่ต้นจนถึงหลัง 7 วันเป็นต้นไป']
 
     useEffect(() => {
         // effect
@@ -79,6 +81,8 @@ export default function PatientList({ navigation }) {
                         onPress={() => navigation.navigate("Item", { data: item })}
                     >
                         <Text style={styles.itemTitle}>{item.title}</Text>
+                        {/* show status */}
+                        <Text style={[styles.itemTitle, {color: (item.isDone) ? "#00bf0b" : ((curDay - (item.day.seconds * 1000) > 0) ? "red" : "#fbbf00")}]}>{(item.isDone) ? "ทำแล้ว" : ((curDay - (item.day.seconds * 1000) >= 0) ? "ยังไม่ได้ทำ" : "ลืมทำ")}</Text>
                         <Text style={styles.itemTime}>{item.day_string}</Text>
                     </TouchableOpacity>
         })
@@ -90,7 +94,7 @@ export default function PatientList({ navigation }) {
                 return <RenderItemDone/>
             case 'ยังไม่ได้ทำ':
                 return <RenderItemNotDone/>
-            case 'ทั้งหมด':
+            case 'รวมทั้งหมดตั้งแต่ต้นจนถึงหลัง 7 วันเป็นต้นไป':
                 return <RenderItemAll/>
             default:
                 break;
@@ -99,7 +103,7 @@ export default function PatientList({ navigation }) {
 
     return (
         <View isSafe style={styles.container}>
-            <Text style={styles.header}>เตือนความจำ</Text>
+            <Text style={styles.header}>สิ่งที่ต้องทำ</Text>
             <TouchableOpacity 
                 style={styles.btn} 
                 onPress={() => navigation.navigate("Create_new")}
@@ -110,7 +114,7 @@ export default function PatientList({ navigation }) {
                 onPress={onSelectIndex}
                 selectedIndex={indexSelect}
                 buttons={buttonsSelect}
-                containerStyle={{height: 50, marginBottom: 12}}
+                containerStyle={{height: 70, marginBottom: 12, padding: 5}}
             />
             {!loading ? (<ScrollView>
                 <View style={{height: 4, width: width, backgroundColor: '#f0f0f0'}}></View>
