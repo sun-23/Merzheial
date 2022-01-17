@@ -150,7 +150,7 @@ const PatientInfo = ({navigation, route}) => {
                         onChangeText={setDescription_al_lv}
                     />
                     <Pressable
-                        style={[styles.button, styles.buttonSummit, {marginBottom: 100, opacity: enable ? 1 : 0.5}]}
+                        style={[styles.button, styles.buttonSummit, {opacity: enable ? 1 : 0.5}]}
                         onPress={update_lv}
                         >
                         <Text style={[styles.textStyle, {color: 'white'}]}>ตกลง</Text>
@@ -374,6 +374,7 @@ const styles = StyleSheet.create({
     },
     multiInput: {
         minHeight: 100,
+        maxHeight: height*0.5,
         width: width*0.9,
         margin: 12,
         padding: 10,

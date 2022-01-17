@@ -43,11 +43,13 @@ const PatientTests = ({navigation, route}) => {
                             key={data.id}
                             style={{
                                 height: 'auto',
+                                minHeight: 70,
                                 width: width,
                                 paddingHorizontal: width * 0.05,
                                 borderBottomWidth: 4,
                                 borderColor: '#f0f0f0',
                                 paddingBottom: 5,
+                                justifyContent: 'center'
                             }}
                             onPress={() => navigation.navigate("TestInfo", { data: data })}
                         >

@@ -1,10 +1,32 @@
-import React from 'react'
-import { StyleSheet, Text, Dimensions, ScrollView } from 'react-native'
+import React, {useState} from 'react'
+import { StyleSheet, Text, Dimensions, ScrollView, Modal, TextInput, Pressable, Alert } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { View, Button } from '../../../components'
-import { Colors } from '../../../config';
+import { Colors, db } from '../../../config';
 const {width, height} = Dimensions.get('window');
+import { doc, setDoc } from 'firebase/firestore';
 
 const DoctorMeetItem = ({navigation, route}) => {
+
+    const { data } = route.params
+
+    const [note, setNote] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
+    const [enable, setEnable] = useState(true)
+
+    const updateNote = async () => {
+        if (note.length === 0) {
+            Alert.alert("ระบุข้อความ","ระบุข้อความในช่องว่าง")
+            return
+        }
+        setEnable(false)
+        await setDoc(doc(db, "meet_doctor", data.id), {note: note}, {merge: true})
+        setNote('');
+        setModalVisible(false);
+        setEnable(true)
+        navigation.goBack()
+    }
+
     return (
         <ScrollView>
             <View isSafe style={styles.container}>
@@ -14,12 +36,55 @@ const DoctorMeetItem = ({navigation, route}) => {
                         borderless
                         onPress={() => navigation.goBack()}
                     />
-                    <Text style={styles.textHeader}>{route.params.data.title}</Text>
+                    <Text style={styles.textHeader}>{data.title}</Text>
+                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
+                        <Button
+                            style={{paddingRight: 5}} 
+                            title='อัพเดต note'
+                            borderless
+                            onPress={() => setModalVisible(true)}
+                            // ทำ screen list all test
+                            // ทำ test info
+                        />
+                    </View>
                 </View>
+                <Modal
+                    animationType="slide"
+                    visible={modalVisible}
+                >
+                    <KeyboardAwareScrollView enableOnAndroid={true}>
+                    <View isSafe style={[styles.container, {height: height, width: width}]}>
+                        <View style={styles.viewHeader}>
+                            <Button 
+                                title='กลับ'
+                                borderless
+                                onPress={() => {
+                                    setModalVisible(false)
+                                    setNote('');
+                                }}
+                            />
+                            <Text style={styles.textHeader}>เปลี่ยนแปลงอาการ</Text>
+                        </View>
+                        <TextInput 
+                            placeholder='note'
+                            multiline={true}
+                            style={styles.multiInput}
+                            value={note}
+                            onChangeText={setNote}
+                        />
+                        <Pressable
+                            style={[styles.button, styles.buttonSummit, {opacity: enable ? 1 : 0.5}]}
+                            onPress={updateNote}
+                            >
+                            <Text style={[styles.textStyle, {color: 'white', alignSelf: 'center'}]}>ตกลง</Text>
+                        </Pressable>
+                    </View>
+                    </KeyboardAwareScrollView>
+                </Modal>
                 <View style={styles.content}>
-                    <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(route.params.data.time.seconds * 1000)))).toString()}</Text>
-                    <Text style={styles.textStyle}>รายละเอียด: {route.params.data.description}</Text>
-                    {/* todo add doctor note after meet */}
+                    <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
+                    <Text style={styles.textStyle}>รายละเอียด: {data.description}</Text>
+                    <Text style={[styles.textStyle, {color : (data.note.length > 0) ? "black" : "red"}]}>note ของแพทย์: {(data.note.length > 0) ? data.note : "ยังไม่ได้ประเมิณ"}</Text>
                 </View>
             </View>
         </ScrollView>
@@ -41,11 +106,14 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     button: {
-        justifyContent: 'center',
-        width: width*0.9,
         height: 50,
+        width: width*0.9,
+        margin: 12,
+        padding: 10,
         borderRadius: 5,
-        marginVertical: 10
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
     },
     buttonOpen: {
         backgroundColor: Colors.orange,
@@ -56,7 +124,6 @@ const styles = StyleSheet.create({
     textStyle: {
         fontWeight: "bold",
         fontSize: 20,
-        textAlign: "left",
         alignSelf: 'flex-start'
     },
     textHeader: {
@@ -71,6 +138,62 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         alignSelf: 'center'
+    },
+    itemPatient:{
+      width: width,
+    },
+    item:{
+      height: 'auto',
+      paddingHorizontal: width * 0.05,
+      borderBottomWidth: 4,
+      borderColor: '#f0f0f0',
+      paddingBottom: 5,
+      flexDirection: 'row',
+    },
+    imagePatient: {
+      height: 70, 
+      width: 70, 
+    },
+    image: { 
+      borderRadius: 5,
+      marginVertical: 12,
+      alignSelf: 'flex-start'
+    },
+    itemTitle:{
+      fontSize: 20,
+      fontWeight: '600',
+    },
+    itemTime: {
+        fontSize: 16,
+        fontWeight: '400'
+    },
+    itemViewText: {
+      alignSelf: 'center', 
+      paddingLeft: 10
+    },
+    picker: {
+        width: 90,
+        marginHorizontal: (width - 90)/2,
+        marginVertical: 5
+    },
+    titleInput:{
+        height: 50,
+        width: width*0.9,
+        margin: 12,
+        padding: 10,
+        borderRadius: 5,
+        fontSize: 20,
+        backgroundColor: "#f7f7f7",
+    },
+    multiInput: {
+        minHeight: 100,
+        maxHeight: height*0.5,
+        width: width*0.9,
+        margin: 12,
+        padding: 10,
+        borderRadius: 5,
+        fontSize: 20,
+        backgroundColor: "#f7f7f7",
     },
 })
 
