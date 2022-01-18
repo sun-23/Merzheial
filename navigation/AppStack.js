@@ -10,7 +10,6 @@ import DoctorHomeStack from './DoctorHomeStack';
 
 // patient screen
 import { PatientSocialScreen } from '../screens';
-import { PatientSimpleTest } from '../screens/patient/PatientSimpleTest';
 import { PatientTest2 } from '../screens/patient/Test2Page/PatientTest2';
 import PatientListStack from './PatientListStack';
 import PatientStatStack from './PatiantStatStack';
