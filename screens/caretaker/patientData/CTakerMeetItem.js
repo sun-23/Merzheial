@@ -20,16 +20,6 @@ const CTakerMeetItem = ({navigation, route}) => {
                         onPress={() => navigation.goBack()}
                     />
                     <Text style={styles.textHeader}>{data.title}</Text>
-                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-                        <Button
-                            style={{paddingRight: 5}} 
-                            title='อัพเดต note'
-                            borderless
-                            onPress={() => setModalVisible(true)}
-                            // ทำ screen list all test
-                            // ทำ test info
-                        />
-                    </View>
                 </View>  
                 <View style={styles.content}>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>

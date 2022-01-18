@@ -29,7 +29,7 @@ const CTakerPatientInfo = ({navigation, route}) => {
         });
 
         const collectionMeetRef = collection(db, "meet_doctor");
-        const q = query(collectionMeetRef, where("uid_patient", "==", patientInfo.uid), where("uid_doctor", "==", doctorInfo.uid))
+        const q = query(collectionMeetRef, where("uid_patient", "==", patientInfo.uid))
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             setCurrentPatientMeet(querySnapshot.docs.map((doc) => /**/({id: doc.id, ...doc.data()})/**/));
         });
