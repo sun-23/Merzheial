@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { UserStack } from './UserStack';
 
 // caretaker screen
-import { CaretakerHomeScreen } from '../screens';
+import CareTakerHomeStack from './CareTakerHomeStack';
 
 // doctor screen
 import DoctorHomeStack from './DoctorHomeStack';
@@ -69,17 +69,12 @@ export const AppStack = () => {
   } else if (userInfo.person_type === 'caretaker') {
     return (
       <Tab.Navigator screenOptions={{ headerShown: false }}>
-        {/* todo
-          1. see meet all
-          2. add patient
-         */}
-        <Tab.Screen name='หน้าแรก' component={CaretakerHomeScreen} />
+        <Tab.Screen name='หน้าแรก' component={CareTakerHomeStack} />
         <Tab.Screen name='ผู้ใช้' component={UserStack} />
       </Tab.Navigator>
     )
   } else if (userInfo.person_type === 'patient' && !userInfo.isTest) {
     return (
-      // <PatientSimpleTest />
       <PatientTest2 />
     )
   } else if (userInfo.person_type === 'patient' && userInfo.isTest) {

@@ -76,7 +76,7 @@ export const familyLists = atom({
   default: []
 })
 
-//=====doctor=======================================================//
+//=====doctor and caretaker==========================================//
 
 export const allPatientsAtom = atom({
   key: 'all-patients',

@@ -1,0 +1,24 @@
+import React from 'react'
+import { createStackNavigator } from '@react-navigation/stack'
+
+import { CaretakerHomeScreen } from '../screens'
+import CTakerPatientInfo from '../screens/caretaker/patientData/CTakerPatientInfo'
+import CTakerMeetItem from '../screens/caretaker/patientData/CTakerMeetItem'
+import PatientTests from '../screens/doctor/patientData/PatientTests'
+import TestInfo from '../screens/doctor/patientData/TestInfo'
+
+const Stack = createStackNavigator()
+
+export default function CareTakerHomeStack() {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name='Home' component={CaretakerHomeScreen} />
+        <Stack.Screen name='Info' component={CTakerPatientInfo} />
+        <Stack.Screen name='MeetInfo' component={CTakerMeetItem} />
+
+        {/* code same as doctor */}
+        <Stack.Screen name='Tests' component={PatientTests} />
+        <Stack.Screen name='TestInfo' component={TestInfo} />
+      </Stack.Navigator>
+    )
+}
