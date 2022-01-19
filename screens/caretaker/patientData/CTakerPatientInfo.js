@@ -11,7 +11,7 @@ import { sortcurrentPatientMeetDocs, currentPatientMeetDocs } from '../../../sto
 const {width, height} = Dimensions.get('window');
 
 const CTakerPatientInfo = ({navigation, route}) => {
-    const { patientInfo, doctorInfo } = route.params; 
+    const { patientInfo } = route.params; 
 
     const [e,setCurrentPatientMeet] = useRecoilState(currentPatientMeetDocs);
     const currentPatientMeet = useRecoilValue(sortcurrentPatientMeetDocs);

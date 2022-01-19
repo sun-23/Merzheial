@@ -3,8 +3,8 @@ import { StyleSheet, Text, Image, Dimensions, ScrollView, TextInput, Pressable, 
 import { View, LoadingIndicator } from '../../components'
 import { Colors, db, auth } from '../../config';
 import { collection, query, startAt, endAt, orderBy, onSnapshot, doc, setDoc, getDoc, getDocs } from "firebase/firestore";
-import { allPatientsAtom, userInfoAtom } from '../../store';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { allPatientsAtom } from '../../store';
+import { useRecoilState } from 'recoil';
 const {width, height} = Dimensions.get('window');
 
 // add patient and list patient
@@ -12,7 +12,6 @@ export const CaretakerHomeScreen = ({navigation}) => {
 
   // patients of doctor
   const [allPatients, setAllPatients] = useRecoilState(allPatientsAtom);
-  const doctorInfo = useRecoilValue(userInfoAtom);
 
   const [isLoading, setLoading] = useState(false);
   const [loadingPatients, setLoadingPatients] = useState(false);
@@ -135,7 +134,7 @@ export const CaretakerHomeScreen = ({navigation}) => {
 
   const gotoPatientInfo = (patient) => {
     console.log("naviagte to ", patient);
-    navigation.navigate("Info", {patientInfo: patient, doctorInfo: doctorInfo});
+    navigation.navigate("Info", {patientInfo: patient});
   }
 
   const RenderPatients = () => {
