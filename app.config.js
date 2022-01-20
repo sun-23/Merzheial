@@ -17,9 +17,9 @@ export default {
     platforms: ['ios', 'android'],
     version: '0.15.0',
     orientation: 'portrait',
-    icon: './assets/icon.jpg',
+    icon: './assets/icon.png',
     splash: {
-      image: './assets/icon.jpg',
+      image: './assets/icon.png',
       resizeMode: 'cover',
       backgroundColor: '#F57C00'
     },

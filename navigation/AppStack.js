@@ -10,6 +10,7 @@ import CareTakerHomeStack from './CareTakerHomeStack';
 import DoctorHomeStack from './DoctorHomeStack';
 
 // patient screen
+import Game from '../screens/patient/game/picture_puzzle/Game';
 import { PatientSocialScreen } from '../screens';
 import { PatientTest2 } from '../screens/patient/Test2Page/PatientTest2';
 import PatientListStack from './PatientListStack';
@@ -62,12 +63,14 @@ export const AppStack = () => {
       iconName = focused ? 'ios-home' : 'ios-home-outline';
     } else if (route.name === 'สถิติ') {
       iconName = focused ? 'ios-today' : 'ios-today-outline';
-    } else if (route.name === 'social') {
+    } else if (route.name === 'Social') {
       iconName = focused ? 'ios-chatbubble-ellipses' : 'ios-chatbubble-ellipses-outline';
     } else if (route.name === 'ญาติ') {
       iconName = focused ? 'ios-people' : 'ios-people-outline';
     } else if (route.name === 'ผู้ใช้') {
       iconName = focused ? 'ios-person' : 'ios-person-outline';
+    } else if (route.name === 'Game') {
+      iconName = focused ? 'game-controller' : 'game-controller-outline';
     }
 
     // You can return any component that you like here!
@@ -130,7 +133,8 @@ export const AppStack = () => {
         {/* todo
           create web game and like to it
          */}
-        <Tab.Screen name='social' component={PatientSocialScreen}/>
+        <Tab.Screen name='Social' component={PatientSocialScreen}/>
+        <Tab.Screen name='Game' component={Game}/>
         <Tab.Screen name='สถิติ' component={PatientStatStack}/>
         <Tab.Screen name='หน้าแรก' component={PatientListStack}/>
         <Tab.Screen name='ญาติ' component={FamilyStack}/>
