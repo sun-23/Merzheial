@@ -82,7 +82,7 @@ export default function CTakerPatientList({ navigation, route }) {
                     >
                         <Text style={styles.itemTitle}>{item.title}</Text>
                         {/* show status */}
-                        <Text style={[styles.itemTitle, {color: (item.isDone) ? "#00bf0b" : ((curDay - (item.day.seconds * 1000) > 0) ? "red" : "#fbbf00")}]}>{(item.isDone) ? "ทำแล้ว" : ((curDay - (item.day.seconds * 1000) >= 0) ? "ยังไม่ได้ทำ" : "ลืมทำ")}</Text>
+                        <Text style={[styles.itemTitle, {color: (item.isDone) ? "#00bf0b" : ((curDay - (item.day.seconds * 1000) > 0) ? "red" : "#fbbf00")}]}>{(item.isDone) ? "ทำแล้ว" : ((curDay - (item.day.seconds * 1000) >= 0) ? "ลืมทำ" : "ยังไม่ได้ทำ")}</Text>
                         <Text style={styles.itemTime}>{item.day_string}</Text>
                     </TouchableOpacity>
         })
