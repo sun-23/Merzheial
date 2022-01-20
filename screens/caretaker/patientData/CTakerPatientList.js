@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, ScrollView, Dimensions, TouchableOpacity , Pressable} from 'react-native'
 import { View, LoadingIndicator } from '../../../components'
 import { ButtonGroup } from 'react-native-elements';
 
@@ -9,6 +9,9 @@ const {width, height} = Dimensions.get('window');
 
 import { userListsAtom, userListsDone, userListsNotDone, sortListsSelector, dayAtom } from '../../../store';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+
+import { Ionicons } from '@expo/vector-icons';
+
 
 export default function CTakerPatientList({ navigation, route }) {
     const { patientInfo } = route.params; 
@@ -103,7 +106,12 @@ export default function CTakerPatientList({ navigation, route }) {
 
     return (
         <View isSafe style={styles.container}>
-            <Text style={styles.header}>สิ่งที่ต้องทำของ {patientInfo.firstname} {patientInfo.lastname}</Text>
+            <View style={styles.viewHeader}>
+                <Pressable onPress={() => navigation.goBack()}>
+                    <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                </Pressable>
+                <Text style={styles.textHeader}>สิ่งที่ต้องทำของ {patientInfo.firstname} {patientInfo.lastname}</Text>
+            </View>
             <ButtonGroup
                 onPress={onSelectIndex}
                 selectedIndex={indexSelect}
@@ -125,12 +133,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         // justifyContent: 'center'
     },
-    header: {
+    textHeader: {
         fontWeight: 'bold', 
-        fontSize: 25,
-        alignSelf: 'flex-start',
+        fontSize: 20,
         marginLeft: 20,
-        marginBottom: 10,
     },
     btn: {
         width: width*0.9,
@@ -156,5 +162,12 @@ const styles = StyleSheet.create({
     itemTime: {
         fontSize: 16,
         fontWeight: '400'
-    }
+    },
+    viewHeader: {
+        width: width*0.9,
+        flexDirection: 'row', 
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        alignSelf: 'center'
+    },
 })

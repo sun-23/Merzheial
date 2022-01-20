@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import { StyleSheet, Text, Image, Dimensions, ScrollView, Pressable } from 'react-native'
 import { View, Button } from '../../../components'
-import { db } from '../../../config';
+import { Colors, db } from '../../../config';
 import { collection, query, where, onSnapshot, doc } from 'firebase/firestore';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { sortcurrentPatientMeetDocs, currentPatientMeetDocs } from '../../../store';
+import { Ionicons } from '@expo/vector-icons';
 
 const {width, height} = Dimensions.get('window');
 
@@ -41,11 +42,9 @@ const CTakerPatientInfo = ({navigation, route}) => {
     return (
         <View isSafe style={styles.container}>
             <View style={styles.viewHeader}>
-                <Button 
-                    title='กลับ'
-                    borderless
-                    onPress={() => navigation.goBack()}
-                />
+                <Pressable onPress={() => navigation.goBack()}>
+                    <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                </Pressable>
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                     <Button
                         style={{paddingRight: 5}} 

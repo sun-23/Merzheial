@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
-import { StyleSheet, Text, Dimensions, ScrollView, Modal, TextInput, Pressable, Alert } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { View, Button } from '../../../components'
-import { Colors, db } from '../../../config';
+import React from 'react'
+import { StyleSheet, Text, Dimensions, ScrollView, Pressable } from 'react-native'
+import { View } from '../../../components'
+import { Colors } from '../../../config';
 const {width, height} = Dimensions.get('window');
-import { doc, setDoc } from 'firebase/firestore';
+
+import { Ionicons } from '@expo/vector-icons';
 
 const CTakerMeetItem = ({navigation, route}) => {
 
@@ -14,11 +14,9 @@ const CTakerMeetItem = ({navigation, route}) => {
         <ScrollView>
             <View isSafe style={styles.container}>
                 <View style={styles.viewHeader}>
-                    <Button 
-                        title='กลับ'
-                        borderless
-                        onPress={() => navigation.goBack()}
-                    />
+                    <Pressable onPress={() => navigation.goBack()}>
+                        <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                    </Pressable>
                     <Text style={styles.textHeader}>{data.title}</Text>
                 </View>  
                 <View style={styles.content}>

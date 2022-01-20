@@ -5,6 +5,8 @@ import { View, Button } from '../../../components'
 import { Colors, db } from '../../../config';
 const {width, height} = Dimensions.get('window');
 import { doc, setDoc } from 'firebase/firestore';
+import { Ionicons } from '@expo/vector-icons';
+
 
 const DoctorMeetItem = ({navigation, route}) => {
 
@@ -31,11 +33,9 @@ const DoctorMeetItem = ({navigation, route}) => {
         <ScrollView>
             <View isSafe style={styles.container}>
                 <View style={styles.viewHeader}>
-                    <Button 
-                        title='กลับ'
-                        borderless
-                        onPress={() => navigation.goBack()}
-                    />
+                    <Pressable onPress={() => navigation.goBack()}>
+                        <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                    </Pressable>
                     <Text style={styles.textHeader}>{data.title}</Text>
                     <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                         <Button
@@ -55,14 +55,14 @@ const DoctorMeetItem = ({navigation, route}) => {
                     <KeyboardAwareScrollView enableOnAndroid={true}>
                     <View isSafe style={[styles.container, {height: height, width: width}]}>
                         <View style={styles.viewHeader}>
-                            <Button 
-                                title='กลับ'
-                                borderless
+                            <Pressable 
                                 onPress={() => {
                                     setModalVisible(false)
                                     setNote('');
                                 }}
-                            />
+                            >
+                                <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                            </Pressable>
                             <Text style={styles.textHeader}>เปลี่ยนแปลงอาการ</Text>
                         </View>
                         <TextInput 

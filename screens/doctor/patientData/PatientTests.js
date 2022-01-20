@@ -5,6 +5,8 @@ import { Colors, db } from '../../../config';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { sortcurrentPatientTests, currentPatientTests } from '../../../store';
+import { Ionicons } from '@expo/vector-icons';
+
 
 const {width, height} = Dimensions.get('window');
 
@@ -29,11 +31,9 @@ const PatientTests = ({navigation, route}) => {
     return (
         <View isSafe style={styles.container}>
             <View style={styles.viewHeader}>
-                <Button 
-                    title='กลับ'
-                    borderless
-                    onPress={() => navigation.goBack()}
-                />
+                <Pressable onPress={() => navigation.goBack()}>
+                    <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                </Pressable>
                 <Text style={styles.textHeader}>ผลการทำแบบทดสอบ</Text>
             </View>
             <ScrollView style={{height: 'auto', width: width}}>

@@ -7,6 +7,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { collection, addDoc, query, where, onSnapshot, doc, setDoc } from 'firebase/firestore';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { sortcurrentPatientMeetDocs, currentPatientMeetDocs } from '../../../store';
+import { Ionicons } from '@expo/vector-icons';
 
 const {width, height} = Dimensions.get('window');
 
@@ -100,11 +101,9 @@ const PatientInfo = ({navigation, route}) => {
     return (
         <View isSafe style={styles.container}>
             <View style={styles.viewHeader}>
-                <Button 
-                    title='กลับ'
-                    borderless
-                    onPress={() => navigation.goBack()}
-                />
+                <Pressable onPress={() => navigation.goBack()}>
+                    <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                </Pressable>
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                     <Button
                         style={{paddingRight: 5}} 
@@ -136,15 +135,15 @@ const PatientInfo = ({navigation, route}) => {
                 <KeyboardAwareScrollView enableOnAndroid={true}>
                 <View isSafe style={[styles.container, {height: height, width: width}]}>
                     <View style={styles.viewHeader}>
-                        <Button 
-                            title='กลับ'
-                            borderless
+                        <Pressable 
                             onPress={() => {
                                 setModalAl(false)
                                 setDescription_al_lv('');
                                 setMedicine('');
                             }}
-                        />
+                        >
+                            <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                        </Pressable>
                         <Text style={styles.textHeader}>เปลี่ยนแปลงอาการ</Text>
                     </View>
                     <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>รายละเอียดอาการ</Text>
@@ -181,15 +180,15 @@ const PatientInfo = ({navigation, route}) => {
                 <KeyboardAwareScrollView enableOnAndroid={true}>
                 <View isSafe style={[styles.container, {height: height, width: width}]}>
                     <View style={styles.viewHeader}>
-                        <Button 
-                            title='กลับ'
-                            borderless
+                        <Pressable 
                             onPress={() => {
                                 setModalVisible(false)
                                 setDescription('')
                                 setTitle('')
                             }}
-                        />
+                        >
+                            <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                        </Pressable> 
                         <Text style={styles.textHeader}>สร้างนัด</Text>
                     </View>
                     <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>หัวข้อ</Text>

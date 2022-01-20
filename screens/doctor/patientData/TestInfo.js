@@ -1,8 +1,9 @@
 import React from 'react'
-import { StyleSheet, Text, Dimensions, ScrollView, Image } from 'react-native'
+import { StyleSheet, Text, Dimensions, ScrollView, Image, Pressable } from 'react-native'
 import { View, Button } from '../../../components'
 import { Colors } from '../../../config';
 const {width, height} = Dimensions.get('window');
+import { Ionicons } from '@expo/vector-icons';
 
 const answer_type = [
     "เหตุการณ์ไม่เคยเกิดขึ้นเลยหรือเกิดขึ้นนานๆ ครั้ง ใน 1 ปี",
@@ -77,11 +78,9 @@ const TestInfo = ({navigation, route}) => {
     return (
         <View isSafe style={styles.container}>
             <View style={styles.viewHeader}>
-                <Button 
-                    title='กลับ'
-                    borderless
-                    onPress={() => navigation.goBack()}
-                />
+                <Pressable onPress={() => navigation.goBack()}>
+                    <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                </Pressable>
                 <Text style={styles.textHeader}>ผลแบบทดสอบ</Text>
             </View>
             <View style={styles.content}>
