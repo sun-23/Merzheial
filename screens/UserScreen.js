@@ -8,7 +8,7 @@ import { userInfoAtom } from '../store';
 import { auth, Images } from '../config';
 import { signOut } from '@firebase/auth';
 
-const {width, height} = Dimensions.get('window');
+const {height} = Dimensions.get('window');
 
 export const UserScreen = ({ navigation }) => {
     const userInfo = useRecoilValue(userInfoAtom);

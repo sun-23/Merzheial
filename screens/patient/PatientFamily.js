@@ -3,8 +3,8 @@ import { StyleSheet, Text, ScrollView, Dimensions, TouchableOpacity, Image } fro
 import { View, LoadingIndicator } from '../../components'
 
 import { onSnapshot, collection } from "firebase/firestore"; 
-import { Colors, db, auth, Images } from '../../config';
-const {width, height} = Dimensions.get('window');
+import { Colors, db, auth } from '../../config';
+const {width} = Dimensions.get('window');
 
 import { familyLists } from '../../store';
 import { useRecoilState } from 'recoil';

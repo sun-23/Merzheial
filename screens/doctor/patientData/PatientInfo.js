@@ -8,7 +8,6 @@ import { collection, addDoc, query, where, onSnapshot, doc, setDoc } from 'fireb
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { sortcurrentPatientMeetDocs, currentPatientMeetDocs } from '../../../store';
 import { Ionicons } from '@expo/vector-icons';
-
 const {width, height} = Dimensions.get('window');
 
 const PatientInfo = ({navigation, route}) => {

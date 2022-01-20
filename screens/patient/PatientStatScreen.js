@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, Dimensions, TouchableOpacity } from 'react-native';
 import { View } from '../../components';
-import { Colors } from '../../config';
-
-const {width, height} = Dimensions.get('window');
-
-import { collection, query, where, orderBy, onSnapshot } from "firebase/firestore";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from '../../config';
-
 import { listLastSevenDays, userInfoAtom, userMeetDocs, userSortMeetDocs } from '../../store';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { ScrollView } from 'react-native-gesture-handler';
+const {width} = Dimensions.get('window');
 
 // show list stat last 7 days done and not done
 export const PatientStatScreen = ({navigation}) => {

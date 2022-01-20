@@ -3,10 +3,9 @@ import { StyleSheet, Text, Dimensions, ScrollView, Modal, TextInput, Pressable, 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { View, Button } from '../../../components'
 import { Colors, db } from '../../../config';
-const {width, height} = Dimensions.get('window');
 import { doc, setDoc } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
-
+const {width, height} = Dimensions.get('window');
 
 const DoctorMeetItem = ({navigation, route}) => {
 

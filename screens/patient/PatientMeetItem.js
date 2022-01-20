@@ -1,7 +1,8 @@
 import React from 'react'
-import { StyleSheet, Text, Image, Dimensions, ScrollView } from 'react-native'
-import { View, Button } from '../../components'
+import { StyleSheet, Text, Dimensions, ScrollView, Pressable } from 'react-native'
+import { View } from '../../components'
 import { Colors } from '../../config';
+import { Ionicons } from '@expo/vector-icons';
 const {width, height} = Dimensions.get('window');
 
 const PatientMeetItem = ({navigation, route}) => {
@@ -12,11 +13,9 @@ const PatientMeetItem = ({navigation, route}) => {
         <ScrollView>
             <View isSafe style={styles.container}>
                 <View style={styles.viewHeader}>
-                    <Button 
-                        title='กลับ'
-                        borderless
-                        onPress={() => navigation.goBack()}
-                    />
+                    <Pressable onPress={() => navigation.goBack()}>
+                        <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                    </Pressable>
                     <Text style={styles.textHeader}>{data.title}</Text>
                 </View>
                 <View style={styles.content}>

@@ -6,7 +6,6 @@ import { collection, query, where, onSnapshot, doc } from 'firebase/firestore';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { sortcurrentPatientMeetDocs, currentPatientMeetDocs } from '../../../store';
 import { Ionicons } from '@expo/vector-icons';
-
 const {width, height} = Dimensions.get('window');
 
 const CTakerPatientInfo = ({navigation, route}) => {

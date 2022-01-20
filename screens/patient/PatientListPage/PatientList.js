@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native'
 import { View, LoadingIndicator } from '../../../components'
 import { ButtonGroup } from 'react-native-elements';
-
-import { onSnapshot, orderBy, query, where, collection } from "firebase/firestore"; 
+import { onSnapshot, collection } from "firebase/firestore"; 
 import { Colors, db, auth } from '../../../config';
-const {width, height} = Dimensions.get('window');
-
 import { userListsAtom, userListsDone, userListsNotDone, sortListsSelector, dayAtom } from '../../../store';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+const {width} = Dimensions.get('window');
 
 export default function PatientList({ navigation }) {
 

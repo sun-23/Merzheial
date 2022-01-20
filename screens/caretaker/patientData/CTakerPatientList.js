@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, ScrollView, Dimensions, TouchableOpacity , Pressable} from 'react-native'
 import { View, LoadingIndicator } from '../../../components'
 import { ButtonGroup } from 'react-native-elements';
-
 import { onSnapshot, collection } from "firebase/firestore"; 
 import { Colors, db } from '../../../config';
-const {width, height} = Dimensions.get('window');
-
 import { userListsAtom, userListsDone, userListsNotDone, sortListsSelector, dayAtom } from '../../../store';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-
 import { Ionicons } from '@expo/vector-icons';
+const {width} = Dimensions.get('window');
 
 
 export default function CTakerPatientList({ navigation, route }) {

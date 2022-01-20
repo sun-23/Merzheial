@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, Dimensions, Pressable, Platform, TextInput, Image, Modal } from 'react-native'
-import { View, Button } from '../../components'
+import { View } from '../../components'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as ImagePicker from 'expo-image-picker';
 import uuid from 'react-native-uuid';
-
+import { Ionicons } from '@expo/vector-icons';
 import { doc, setDoc } from "firebase/firestore"; 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Colors, db, storage, auth } from '../../config';
@@ -112,11 +112,9 @@ export default function PatientNewFP({navigation}) {
                         </View>
                     </Modal>
                     <View style={styles.viewHeader}>
-                        <Button 
-                            title='กลับ'
-                            borderless
-                            onPress={() => navigation.goBack()}
-                        />
+                        <Pressable onPress={() => navigation.goBack()}>
+                            <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                        </Pressable>
                         <Text style={styles.textHeader}>เพิ่มคนรู้จัก</Text>
                     </View>
                     <TextInput 

@@ -1,9 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, Dimensions, ScrollView, Image, Pressable } from 'react-native'
-import { View, Button } from '../../../components'
+import { View } from '../../../components'
 import { Colors } from '../../../config';
-const {width, height} = Dimensions.get('window');
 import { Ionicons } from '@expo/vector-icons';
+const {width, height} = Dimensions.get('window');
 
 const answer_type = [
     "เหตุการณ์ไม่เคยเกิดขึ้นเลยหรือเกิดขึ้นนานๆ ครั้ง ใน 1 ปี",

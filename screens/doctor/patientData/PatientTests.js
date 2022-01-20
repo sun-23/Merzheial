@@ -1,13 +1,11 @@
 import React, {useEffect} from 'react'
 import { StyleSheet, Text, Dimensions, ScrollView, Pressable } from 'react-native'
-import { View, Button } from '../../../components'
+import { View } from '../../../components'
 import { Colors, db } from '../../../config';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { sortcurrentPatientTests, currentPatientTests } from '../../../store';
 import { Ionicons } from '@expo/vector-icons';
-
-
 const {width, height} = Dimensions.get('window');
 
 const PatientTests = ({navigation, route}) => {

@@ -1,8 +1,9 @@
 import React from 'react'
-import { StyleSheet, Text, Image, Dimensions, ScrollView } from 'react-native'
+import { StyleSheet, Text, Image, Dimensions, ScrollView, Pressable } from 'react-native'
 import { View, Button } from '../../../components'
 import { Colors, db, auth } from '../../../config';
 import { setDoc, doc } from '@firebase/firestore';
+import { Ionicons } from '@expo/vector-icons';
 const {width, height} = Dimensions.get('window');
 
 const ItemList = ({navigation, route}) => {
@@ -18,11 +19,9 @@ const ItemList = ({navigation, route}) => {
         <ScrollView>
             <View isSafe style={styles.container}>
                 <View style={styles.viewHeader}>
-                    <Button 
-                        title='กลับ'
-                        borderless
-                        onPress={() => navigation.goBack()}
-                    />
+                    <Pressable onPress={() => navigation.goBack()}>
+                        <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                    </Pressable>
                     <Text style={styles.textHeader}>{route.params.data.title}</Text>
                 </View>
                 <View style={styles.content}>

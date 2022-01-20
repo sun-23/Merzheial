@@ -4,7 +4,7 @@ import * as Linking from 'expo-linking';
 
 import { View } from '../../components';
 
-const {width, height} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 export const PatientSocialScreen = () => {
 

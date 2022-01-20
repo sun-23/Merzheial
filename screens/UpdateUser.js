@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, Alert, Platform, Image } from 'react-native';
+import { Text, StyleSheet, Alert, Platform, Image, Pressable, Dimensions } from 'react-native';
 import { Formik } from 'formik';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { View, TextInput, Logo, FormErrorMessage, Button } from '../components';
 import { DropdownList } from 'react-native-ultimate-modal-picker';
 import * as ImagePicker from 'expo-image-picker';
+import { Ionicons } from '@expo/vector-icons';
 
 import { updateUserSchema } from '../utils';
 import { doc, setDoc } from "firebase/firestore"; 
@@ -12,6 +13,8 @@ import { Images, Colors, auth, db, storage } from '../config';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useRecoilValue } from 'recoil';
 import { userInfoAtom } from '../store';
+
+const {width} = Dimensions.get('window');
 
 export const UpdateUser = ({ navigation }) => {
 
@@ -136,6 +139,12 @@ export const UpdateUser = ({ navigation }) => {
 
   return (
     <View isSafe style={styles.container}>
+      <View style={styles.viewHeader}>
+        <Pressable onPress={() => navigation.goBack()} disabled={!btnEnable}>
+          <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+        </Pressable>
+        <Text style={styles.textHeader}>อัพเดตข้อมูลผู้ใช้</Text>        
+      </View>
       <KeyboardAwareScrollView enableOnAndroid={true}>
         {/* LogoContainer: consits app logo and screen title */}
         <View style={styles.logoContainer}>
@@ -273,14 +282,6 @@ export const UpdateUser = ({ navigation }) => {
             </>
           )}
         </Formik>
-        <Button
-          style={styles.borderlessButtonContainer}
-          onPress={() => navigation.goBack()}
-          disabled={!btnEnable}
-          borderless
-          title='กลับ'
-        >
-        </Button>
       </KeyboardAwareScrollView>
     </View>
   );
@@ -320,5 +321,18 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     alignItems: 'center',
     justifyContent: 'center'
-  }
+  },
+  textHeader: {
+      fontWeight: 'bold', 
+      fontSize: 30,
+      marginLeft: 20,
+      marginBottom: 10
+  },
+  viewHeader: {
+      width: width*0.9,
+      flexDirection: 'row', 
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      alignSelf: 'center'
+  },
 });

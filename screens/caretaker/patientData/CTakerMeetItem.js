@@ -2,9 +2,8 @@ import React from 'react'
 import { StyleSheet, Text, Dimensions, ScrollView, Pressable } from 'react-native'
 import { View } from '../../../components'
 import { Colors } from '../../../config';
-const {width, height} = Dimensions.get('window');
-
 import { Ionicons } from '@expo/vector-icons';
+const {width, height} = Dimensions.get('window');
 
 const CTakerMeetItem = ({navigation, route}) => {
 

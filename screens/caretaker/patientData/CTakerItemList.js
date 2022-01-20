@@ -3,7 +3,6 @@ import { StyleSheet, Text, Image, Dimensions, ScrollView, Pressable } from 'reac
 import { View } from '../../../components'
 import { Colors } from '../../../config';
 import { Ionicons } from '@expo/vector-icons';
-
 const {width, height} = Dimensions.get('window');
 
 const CTakerItemList = ({navigation, route}) => {
