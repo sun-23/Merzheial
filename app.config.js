@@ -17,9 +17,9 @@ export default {
     platforms: ['ios', 'android'],
     version: '0.15.0',
     orientation: 'portrait',
-    icon: './assets/flame.png',
+    icon: './assets/icon.jpg',
     splash: {
-      image: './assets/splash.png',
+      image: './assets/icon.jpg',
       resizeMode: 'cover',
       backgroundColor: '#F57C00'
     },
