@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
+import { TouchableOpacity, Text, ActivityIndicator, StyleSheet, Dimensions, Image } from 'react-native';
 import { PicturePuzzle } from 'react-native-picture-puzzle';
 import { Colors } from '../../../../config';
 import { View } from '../../../../components'
@@ -15,9 +15,9 @@ function shuffle(array) {
 }
 
 const ImgList = [
-  'https://rspcasa.b-cdn.net/wp-content/uploads/2019/01/Adopt-a-dog-or-puppy-from-RSPCA-South-Australia.jpg', 
-  'https://upload.wikimedia.org/wikipedia/commons/b/b1/VAN_CAT.png',
-  'https://cdn.icon-icons.com/icons2/2643/PNG/512/male_boy_person_people_avatar_icon_159358.png'
+  'https://cdn3.vectorstock.com/i/thumb-large/39/62/head-of-cartoon-cow-vector-23863962.jpg', 
+  'https://cdn.icon-icons.com/icons2/2643/PNG/512/male_boy_person_people_avatar_icon_159358.png',
+  'https://icons.iconarchive.com/icons/google/noto-emoji-animals-nature/256/22215-dog-icon.png'
 ]
 
 export default function Game() {
@@ -25,7 +25,7 @@ export default function Game() {
   const [index, setIndex] = React.useState(0);
 
   const [source, setSource] = React.useState({
-    uri: 'https://rspcasa.b-cdn.net/wp-content/uploads/2019/01/Adopt-a-dog-or-puppy-from-RSPCA-South-Australia.jpg',
+    uri: 'https://icons.iconarchive.com/icons/google/noto-emoji-animals-nature/256/22215-dog-icon.png',
   });
 
   const originalPieces = React.useMemo(() => (
@@ -60,10 +60,11 @@ export default function Game() {
   const retry = React.useCallback(() => {
     setPieces(shuffledPieces);
     setHidden(0);
-  }, [setPieces, shuffledPieces, source]);
+  }, [setPieces, shuffledPieces]);
 
   const RandomImg = () => {
-    setIndex(index => index > 2 ? 0 : index+=1)
+    setIndex(index => index >= 2 ? 0 : index+=1)
+    // console.log(ImgList[index]);
     switch (index) {
       case 0:
         setSource({ uri: ImgList[0]})
@@ -82,6 +83,8 @@ export default function Game() {
   return (
     <View isSafe style={styles.container}>
       <Text style={styles.header}>เกมเรียงรูปภาพ</Text>
+      <Text style={{fontSize: 20, fontWeight: 'bold'}}>ภาพที่ {index + 1}</Text>
+      <Image source={source} style={{width: 50, height: 50}}/>
       <View style={{justifyContent: "center", height: height, width: width}}>
         <PicturePuzzle
           style={styles.shadow}
@@ -104,7 +107,7 @@ export default function Game() {
             </Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={RandomImg} style={[styles.btn, {marginBottom: height * 0.3}]}>
+        <TouchableOpacity onPress={RandomImg} style={[styles.btn, {marginBottom: height * 0.3, alignSelf: 'center'}]}>
             <Text style={{color: 'white', fontSize: 20}}>
               สุ่มภาพใหม่
             </Text>
@@ -141,19 +144,16 @@ const styles = StyleSheet.create({
   center: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
-    height: 300,
-    width: 300
   },
   row: { flexDirection: 'row', justifyContent: "space-evenly", width: width},
   shadow: {
     alignSelf: 'center',
-    shadowColor: "#000",
+    shadowColor: "#555",
     shadowOffset: {
-      width: 2,
-      height: 2,
+      width: 1,
+      height: 1,
     },
-    shadowOpacity: 0.9,
+    shadowOpacity: 0.6,
     shadowRadius: 10.0,
   },
 })
