@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, Text, Image, Dimensions, ScrollView, Modal, TextInput, Pressable, Alert } from 'react-native'
+import { StyleSheet, Text, Image, Dimensions, ScrollView, Pressable } from 'react-native'
 import { View, Button } from '../../../components'
-import { Colors, db } from '../../../config';
-import DateTimePicker from '@react-native-community/datetimepicker'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { collection, addDoc, query, where, onSnapshot, doc, setDoc } from 'firebase/firestore';
+import { db } from '../../../config';
+import { collection, query, where, onSnapshot, doc } from 'firebase/firestore';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { sortcurrentPatientMeetDocs, currentPatientMeetDocs } from '../../../store';
 
@@ -55,12 +53,18 @@ const CTakerPatientInfo = ({navigation, route}) => {
                         borderless
                         onPress={() => navigation.navigate("Tests", { patientInfo: patientInfo })}
                     />
+                    <Button
+                        style={{paddingRight: 5}} 
+                        title='กิจกรรม'
+                        borderless
+                        onPress={() => navigation.navigate("List", { patientInfo: patientFireInfo })}
+                    />
                 </View>
             </View>
            
             <View style={styles.content}>
                 <Text style={[styles.textHeader, {alignSelf: 'flex-start'}]}>คนไข้</Text>
-                {patientFireInfo && <View style={[styles.item, styles.itemPatient]}>
+                {patientFireInfo && <View style={[styles.item, styles.itemPatient, {maxHeight: height* 0.2}]}>
                     {!patientFireInfo.urlImage ? 
                         <Image 
                             style={[styles.image, styles.imagePatient]}  
@@ -71,16 +75,18 @@ const CTakerPatientInfo = ({navigation, route}) => {
                             source={{uri: patientFireInfo.urlImage}}
                     />}
                     <View style={styles.itemViewText}>
-                        <Text style={styles.itemTitle}>ชื่อ: {patientFireInfo.firstname}</Text>
-                        <Text style={styles.itemTitle}>นามสกุล: {patientFireInfo.lastname}</Text>
-                        <Text style={styles.itemTitle}>อายุ: {patientFireInfo.age}ปี เพศ: {patientFireInfo.sex_type === "female" ? "หญิง" : "ชาย"}</Text>
-                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ชอบ {patientFireInfo.like}</Text>
-                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ไม่ชอบ {patientFireInfo.unlike}</Text>
-                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่แพ้ {patientFireInfo.allergy}</Text>
-                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>ที่อยู่ {patientFireInfo.address}</Text>
-                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>uid: {patientFireInfo.uid}</Text>
-                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.alzheimer_lv !== "") ? "black" : "red"}]}>ระยะอาการ: {patientFireInfo.alzheimer_lv !== "" ? patientFireInfo.alzheimer_lv : "ให้แพทย์ประเมิณ"}</Text>
-                        <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.medicine !== "") ? "black" : "red"}]}>ระยะอาการ: {patientFireInfo.medicine !== "" ? patientFireInfo.medicine : "ให้แพทย์ประเมิณ"}</Text>
+                        <ScrollView>
+                            <Text style={styles.itemTitle}>ชื่อ: {patientFireInfo.firstname}</Text>
+                            <Text style={styles.itemTitle}>นามสกุล: {patientFireInfo.lastname}</Text>
+                            <Text style={styles.itemTitle}>อายุ: {patientFireInfo.age}ปี เพศ: {patientFireInfo.sex_type === "female" ? "หญิง" : "ชาย"}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ชอบ {patientFireInfo.like}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ไม่ชอบ {patientFireInfo.unlike}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่แพ้ {patientFireInfo.allergy}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>ที่อยู่ {patientFireInfo.address}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>uid: {patientFireInfo.uid}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.alzheimer_lv !== "") ? "black" : "red"}]}>ระยะอาการ: {patientFireInfo.alzheimer_lv !== "" ? patientFireInfo.alzheimer_lv : "ให้แพทย์ประเมิณ"}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.medicine !== "") ? "black" : "red"}]}>ระยะอาการ: {patientFireInfo.medicine !== "" ? patientFireInfo.medicine : "ให้แพทย์ประเมิณ"}</Text>
+                        </ScrollView>
                     </View>
                 </View>}
             </View>
@@ -117,7 +123,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center', 
         backgroundColor: 'white',
-        height: height
+        height: height,
         // justifyContent: 'center'
     }, 
     content: {
