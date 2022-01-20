@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 import { UserStack } from './UserStack';
 
 // caretaker screen
@@ -54,20 +55,57 @@ export const AppStack = () => {
     }
   }, [])
 
+  const renderIcons = ({ focused, color, size, route }) => {
+    let iconName;
+
+    if (route.name === 'หน้าแรก') {
+      iconName = focused ? 'ios-home' : 'ios-home-outline';
+    } else if (route.name === 'สถิติ') {
+      iconName = focused ? 'ios-today' : 'ios-today-outline';
+    } else if (route.name === 'social') {
+      iconName = focused ? 'ios-chatbubble-ellipses' : 'ios-chatbubble-ellipses-outline';
+    } else if (route.name === 'ญาติ') {
+      iconName = focused ? 'ios-people' : 'ios-people-outline';
+    } else if (route.name === 'ผู้ใช้') {
+      iconName = focused ? 'ios-person' : 'ios-person-outline';
+    }
+
+    // You can return any component that you like here!
+    return <Ionicons name={iconName} size={size} color={color} />;
+  }
+
   if (isLoading) {
     return <LoadingIndicator />
   }
 
   if (userInfo.person_type === 'doctor') {
     return (
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Navigator 
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            return renderIcons({ focused, color, size, route })
+          },
+          tabBarActiveTintColor: 'tomato',
+          tabBarInactiveTintColor: 'gray',
+          headerShown: false
+        })}
+      >
         <Tab.Screen name='หน้าแรก' component={DoctorHomeStack} />
         <Tab.Screen name='ผู้ใช้' component={UserStack} />
       </Tab.Navigator>
     );
   } else if (userInfo.person_type === 'caretaker') {
     return (
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Navigator 
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            return renderIcons({ focused, color, size, route })
+          },
+          tabBarActiveTintColor: 'tomato',
+          tabBarInactiveTintColor: 'gray',
+          headerShown: false
+        })}
+      >
         <Tab.Screen name='หน้าแรก' component={CareTakerHomeStack} />
         <Tab.Screen name='ผู้ใช้' component={UserStack} />
       </Tab.Navigator>
@@ -78,7 +116,17 @@ export const AppStack = () => {
     )
   } else if (userInfo.person_type === 'patient' && userInfo.isTest) {
     return (
-      <Tab.Navigator screenOptions={{ headerShown: false }} initialRouteName="หน้าแรก">
+      <Tab.Navigator 
+        initialRouteName="หน้าแรก" 
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            return renderIcons({ focused, color, size, route })
+          },
+          tabBarActiveTintColor: 'tomato',
+          tabBarInactiveTintColor: 'gray',
+          headerShown: false
+        })}
+      >
         {/* todo
           create web game and like to it
          */}
