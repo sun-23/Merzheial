@@ -8,7 +8,7 @@ import { userInfoAtom } from '../store';
 import { auth, Images } from '../config';
 import { signOut } from '@firebase/auth';
 
-const {height} = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 export const UserScreen = ({ navigation }) => {
     const userInfo = useRecoilValue(userInfoAtom);
@@ -17,11 +17,27 @@ export const UserScreen = ({ navigation }) => {
         <View isSafe style={styles.container}>
             <Text style={styles.screenTitle}>ข้อมูลผู้ใช้</Text>
             {/* <Text>{JSON.stringify(userInfo)}</Text> */}
-            {userInfo.urlImage ? <Image source={{ uri: userInfo.urlImage }} style={{ width: 200, height: 200, borderRadius: 100, marginVertical: 10 }} /> : <Logo uri={Images.logo} />}
-            <Text style={styles.text}>{userInfo.firstname} {userInfo.lastname}</Text>
-            <Text style={styles.text}>{userInfo.email}</Text>
-            <Text style={styles.text}>อายุ {userInfo.age} ปี</Text>
-            <Text style={styles.text}>เพศ {userInfo.sex_type == 'female' ? 'หญิง' : 'ชาย'}</Text>
+            {userInfo.urlImage ? 
+              <Image 
+                source={{ uri: userInfo.urlImage }} 
+                style={{ 
+                  width: 200, 
+                  height: 200, 
+                  borderRadius: 100, 
+                  marginVertical: 10, 
+                  alignSelf: 'center' 
+                }} 
+              /> : 
+              <Logo 
+                uri={Images.logo} 
+                style={{alignSelf: 'center'}} 
+              />
+            }
+            <Text style={styles.text}>userID: {userInfo.uid}</Text>
+            <Text style={styles.text}>ชื่อ: {userInfo.firstname} {userInfo.lastname}</Text>
+            <Text style={styles.text}>email: {userInfo.email}</Text>
+            <Text style={styles.text}>อายุ: {userInfo.age} ปี</Text>
+            <Text style={styles.text}>เพศ: {userInfo.sex_type == 'female' ? 'หญิง' : 'ชาย'}</Text>
 
             {/* patient */}
             {userInfo.person_type === 'patient' ? 
@@ -76,21 +92,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.white,
-    paddingHorizontal: 12,
-    alignItems: 'center',
-    minHeight: height
+    alignItems: 'flex-start',
+    minHeight: height,
+    paddingHorizontal: width * 0.1
   },
   screenTitle: {
     fontSize: 32,
     fontWeight: '700',
     color: Colors.black,
-    paddingTop: 20
+    paddingTop: 20,
+    alignSelf: 'center'
   },
   borderlessButtonContainer: {
     marginTop: 16,
     marginBottom: 16,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignSelf: 'center'
   },
   text: {
     fontSize: 20,
