@@ -206,7 +206,7 @@ const Outtro = ({item, point}) => {
         } else if (point >= 40 && point <= 56) {
             return <Text style={styles.title}>{result_type.d}</Text>
         } else {
-            return <Text style={styles.title}>hello</Text>
+            return <Text style={styles.title}></Text>
         }
     }
     return (
