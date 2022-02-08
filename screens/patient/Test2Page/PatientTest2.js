@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { StyleSheet, Text, FlatList, TouchableOpacity, Dimensions, StatusBar, SafeAreaView, View} from 'react-native'
+import { StyleSheet, Text, FlatList, TouchableOpacity, Dimensions, StatusBar, SafeAreaView, View, Modal} from 'react-native'
 import { doc, setDoc, Timestamp } from "firebase/firestore"; 
 import { Colors, auth, db, storage } from '../../../config';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -107,6 +107,8 @@ const Slide = ({item, goNext, choice, setChoice}) => {
 export const PatientTest2 = ({ navigation }) => {
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
     const [choice, setChoice] = useState(slides);
+    const [enable, setEnable] = useState(true)
+    const [percentUp, setPercent] = useState(0)
     const refSlide = useRef();
 
     const updateCurrentSlideIndex = e => {
@@ -136,7 +138,7 @@ export const PatientTest2 = ({ navigation }) => {
                 uploadTask.on('state_changed', (snapshot) => {
                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                     console.log('Upload is ' + progress + '% done');
-                    setUpLoadProgess(progress.toFixed(2));
+                    setPercent(progress.toFixed(2));
                 },
                 (error) => {
                     setErrorState(error.message);
@@ -155,6 +157,7 @@ export const PatientTest2 = ({ navigation }) => {
 
     const putPointToFirebase = async () => {
         console.log(choice);
+        setEnable(false);
         const uuid_v4 = uuid.v4(); // => ex.'11edc52b-2918-4d71-9058-f7285e29d894'
         const docRef = doc(db, "users", auth.currentUser.uid , "patient_test", uuid_v4)
         const userRef = doc(db, "users", auth.currentUser.uid)
@@ -202,7 +205,7 @@ export const PatientTest2 = ({ navigation }) => {
                 }
             } ,{merge: true}).then(() => {
                 console.log('upload choice 6');
-
+                setEnable(true);
                 if (navigation != null) {
                     navigation.goBack();
                 }
@@ -249,6 +252,7 @@ export const PatientTest2 = ({ navigation }) => {
                 {currentSlideIndex == slides.length - 1 ? (
                     <View style={{height: 50}}>
                     <TouchableOpacity
+                        disabled={!enable}
                         style={styles.btn}
                         onPress={putPointToFirebase}>
                         <Text style={{fontWeight: 'bold', fontSize: 15}}>
@@ -291,6 +295,16 @@ export const PatientTest2 = ({ navigation }) => {
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: Colors.orange}}>
             <StatusBar backgroundColor={Colors.orange} />
+            <Modal
+                transparent={true}
+                visible={percentUp > 0 && percentUp < 100 ? true : false}
+            >
+                <View style={{flex: 1 ,justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={styles.modalView}>
+                        <Text style={[styles.textStyle, {color: 'black'}]}>อัพโหลดภาพแล้ว{percentUp}%</Text>
+                    </View>
+                </View>
+            </Modal>
             <FlatList 
                 ref={refSlide}
                 onMomentumScrollEnd={updateCurrentSlideIndex}
@@ -352,4 +366,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 5,
+        padding: 50,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+        width: 0,
+        height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    }
 });
