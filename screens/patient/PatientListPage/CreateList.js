@@ -4,12 +4,21 @@ import { View } from '../../../components'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import * as ImagePicker from 'expo-image-picker';
+import * as Notifications from "expo-notifications";
 import uuid from 'react-native-uuid';
 import { Ionicons } from '@expo/vector-icons';
 import { doc, setDoc } from "firebase/firestore"; 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Colors, db, storage, auth } from '../../../config';
 const {width, height} = Dimensions.get('window');
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 export default function CreateList({navigation}) {
     const [title, setTitle] = useState('')
@@ -25,12 +34,22 @@ export default function CreateList({navigation}) {
         if (Platform.OS !== 'web') {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
             if (status !== 'granted') {
-            Alert.alert(
-                "การเข้าถึงรูปภาพ",
-                "Sorry, we need camera roll permissions to make pick the photo",
-            [
-                { text: "OK", onPress: () => console.log("OK Pressed") }
-            ])
+                Alert.alert(
+                    "การเข้าถึงรูปภาพ",
+                    "Sorry, we need camera roll permissions to make pick the photo",
+                [
+                    { text: "OK", onPress: () => console.log("OK Pressed") }
+                ])
+            }
+
+            const result = await Notifications.requestPermissionsAsync();
+            if (result.status !== 'granted') {
+                Alert.alert(
+                    "การแจ้งเตือนกิจกรรม",
+                    "เปิดการแจ้งเตือนเพื่อการแจ้งเตือนกิจกรรม",
+                [
+                    { text: "OK", onPress: () => console.log("OK Pressed") }
+                ])
             }
         }
         })();
@@ -100,6 +119,7 @@ export default function CreateList({navigation}) {
             isDone: false
         }
         setDoc(listRef, payload, {merge: true})
+        notif(title, description, date.setSeconds(0,0)); // second 0 ms 0
         uploadImageAsync(imageUrl, 'list-image/'+ id, (result) => {
             if (result) {
                 setDoc(listRef, {imageUrl: result}, {merge: true})
@@ -107,6 +127,22 @@ export default function CreateList({navigation}) {
             navigation.goBack()
         })
     }
+
+    const notif = async (noti_title, text, time) => {
+        // console.log(time);
+        const trigger = new Date(time);
+        trigger.setSeconds(0);
+        // console.log(trigger);
+        let lol = await Notifications.scheduleNotificationAsync({
+            content: {
+                title: "กิจกรรม: "+noti_title,
+                body: text,
+            },
+            trigger,
+        });
+        // console.log(lol);
+        return lol;
+    };
 
     return (
         <View isSafe style={{backgroundColor: 'white', height: height}}>

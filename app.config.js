@@ -10,6 +10,13 @@ export default {
           photosPermission: "Allow Merzheial to access your photos",
           cameraPermission: "Allow Merzheial to access your camera"
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          icon: "./assets/icon.png",
+          color: "#ffffff",
+        }
       ]
     ],
     slug: 'merzheial',
