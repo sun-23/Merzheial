@@ -62,7 +62,7 @@ const DoctorMeetItem = ({navigation, route}) => {
                             >
                                 <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
                             </Pressable>
-                            <Text style={styles.textHeader}>เปลี่ยนแปลงอาการ</Text>
+                            <Text style={styles.textHeader}>เปลี่ยนแปลง note</Text>
                         </View>
                         <TextInput 
                             placeholder='note'
