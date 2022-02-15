@@ -104,7 +104,7 @@ const Slide = ({item, goNext, choice, setChoice}) => {
     }
 }
 
-export const PatientTest2 = ({ navigation }) => {
+export const PatientTest2 = ({ navigation, firstTest }) => {
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
     const [choice, setChoice] = useState(slides);
     const [enable, setEnable] = useState(true)
@@ -274,17 +274,19 @@ export const PatientTest2 = ({ navigation }) => {
                         </TouchableOpacity>
                     </View> : 
                     <View style={{flexDirection: 'row'}}>
-                        <TouchableOpacity
+                        {(!firstTest) ? <TouchableOpacity
                             disabled={currentSlideIndex !== 0 ? true : false}
                             activeOpacity={0.8}
                             onPress={() => {
-                                navigation.goBack()
+                                if(navigation){
+                                    navigation.goBack()
+                                }
                             }}
                             style={styles.btn}>
                             <Text style={{fontWeight: 'bold', fontSize: 15, color: "red"}}>
                             ยกเลิก
                             </Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> : null}
                     </View> 
                 )}
                 </View>

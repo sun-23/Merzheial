@@ -115,7 +115,7 @@ export const AppStack = () => {
     )
   } else if (userInfo.person_type === 'patient' && !userInfo.isTest) {
     return (
-      <PatientTest2 />
+      <PatientTest2 firstTest={true}/>
     )
   } else if (userInfo.person_type === 'patient' && userInfo.isTest) {
     return (

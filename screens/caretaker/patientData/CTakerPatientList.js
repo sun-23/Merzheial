@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, ScrollView, Dimensions, TouchableOpacity , Pressable} from 'react-native'
 import { View, LoadingIndicator } from '../../../components'
 import { ButtonGroup } from 'react-native-elements';
-import { onSnapshot, collection } from "firebase/firestore"; 
+import { onSnapshot, query, where, orderBy, doc, collection } from "firebase/firestore"; 
 import { Colors, db } from '../../../config';
-import { userListsAtom, userListsDone, userListsNotDone, sortListsSelector, dayAtom } from '../../../store';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { userListsAtom, userListsDone, userListsNotDone, dayAtom , listLastSevenDays} from '../../../store';
+import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 import { Ionicons } from '@expo/vector-icons';
 const {width} = Dimensions.get('window');
 
@@ -14,30 +14,56 @@ export default function CTakerPatientList({ navigation, route }) {
     const { patientInfo } = route.params; 
 
     const setListAtom = useSetRecoilState(userListsAtom)
-    const sortLists = useRecoilValue(sortListsSelector)
+    const [last7Lists, setL7DS] = useRecoilState(listLastSevenDays)
     const doneLists = useRecoilValue(userListsDone)
     const notDoneLists = useRecoilValue(userListsNotDone)
     const curDay = useRecoilValue(dayAtom)
 
     const [indexSelect, setIndex] = useState(2)
     const [loading, setLoading] = useState(true)
-    const buttonsSelect = ['ผู้ป่วยทำเสร็จแล้ว', 'ผู้ป่วยยังไม่ได้ทำ', 'รวมทั้งหมดตั้งแต่ต้นจนถึงหลัง 7 วันเป็นต้นไป']
+    const buttonsSelect = ['ผู้ป่วยทำเสร็จแล้ว', 'ผู้ป่วยยังไม่ได้ทำ', '7วันที่ผ่านมา']
 
     useEffect(() => {
         // effect
         setLoading(true)
 
-        const collRef = collection(db, "users", patientInfo.uid, "List")
-        // query not working in sub collection
-        // const q = query(collRef, where("day", ">=", new Date()), orderBy("day"))
-        const unsubscribe = onSnapshot(collRef, (snapshot) => {
-            setListAtom(snapshot.docs.map((doc) => doc.data()))
+        // how to query in subcollection
+        const docRef = doc(db, "users", patientInfo.uid);
+        const collRef = collection(docRef, "List");
+        let currentday = new Date();
+        currentday.setHours(0,0,0,0)
+
+        // this day to after
+        const q = query(
+            collRef, 
+            where("date_millisecconds", ">=", currentday.getTime()), 
+            orderBy("date_millisecconds", "asc")
+        )
+        const unsubscribe = onSnapshot(q, (qureySnapshot) => {
+            setListAtom(qureySnapshot.docs.map((doc) => doc.data()))
+            setLoading(false)
+        });
+
+        let last7day = new Date();
+        last7day.setHours(0,0,0,0);
+        last7day.setDate(last7day.getDate() - 7);
+
+        // last 7 day
+        const q2 = query(
+            collRef, 
+            where("date_millisecconds", "<=", currentday.getTime()),
+            where("date_millisecconds", ">=", last7day.getTime()), 
+            orderBy("date_millisecconds", "desc")
+        )
+        const unsubscribe2 = onSnapshot(q2, (qureySnapshot) => {
+            setL7DS(qureySnapshot.docs.map((doc) => doc.data()))
             setLoading(false)
         });
 
         return () => {
             // cleanup
             unsubscribe()
+            unsubscribe2();
         }
     }, [])
 
@@ -74,7 +100,7 @@ export default function CTakerPatientList({ navigation, route }) {
     }
 
     const RenderItemAll = () => {
-        return sortLists.map(item => {
+        return last7Lists.map(item => {
             return <TouchableOpacity 
                         key={item.id}
                         style={styles.item}
@@ -94,7 +120,7 @@ export default function CTakerPatientList({ navigation, route }) {
                 return <RenderItemDone/>
             case 'ผู้ป่วยยังไม่ได้ทำ':
                 return <RenderItemNotDone/>
-            case 'รวมทั้งหมดตั้งแต่ต้นจนถึงหลัง 7 วันเป็นต้นไป':
+            case '7วันที่ผ่านมา':
                 return <RenderItemAll/>
             default:
                 break;
@@ -146,7 +172,7 @@ const styles = StyleSheet.create({
     },
     item:{
         width: width,
-        height: 70,
+        height: 90,
         paddingHorizontal: width * 0.05,
         borderBottomWidth: 4,
         borderColor: '#f0f0f0',

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, Dimensions, TouchableOpacity } from 'react-native';
 import { View } from '../../components';
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { collection, query, where, onSnapshot, orderBy } from "firebase/firestore";
 import { db } from '../../config';
-import { listLastSevenDays, userInfoAtom, userMeetDocs, userSortMeetDocs } from '../../store';
+import { listLastSevenDays, userInfoAtom, userMeetDocs } from '../../store';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { ScrollView } from 'react-native-gesture-handler';
 const {width} = Dimensions.get('window');
@@ -15,7 +15,7 @@ export const PatientStatScreen = ({navigation}) => {
   const [numNotDone, setNumNotDone] = useState(0);
   const list = useRecoilValue(listLastSevenDays);
   const userInfo = useRecoilValue(userInfoAtom);
-  const meetDoctors= useRecoilValue(userSortMeetDocs);
+  const meetDoctors= useRecoilValue(userMeetDocs);
   const setMeetDoctors = useSetRecoilState(userMeetDocs);
 
   useEffect(() => {
@@ -32,9 +32,16 @@ export const PatientStatScreen = ({navigation}) => {
     setNumDone(numD)
     setNumNotDone(numND)
 
+    let currentday = new Date();
+    currentday.setHours(0,0,0,0)
+
     const docmeetRef = collection(db, "meet_doctor");
-    // Create a query against the collection.
-    const q = query(docmeetRef, where("uid_patient", "==", userInfo.uid.toString()));
+    const q = query(
+      docmeetRef,  
+      where("uid_patient", "==", userInfo.uid), 
+      where("time_milisecconds", ">=", currentday.getTime()), 
+      orderBy("time_milisecconds", "asc")
+    )
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       setMeetDoctors(querySnapshot.docs.map((doc) => /**/({id: doc.id, ...doc.data()})/**/))
     });

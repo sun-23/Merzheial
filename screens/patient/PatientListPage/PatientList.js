@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native'
 import { View, LoadingIndicator } from '../../../components'
 import { ButtonGroup } from 'react-native-elements';
-import { onSnapshot, collection } from "firebase/firestore"; 
+import { onSnapshot, query, where, orderBy, doc, collection } from "firebase/firestore"; 
 import { Colors, db, auth } from '../../../config';
-import { userListsAtom, userListsDone, userListsNotDone, sortListsSelector, dayAtom } from '../../../store';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { userListsAtom, userListsDone, userListsNotDone, dayAtom , listLastSevenDays} from '../../../store';
+import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 const {width} = Dimensions.get('window');
 
 export default function PatientList({ navigation }) {
 
     const setListAtom = useSetRecoilState(userListsAtom)
-    const sortLists = useRecoilValue(sortListsSelector)
+    const [last7Lists, setL7DS] = useRecoilState(listLastSevenDays)
     const doneLists = useRecoilValue(userListsDone)
     const notDoneLists = useRecoilValue(userListsNotDone)
     const curDay = useRecoilValue(dayAtom)
@@ -19,23 +19,49 @@ export default function PatientList({ navigation }) {
 
     const [indexSelect, setIndex] = useState(2)
     const [loading, setLoading] = useState(true)
-    const buttonsSelect = ['ทำเสร็จแล้ว', 'ยังไม่ได้ทำ', 'รวมทั้งหมดตั้งแต่ต้นจนถึงหลัง 7 วันเป็นต้นไป']
+    const buttonsSelect = ['ทำเสร็จแล้ว', 'ยังไม่ได้ทำ', '7วันที่ผ่านมา']
 
     useEffect(() => {
         // effect
         setLoading(true)
 
-        const collRef = collection(db, "users", auth.currentUser.uid, "List")
-        // query not working in sub collection
-        // const q = query(collRef, where("day", ">=", new Date()), orderBy("day"))
-        const unsubscribe = onSnapshot(collRef, (snapshot) => {
-            setListAtom(snapshot.docs.map((doc) => doc.data()))
+        // how to query in subcollection
+        const docRef = doc(db, "users", auth.currentUser.uid);
+        const collRef = collection(docRef, "List");
+        let currentday = new Date();
+        currentday.setHours(0,0,0,0)
+
+        // this day to after
+        const q = query(
+            collRef, 
+            where("date_millisecconds", ">=", currentday.getTime()), 
+            orderBy("date_millisecconds", "asc")
+        )
+        const unsubscribe = onSnapshot(q, (qureySnapshot) => {
+            setListAtom(qureySnapshot.docs.map((doc) => doc.data()))
+            setLoading(false)
+        });
+
+        let last7day = new Date();
+        last7day.setHours(0,0,0,0);
+        last7day.setDate(last7day.getDate() - 7);
+
+        // last 7 day
+        const q2 = query(
+            collRef, 
+            where("date_millisecconds", "<=", currentday.getTime()),
+            where("date_millisecconds", ">=", last7day.getTime()), 
+            orderBy("date_millisecconds", "desc")
+        )
+        const unsubscribe2 = onSnapshot(q2, (qureySnapshot) => {
+            setL7DS(qureySnapshot.docs.map((doc) => doc.data()))
             setLoading(false)
         });
 
         return () => {
             // cleanup
             unsubscribe()
+            unsubscribe2();
         }
     }, [])
 
@@ -72,7 +98,7 @@ export default function PatientList({ navigation }) {
     }
 
     const RenderItemAll = () => {
-        return sortLists.map(item => {
+        return last7Lists.map(item => {
             return <TouchableOpacity 
                         key={item.id}
                         style={styles.item}
@@ -80,7 +106,7 @@ export default function PatientList({ navigation }) {
                     >
                         <Text style={styles.itemTitle}>{item.title}</Text>
                         {/* show status */}
-                        <Text style={[styles.itemTitle, {color: (item.isDone) ? "#00bf0b" : ((curDay - (item.day.seconds * 1000) > 0) ? "red" : "#fbbf00")}]}>{(item.isDone) ? "ทำแล้ว" : ((curDay - (item.day.seconds * 1000) >= 0) ? "ลืมทำ" : "ยังไม่ได้ทำ")}</Text>
+                        <Text style={[styles.itemTitle, {color: (item.isDone) ? "#00bf0b" : "red" }]}>{(item.isDone) ? "ทำแล้ว" : "ลืมทำ" }</Text>
                         <Text style={styles.itemTime}>{item.day_string}</Text>
                     </TouchableOpacity>
         })
@@ -92,7 +118,7 @@ export default function PatientList({ navigation }) {
                 return <RenderItemDone/>
             case 'ยังไม่ได้ทำ':
                 return <RenderItemNotDone/>
-            case 'รวมทั้งหมดตั้งแต่ต้นจนถึงหลัง 7 วันเป็นต้นไป':
+            case '7วันที่ผ่านมา':
                 return <RenderItemAll/>
             default:
                 break;
@@ -147,7 +173,7 @@ const styles = StyleSheet.create({
     },
     item:{
         width: width,
-        height: 70,
+        height: 90,
         paddingHorizontal: width * 0.05,
         borderBottomWidth: 4,
         borderColor: '#f0f0f0',

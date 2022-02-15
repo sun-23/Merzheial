@@ -2,24 +2,24 @@ import React, {useState, useEffect} from 'react'
 import { StyleSheet, Text, Image, Dimensions, ScrollView, Pressable } from 'react-native'
 import { View, Button } from '../../../components'
 import { Colors, db } from '../../../config';
-import { collection, query, where, onSnapshot, doc } from 'firebase/firestore';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { sortcurrentPatientMeetDocs, currentPatientMeetDocs } from '../../../store';
+import { collection, query, where, onSnapshot, doc, orderBy } from 'firebase/firestore';
+import { useRecoilState } from 'recoil';
+import { currentPatientMeetDocs } from '../../../store';
 import { Ionicons } from '@expo/vector-icons';
 const {width, height} = Dimensions.get('window');
 
 const CTakerPatientInfo = ({navigation, route}) => {
     const { patientInfo } = route.params; 
 
-    const [e,setCurrentPatientMeet] = useRecoilState(currentPatientMeetDocs);
-    const currentPatientMeet = useRecoilValue(sortcurrentPatientMeetDocs);
-
+    const [currentPatientMeet,setCurrentPatientMeet] = useRecoilState(currentPatientMeetDocs);
     const [patientFireInfo, setPatientFireInfo] = useState();
 
     useEffect(() => {
         // effect
 
         const docRef = doc(db, "users", patientInfo.uid);
+        let currentday = new Date();
+        currentday.setHours(0,0,0,0)
 
         const unsubscribeUserRef = onSnapshot(docRef, (doc) => {
             // console.log("ddddd",/**/({id: doc.id, ...doc.data()})/**/);
@@ -27,7 +27,12 @@ const CTakerPatientInfo = ({navigation, route}) => {
         });
 
         const collectionMeetRef = collection(db, "meet_doctor");
-        const q = query(collectionMeetRef, where("uid_patient", "==", patientInfo.uid))
+        const q = query(
+            collectionMeetRef,  
+            where("uid_patient", "==", patientInfo.uid), 
+            where("time_milisecconds", ">=", currentday.getTime()), 
+            orderBy("time_milisecconds", "asc")
+        )
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             setCurrentPatientMeet(querySnapshot.docs.map((doc) => /**/({id: doc.id, ...doc.data()})/**/));
         });

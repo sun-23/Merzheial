@@ -4,18 +4,16 @@ import { View, Button } from '../../../components'
 import { Colors, db } from '../../../config';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { collection, addDoc, query, where, onSnapshot, doc, setDoc } from 'firebase/firestore';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { sortcurrentPatientMeetDocs, currentPatientMeetDocs } from '../../../store';
+import { collection, addDoc, query, where, onSnapshot, doc, setDoc, orderBy } from 'firebase/firestore';
+import { useRecoilState } from 'recoil';
+import { currentPatientMeetDocs } from '../../../store';
 import { Ionicons } from '@expo/vector-icons';
 const {width, height} = Dimensions.get('window');
 
 const PatientInfo = ({navigation, route}) => {
     const { patientInfo, doctorInfo } = route.params; 
 
-    const [e,setCurrentPatientMeet] = useRecoilState(currentPatientMeetDocs);
-    const currentPatientMeet = useRecoilValue(sortcurrentPatientMeetDocs);
-
+    const [currentPatientMeet,setCurrentPatientMeet] = useRecoilState(currentPatientMeetDocs);
     const [patientFireInfo, setPatientFireInfo] = useState();
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -32,14 +30,28 @@ const PatientInfo = ({navigation, route}) => {
         // effect
 
         const docRef = doc(db, "users", patientInfo.uid);
+        let currentday = new Date();
+        currentday.setHours(0,0,0,0)
 
         const unsubscribeUserRef = onSnapshot(docRef, (doc) => {
             // console.log("ddddd",/**/({id: doc.id, ...doc.data()})/**/);
             setPatientFireInfo(/**/({id: doc.id, ...doc.data()})/**/);
         });
 
+        // https://stackoverflow.com/questions/48698564/uncaught-in-promise-error-the-query-requires-an-index
+        // Since you're querying on two fields (status and createDate), 
+        // there needs to be a composite index on those two fields. 
+        // Indices on individual fields are automatically created, 
+        //but composite indexes are only created when you ask for them.
+
         const collectionMeetRef = collection(db, "meet_doctor");
-        const q = query(collectionMeetRef, where("uid_patient", "==", patientInfo.uid), where("uid_doctor", "==", doctorInfo.uid))
+        const q = query(
+            collectionMeetRef,  
+            where("uid_patient", "==", patientInfo.uid), 
+            where("uid_doctor", "==", doctorInfo.uid),
+            where("time_milisecconds", ">=", currentday.getTime()), 
+            orderBy("time_milisecconds", "asc")
+        )
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             setCurrentPatientMeet(querySnapshot.docs.map((doc) => /**/({id: doc.id, ...doc.data()})/**/));
         });
@@ -68,6 +80,7 @@ const PatientInfo = ({navigation, route}) => {
             description: description,
             doctor_name: doctorInfo.firstname + " " + doctorInfo.lastname,
             time: time,
+            time_milisecconds: time.getTime(),
             uid_doctor: doctorInfo.uid,
             uid_patient: patientInfo.uid,
             title: title,

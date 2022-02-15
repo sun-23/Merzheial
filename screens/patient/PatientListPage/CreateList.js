@@ -108,9 +108,10 @@ export default function CreateList({navigation}) {
             return
         }
         const id = uuid.v4()
-        const listRef = doc(db, "users", auth.currentUser.uid , "List", id)
+        const listRef = doc(db, "users", auth.currentUser.uid , "List", id) // uniqe list for sub collection (collection group)
         const payload = {
             day: date,
+            date_millisecconds: date.getTime(),
             day_string: (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format(date)).toString(),
             title: title,
             description: description,

@@ -18,57 +18,24 @@ export const userListsAtom = atom({
     default: []
 })
 
-export const sortListsSelector = selector({
-    key: 'sort-lists',
-    get: ({get}) => {
-      const temp = get(userListsAtom)
-      const lists = temp.filter(e => e) // create new array for fix attemped read only property
-      return lists.sort((a,b) => {
-        if (a && b) {
-          return a.day.seconds - b.day.seconds
-        }
-        return 1
-      })
-    }
-})
-
-export const listLastSevenDays = selector({
+export const listLastSevenDays = atom({
   key: 'lists-last-7-days',
-  get: ({get}) => (get(sortListsSelector).filter(e => get(dayAtom) - (e.day.seconds * 1000) >= (60 * 60 * 24 * 7)))
-});
-
-export const listAfterCurrent = selector({
-  key: 'lists-after-current-day',
-  get: ({get}) => (get(sortListsSelector).filter(e => (e.day.seconds * 1000) - get(dayAtom) >= 0))
+  default: []
 });
 
 export const userListsDone = selector({
   key: 'lists-done',
-  get: ({get}) => (get(listAfterCurrent).filter(e => e.isDone == true))
+  get: ({get}) => (get(userListsAtom).filter(e => e.isDone == true))
 });
 
 export const userListsNotDone = selector({
   key: 'lists-not-done',
-  get: ({get}) => (get(listAfterCurrent).filter(e => e.isDone == false))
+  get: ({get}) => (get(userListsAtom).filter(e => e.isDone == false))
 });
 
 export const userMeetDocs = atom({
   key: 'users-meet-doctor',
   default: []
-})
-
-export const userSortMeetDocs = selector({
-  key: 'sort-users-meet-doctor',
-  get: ({get}) => {
-      const temp = get(userMeetDocs)
-      const lists = temp.filter(e => e) // create new array for fix attemped read only property
-      return lists.sort((a,b) => {
-        if (a && b) {
-          return a.time.seconds - b.time.seconds
-        }
-        return 1
-      })
-    }
 })
 
 export const familyLists = atom({
@@ -86,20 +53,6 @@ export const allPatientsAtom = atom({
 export const currentPatientMeetDocs = atom({
   key: 'current-patient-meet-doctor',
   default: []
-})
-
-export const sortcurrentPatientMeetDocs = selector({
-  key: 'sort-current-patient-meet-doctor',
-  get: ({get}) => {
-      const temp = get(currentPatientMeetDocs)
-      const lists = temp.filter(e => e) // create new array for fix attemped read only property
-      return lists.sort((a,b) => {
-        if (a && b) {
-          return b.time.seconds - a.time.seconds
-        }
-        return 1
-      })
-    }
 })
 
 export const currentPatientTests = atom({

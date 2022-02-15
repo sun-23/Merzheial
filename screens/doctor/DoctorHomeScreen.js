@@ -195,10 +195,15 @@ export const DoctorHomeScreen = ({navigation}) => {
                         key={patient.uid}
                         style={[styles.item, styles.itemSearch]}
                       >
-                        <Image 
-                          style={[styles.image, styles.imageSearch]} 
-                          source={{uri: patient.urlImage}}
-                        />
+                        {!patient.urlImage ? 
+                          <Image 
+                            style={[styles.image, styles.imageSearch]}  
+                            source={require('../../assets/avatar.webp')}
+                          /> : 
+                          <Image 
+                            style={[styles.image, styles.imageSearch]} 
+                            source={{uri: patient.urlImage}}
+                        />}
                         <View style={styles.itemViewText}>
                           <Text style={styles.itemTitle}>{patient.firstname}</Text>
                           <Text style={styles.itemTitle}>{patient.lastname}</Text>
