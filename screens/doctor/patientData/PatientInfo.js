@@ -153,7 +153,7 @@ const PatientInfo = ({navigation, route}) => {
                         value={description_al_lv}
                         onChangeText={setDescription_al_lv}
                     />
-                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>รายละเอียดยาที่ต้องรับประธาน</Text>
+                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>รายละเอียดยาที่ต้องรับประทาน</Text>
                     <TextInput 
                         placeholder='รายละเอียด'
                         multiline={true}
@@ -265,7 +265,7 @@ const PatientInfo = ({navigation, route}) => {
                             <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>ที่อยู่ {patientFireInfo.address}</Text>
                             <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>uid: {patientFireInfo.uid}</Text>
                             <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.alzheimer_lv !== "") ? "black" : "red"}]}>ระยะอาการ: {patientFireInfo.alzheimer_lv !== "" ? patientFireInfo.alzheimer_lv : "ให้แพทย์ประเมิณ"}</Text>
-                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.medicine !== "") ? "black" : "red"}]}>ระยะอาการ: {patientFireInfo.medicine !== "" ? patientFireInfo.medicine : "ให้แพทย์ประเมิณ"}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.medicine !== "") ? "black" : "red"}]}>ยาที่ต้องรับประทาน: {patientFireInfo.medicine !== "" ? patientFireInfo.medicine : "ให้แพทย์ประเมิณ"}</Text>
                         </ScrollView>
                     </View>
                 </View>}
