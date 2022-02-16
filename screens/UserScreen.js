@@ -28,9 +28,15 @@ export const UserScreen = ({ navigation }) => {
                   alignSelf: 'center' 
                 }} 
               /> : 
-              <Logo 
-                uri={Images.logo} 
-                style={{alignSelf: 'center'}} 
+              <Image 
+                source={Images.logo} 
+                style={{ 
+                  width: 200, 
+                  height: 200, 
+                  borderRadius: 100, 
+                  marginVertical: 10, 
+                  alignSelf: 'center' 
+                }} 
               />
             }
             <Text style={styles.text}>userID: {userInfo.uid}</Text>
@@ -52,6 +58,22 @@ export const UserScreen = ({ navigation }) => {
             null}
 
             {/* patient test */}
+            {userInfo.person_type === 'patient' ? 
+              <Button
+                style={styles.borderlessButtonContainer}
+                borderless
+                title={'chat กับหมอ'}
+                onPress={() => navigation.navigate('Chat')}
+              /> :
+            null}
+            {userInfo.person_type === 'patient' ? 
+              <Button
+                style={styles.borderlessButtonContainer}
+                borderless
+                title={'ทำแบบทดสอบ moca'}
+                onPress={() => navigation.navigate('DoTestMOCA')}
+              /> :
+            null}
             {userInfo.person_type === 'patient' ? 
               <Button
                 style={styles.borderlessButtonContainer}
@@ -108,7 +130,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   text: {
     fontSize: 20,

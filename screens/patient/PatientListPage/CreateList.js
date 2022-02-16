@@ -9,6 +9,7 @@ import uuid from 'react-native-uuid';
 import { Ionicons } from '@expo/vector-icons';
 import { doc, setDoc } from "firebase/firestore"; 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import { Colors, db, storage, auth } from '../../../config';
 const {width, height} = Dimensions.get('window');
 
@@ -60,9 +61,16 @@ export default function CreateList({navigation}) {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 1,
         });
-        //console.log(result);
+        console.log(result);s
         if (!result.cancelled) {
-        setImage(result.uri);
+            let { width, height } = result;
+            const manipResult = await manipulateAsync(
+                result.uri,
+                [{ resize: { width: 480, height: (height/width*480) } }],
+                { format: SaveFormat.JPEG, compress: 1 }
+            );
+            console.log(manipResult);
+            setImage(manipResult.uri);
         }
     };
 

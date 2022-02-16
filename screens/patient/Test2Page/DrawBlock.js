@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 
 const {width, height} = Dimensions.get('window');
 const COLORS = {primary: '#282534', white: '#fff'};
@@ -27,13 +28,18 @@ export function DrawBlock({item, setChoice, choice}) {
         });
 
         if (!result.cancelled) {
-            setImage(result.uri);
+            const manipResult = await manipulateAsync(
+                result.uri,
+                [{ resize: { width: 480, height: 480 } }],
+                { format: SaveFormat.JPEG, compress: 1 }
+            );
+            console.log(manipResult);
+            setImage(manipResult.uri);
             var newChoice = choice
-            newChoice[item.id].url = result.uri
+            newChoice[item.id].url = manipResult.uri
             setChoice(newChoice);
         }
     };
-
 
     return (
         <View style={{flex: 1, width: width, alignItems: 'center', justifyContent: 'center'}}>

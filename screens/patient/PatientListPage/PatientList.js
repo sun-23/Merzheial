@@ -37,8 +37,8 @@ export default function PatientList({ navigation }) {
             where("date_millisecconds", ">=", currentday.getTime()), 
             orderBy("date_millisecconds", "asc")
         )
-        const unsubscribe = onSnapshot(q, (qureySnapshot) => {
-            setListAtom(qureySnapshot.docs.map((doc) => doc.data()))
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            setListAtom(querySnapshot.docs.map((doc) => doc.data()))
             setLoading(false)
         });
 
@@ -53,8 +53,8 @@ export default function PatientList({ navigation }) {
             where("date_millisecconds", ">=", last7day.getTime()), 
             orderBy("date_millisecconds", "desc")
         )
-        const unsubscribe2 = onSnapshot(q2, (qureySnapshot) => {
-            setL7DS(qureySnapshot.docs.map((doc) => doc.data()))
+        const unsubscribe2 = onSnapshot(q2, (querySnapshot) => {
+            setL7DS(querySnapshot.docs.map((doc) => doc.data()))
             setLoading(false)
         });
 
