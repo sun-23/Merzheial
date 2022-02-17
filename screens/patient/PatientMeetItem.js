@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, Text, Dimensions, ScrollView, Pressable } from 'react-native'
+import React, {useState} from 'react'
+import { StyleSheet, Text, Dimensions, ScrollView, Pressable, Modal, Image } from 'react-native'
 import { View } from '../../components'
 import { Colors } from '../../config';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ const {width, height} = Dimensions.get('window');
 const PatientMeetItem = ({navigation, route}) => {
 
     const { data } = route.params;
+    const [urlpreview, setUrlPreview] = useState();
     
     return (
         <ScrollView>
@@ -18,11 +19,53 @@ const PatientMeetItem = ({navigation, route}) => {
                     </Pressable>
                     <Text style={styles.textHeader}>{data.title}</Text>
                 </View>
+                {/* preview image */}
+                <Modal 
+                    visible={(urlpreview) ? true : false}
+                    animationType="slide"
+                >
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Pressable onPress={() => setUrlPreview('')}>
+                            <Ionicons name={'close'} size={30} color={Colors.blue} />
+                        </Pressable>
+                        <Image style={{width: width*0.8, height: height*0.8, resizeMode: 'contain'}} source={{uri: urlpreview}}/>
+                    </View>
+                </Modal>
+                {/* content */}
                 <View style={styles.content}>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
                     <Text style={styles.textStyle}>แพทย์: {data.doctor_name}</Text>
                     <Text style={styles.textStyle}>รายละเอียด: {data.description}</Text>
                     <Text style={[styles.textStyle, {color : (data.note.length > 0) ? "black" : "red"}]}>note ของแพทย์: {(data.note.length > 0) ? data.note : "รอแพทย์ประเมิณหลังนัดพบ"}</Text>
+                    {route.params.data.noteUrl != "" ? 
+                        <Pressable 
+                                onPress={() => setUrlPreview(route.params.data.noteUrl)}>
+                            <Image 
+                                style={{
+                                    height: width*0.7, 
+                                    width: width*0.7, 
+                                    borderRadius: 5,
+                                    marginVertical: 12,
+                                    alignSelf: 'flex-start'
+                                }}  
+                                source={{uri: route.params.data.noteUrl}}
+                            />
+                        </Pressable> : 
+                        <View 
+                            style={{
+                                height: width*0.7, 
+                                width: width*0.7, 
+                                borderRadius: 5,
+                                marginVertical: 12,
+                                alignSelf: 'flex-start',
+                                backgroundColor: '#a0a0a0',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                        > 
+                            <Text style={[styles.textStyle, {alignSelf: 'center', color: 'white'}]}>ไม่มีภาพ note</Text>
+                        </View>
+                    }
                 </View>
             </View>
         </ScrollView>
