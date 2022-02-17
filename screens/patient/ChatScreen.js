@@ -22,6 +22,7 @@ export default function ChatScreen({navigation}) {
     const [chat, setChat] = useState([])
     const [imageUrl, setImage] = useState('')
     const [imageAvatars, setimageAvatars] = useState({})
+    const [urlpreview, setUrlPreview] = useState();
 
     useEffect(async () => {
         (async () => {
@@ -158,6 +159,12 @@ export default function ChatScreen({navigation}) {
         setMessage('');
     }
 
+
+    const previewIMG = (url) => {
+        console.log('click img', url);
+        setUrlPreview(url)
+    }
+
     const MessageBox = ({item, user_uid}) => {
         return  (
             <View>
@@ -214,17 +221,20 @@ export default function ChatScreen({navigation}) {
                         color: (item.sender_uid === user_uid) ? 'white' : 'black'
                     }}>{item.message}</Text>
                 </View> :
-                <Image 
-                    style={{
-                        height: 200, 
-                        width: 200, 
-                        borderRadius: 5,
-                        margin: 12,
-                        // resizeMode: 'contain',
-                        alignSelf: (item.sender_uid === user_uid) ? 'flex-end' : 'flex-start'
-                    }} 
-                    source={{uri: item.image}}
-                />}
+                <Pressable 
+                    onPress={() => previewIMG(item.image)}>
+                    <Image 
+                        style={{
+                            height: 200, 
+                            width: 200, 
+                            borderRadius: 5,
+                            margin: 12,
+                            // resizeMode: 'contain',
+                            alignSelf: (item.sender_uid === user_uid) ? 'flex-end' : 'flex-start'
+                        }} 
+                        source={{uri: item.image}}
+                    />
+                </Pressable>}
                 <Text style={{
                     alignSelf: (item.sender_uid === user_uid) ? 'flex-end' : 'flex-start' ,
                     fontSize: 10, 
@@ -248,6 +258,17 @@ export default function ChatScreen({navigation}) {
                     </Pressable>
                     <Text style={styles.textHeader}>ห้อง chat กับหมอ</Text>
                 </View>
+                <Modal 
+                    visible={(urlpreview) ? true : false}
+                    animationType="slide"
+                >
+                    <View style={[styles.container, {justifyContent: 'center', alignItems: 'center'}]}>
+                        <Pressable onPress={() => setUrlPreview('')}>
+                            <Ionicons name={'close'} size={30} color={Colors.blue} />
+                        </Pressable>
+                        <Image style={{width: width*0.8, height: height*0.8, resizeMode: 'contain'}} source={{uri: urlpreview}}/>
+                    </View>
+                </Modal>
                 <View style={{flex: 1,backgroundColor: '#f3f3f3'}}>
                     <ScrollView 
                         ref={scrollViewRef}
