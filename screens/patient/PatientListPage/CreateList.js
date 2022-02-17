@@ -61,7 +61,7 @@ export default function CreateList({navigation}) {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 1,
         });
-        console.log(result);s
+        console.log(result);
         if (!result.cancelled) {
             let { width, height } = result;
             const manipResult = await manipulateAsync(

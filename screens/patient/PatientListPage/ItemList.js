@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, Text, Image, Dimensions, ScrollView, Pressable } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Text, Image, Dimensions, ScrollView, Pressable, Modal } from 'react-native'
 import { View, Button } from '../../../components'
 import { Colors, db, auth } from '../../../config';
 import { setDoc, doc } from '@firebase/firestore';
@@ -7,6 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 const {width, height} = Dimensions.get('window');
 
 const ItemList = ({navigation, route}) => {
+
+    const [urlpreview, setUrlPreview] = useState();
 
     const onDone = () => {
         const { id } = route.params.data
@@ -27,17 +29,31 @@ const ItemList = ({navigation, route}) => {
                 <View style={styles.content}>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>{route.params.data.day_string}</Text>
                     <Text style={styles.textStyle}>รายละเอียด: {route.params.data.description}</Text>
-                    {route.params.data.imageUrl != "" ? 
-                        <Image 
-                            style={{
-                                height: width*0.7, 
-                                width: width*0.7, 
-                                borderRadius: 5,
-                                marginVertical: 12,
-                                alignSelf: 'flex-start'
-                            }}  
-                            source={{uri: route.params.data.imageUrl}}
-                        /> : 
+                    <Modal 
+                        visible={(urlpreview) ? true : false}
+                        animationType="slide"
+                    >
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Pressable onPress={() => setUrlPreview('')}>
+                                <Ionicons name={'close'} size={30} color={Colors.blue} />
+                            </Pressable>
+                            <Image style={{width: width*0.8, height: height*0.8, resizeMode: 'contain'}} source={{uri: urlpreview}}/>
+                        </View>
+                    </Modal>
+                    {route.params.data.imageUrl != "" ?
+                        <Pressable 
+                            onPress={() => setUrlPreview(route.params.data.imageUrl)}>
+                            <Image 
+                                style={{
+                                    height: width*0.7, 
+                                    width: width*0.7, 
+                                    borderRadius: 5,
+                                    marginVertical: 12,
+                                    alignSelf: 'flex-start'
+                                }}  
+                                source={{uri: route.params.data.imageUrl}}
+                            />
+                        </Pressable>  : 
                         <View 
                             style={{
                                 height: width*0.7, 

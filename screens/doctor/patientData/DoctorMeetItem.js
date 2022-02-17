@@ -1,10 +1,14 @@
-import React, {useState} from 'react'
-import { StyleSheet, Text, Dimensions, ScrollView, Modal, TextInput, Pressable, Alert } from 'react-native'
+import React, {useState, useEffect} from 'react'
+import { StyleSheet, Text, Dimensions, ScrollView, Modal, TextInput, Pressable, Alert, Image } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { View, Button } from '../../../components'
-import { Colors, db } from '../../../config';
+import { Colors, db, storage } from '../../../config';
 import { doc, setDoc } from 'firebase/firestore';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
+import uuid from 'react-native-uuid';
 const {width, height} = Dimensions.get('window');
 
 const DoctorMeetItem = ({navigation, route}) => {
@@ -13,7 +17,69 @@ const DoctorMeetItem = ({navigation, route}) => {
 
     const [note, setNote] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-    const [enable, setEnable] = useState(true)
+    const [enable, setEnable] = useState(true);
+    const [imageUrl, setImage] = useState('');
+    const [urlpreview, setUrlPreview] = useState();
+
+    useEffect(() => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (status !== 'granted') {
+                    Alert.alert(
+                        "การเข้าถึงรูปภาพ",
+                        "Sorry, we need camera roll permissions to make pick the photo",
+                    [
+                        { text: "OK", onPress: () => console.log("OK Pressed") }
+                    ])
+                }
+            }
+        })();
+    }, []);
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        });
+        console.log(result);
+        if (!result.cancelled) {
+            let { width, height } = result;
+            const manipResult = await manipulateAsync(
+                result.uri,
+                [{ resize: { width: 480, height: (height/width*480) } }],
+                { format: SaveFormat.JPEG, compress: 1 }
+            );
+            // console.log(manipResult);
+            setImage(manipResult.uri);
+        }
+    };
+
+    const uploadImageAsync = async (uri, path, callBack) => {
+        if (uri) {
+            console.log('image ok', uri);
+            const imageRef = ref(storage, path);
+            await fetch(uri)
+            .then(response => response.blob())
+            .then(blob => {
+                const uploadTask = uploadBytesResumable(imageRef, blob);
+                uploadTask.on('state_changed', (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                },
+                (error) => {
+                },  
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        //console.log('File available at', downloadURL);
+                        callBack(downloadURL);
+                    });
+                })
+            });
+        } else {
+            callBack('');
+        }
+    }
 
     const updateNote = async () => {
         if (note.length === 0) {
@@ -25,6 +91,13 @@ const DoctorMeetItem = ({navigation, route}) => {
         setNote('');
         setModalVisible(false);
         setEnable(true)
+        const id = uuid.v4()
+        uploadImageAsync(imageUrl, 'note-image/'+ id, (result) => {
+            if (result) {
+                setDoc(doc(db, "meet_doctor", data.id), {noteUrl: result}, {merge: true})
+            }
+            navigation.goBack()
+        })
         navigation.goBack()
     }
 
@@ -47,6 +120,20 @@ const DoctorMeetItem = ({navigation, route}) => {
                         />
                     </View>
                 </View>
+                {/* preview image */}
+                <Modal 
+                    visible={(urlpreview) ? true : false}
+                    animationType="slide"
+                >
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Pressable onPress={() => setUrlPreview('')}>
+                            <Ionicons name={'close'} size={30} color={Colors.blue} />
+                        </Pressable>
+                        <Image style={{width: width*0.8, height: height*0.8, resizeMode: 'contain'}} source={{uri: urlpreview}}/>
+                    </View>
+                </Modal>
+
+                {/* creat note */}
                 <Modal
                     animationType="slide"
                     visible={modalVisible}
@@ -64,6 +151,24 @@ const DoctorMeetItem = ({navigation, route}) => {
                             </Pressable>
                             <Text style={styles.textHeader}>เปลี่ยนแปลง note</Text>
                         </View>
+                        {imageUrl ? 
+                            <Image 
+                                style={{
+                                    height: width*0.7, 
+                                    width: width*0.7, 
+                                    borderRadius: 5,
+                                    margin: 15
+                                }}  
+                                source={{uri: imageUrl}}
+                            /> : 
+                            null
+                        }
+                        <Pressable 
+                            style={[styles.button, styles.buttonOpen]} 
+                            onPress={pickImage}
+                        >
+                            <Text style={[styles.textStyle, {color: 'white', alignSelf: 'center'}]}>เลือกภาพ</Text>
+                        </Pressable>
                         <TextInput 
                             placeholder='note'
                             multiline={true}
@@ -84,6 +189,35 @@ const DoctorMeetItem = ({navigation, route}) => {
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
                     <Text style={styles.textStyle}>รายละเอียด: {data.description}</Text>
                     <Text style={[styles.textStyle, {color : (data.note.length > 0) ? "black" : "red"}]}>note ของแพทย์: {(data.note.length > 0) ? data.note : "ยังไม่ได้ประเมิณ"}</Text>
+                    {route.params.data.noteUrl != "" ? 
+                        <Pressable 
+                                onPress={() => setUrlPreview(route.params.data.noteUrl)}>
+                            <Image 
+                                style={{
+                                    height: width*0.7, 
+                                    width: width*0.7, 
+                                    borderRadius: 5,
+                                    marginVertical: 12,
+                                    alignSelf: 'flex-start'
+                                }}  
+                                source={{uri: route.params.data.noteUrl}}
+                            />
+                        </Pressable> : 
+                        <View 
+                            style={{
+                                height: width*0.7, 
+                                width: width*0.7, 
+                                borderRadius: 5,
+                                marginVertical: 12,
+                                alignSelf: 'flex-start',
+                                backgroundColor: '#a0a0a0',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                        > 
+                            <Text style={[styles.textStyle, {alignSelf: 'center', color: 'white'}]}>ไม่มีภาพ note</Text>
+                        </View>
+                    }
                 </View>
             </View>
         </ScrollView>

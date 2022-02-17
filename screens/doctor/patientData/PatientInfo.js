@@ -129,20 +129,6 @@ const PatientInfo = ({navigation, route}) => {
                         // ทำ screen list all test
                         // ทำ test info
                     />
-                    <Button
-                        style={{paddingRight: 5}} 
-                        title='ห้อง chat กับผู้ป่วย'
-                        borderless
-                        onPress={() => navigation.navigate("Chat", { patientInfo: patientInfo })}
-                        // ทำ screen list all test
-                        // ทำ test info
-                    />
-                    <Button
-                        style={{paddingRight: 5}} 
-                        title='กิจกรรม'
-                        borderless
-                        onPress={() => navigation.navigate("List", { patientInfo: patientFireInfo })}
-                    />
                     <Button 
                         style={{paddingHorizontal: 5}} 
                         title='อัพเดตข้อมูลผุ้ป่วย'
@@ -157,6 +143,23 @@ const PatientInfo = ({navigation, route}) => {
                     />
                 </View>
             </View>
+            <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                <Button
+                    style={{paddingRight: 5}} 
+                    title='ห้อง chat กับผู้ป่วย'
+                    borderless
+                    onPress={() => navigation.navigate("Chat", { patientInfo: patientInfo })}
+                    // ทำ screen list all test
+                    // ทำ test info
+                />
+                <Button
+                    style={{paddingRight: 5}} 
+                    title='กิจกรรม'
+                    borderless
+                    onPress={() => navigation.navigate("List", { patientInfo: patientFireInfo })}
+                />
+            </View>
+
             {/* modal 1 */}
             <Modal
                 animationType="slide"
@@ -273,6 +276,8 @@ const PatientInfo = ({navigation, route}) => {
                 </View>
                 </KeyboardAwareScrollView>
             </Modal>
+
+            {/* content */}
             <View style={styles.content}>
                 <Text style={[styles.textHeader, {alignSelf: 'flex-start'}]}>คนไข้</Text>
                 {patientFireInfo && <View style={[styles.item, styles.itemPatient, {maxHeight: height* 0.2}]}>
