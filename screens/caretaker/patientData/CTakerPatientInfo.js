@@ -58,6 +58,14 @@ const CTakerPatientInfo = ({navigation, route}) => {
                     />
                     <Button
                         style={{paddingRight: 5}} 
+                        title='ห้อง chat กับผู้ป่วย'
+                        borderless
+                        onPress={() => navigation.navigate("Chat", { patientInfo: patientInfo })}
+                        // ทำ screen list all test
+                        // ทำ test info
+                    />
+                    <Button
+                        style={{paddingRight: 5}} 
                         title='กิจกรรม'
                         borderless
                         onPress={() => navigation.navigate("List", { patientInfo: patientFireInfo })}

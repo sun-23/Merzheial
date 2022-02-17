@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { StyleSheet, Text, Dimensions, Pressable, Platform, TextInput, Image, ScrollView, KeyboardAvoidingView, SafeAreaView, Modal } from 'react-native'
-import { View } from '../../components'
+import { View } from '../../../components'
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { collection, addDoc, onSnapshot, query, orderBy, doc } from "firebase/firestore"; 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { Colors, db, storage } from '../../config';
-import { userInfoAtom } from '../../store';
+import { Colors, db, storage } from '../../../config';
+import { userInfoAtom } from '../../../store';
 import { useRecoilValue } from 'recoil';
 import uuid from 'react-native-uuid';
 import axios from 'axios';
@@ -14,7 +14,9 @@ import { Buffer } from 'buffer';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 const {width, height} = Dimensions.get('window');
 
-export default function ChatScreen({navigation}) {
+export default function PatientChatScreen({navigation, route}) {
+
+    const { patientInfo } = route.params; 
 
     const scrollViewRef = useRef();
     const userInfo = useRecoilValue(userInfoAtom)
@@ -39,7 +41,7 @@ export default function ChatScreen({navigation}) {
         }
         })();
 
-        const colRef = collection(db, "Chat"+userInfo.uid)
+        const colRef = collection(db, "Chat"+patientInfo.uid) //chat uid patient
         const q = query(colRef, orderBy("time_milisecconds", "asc"))
         const unsub = onSnapshot(q, async (querySnapshot) => {
             setChat(querySnapshot.docs.map((doc) => doc.data()))
@@ -125,7 +127,7 @@ export default function ChatScreen({navigation}) {
         uploadImageAsync(imageUrl, 'chat-image/'+ id, (url) => {
             if (url !== '') {
                 console.log('upload ok');
-                const colRef = collection(db, "Chat"+userInfo.uid)
+                const colRef = collection(db, "Chat"+patientInfo.uid)
                 addDoc(colRef,{
                     time_milisecconds: time.getTime(),
                     time_string: (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'medium', timeStyle: 'short' }).format(time.getTime())).toString(),
@@ -147,7 +149,7 @@ export default function ChatScreen({navigation}) {
             return;
         }
         const time = new Date()
-        const colRef = collection(db, "Chat"+userInfo.uid) //chat is Chat+patient uid
+        const colRef = collection(db, "Chat"+patientInfo.uid) //chat is Chat+patient uid
         addDoc(colRef,{
             time_milisecconds: time.getTime(),
             time_string: (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'medium', timeStyle: 'short' }).format(time.getTime())).toString(),
@@ -189,7 +191,7 @@ export default function ChatScreen({navigation}) {
                             margin: 12,
                             alignSelf: 'flex-start'
                         }}  
-                        source={require('../../assets/avatar.webp')}
+                        source={require('../../../assets/avatar.webp')}
                     /> : 
                     <Image 
                         style={{
