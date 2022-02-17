@@ -3,12 +3,14 @@ import { StyleSheet, Text, Dimensions, Pressable, Platform, TextInput, Image, Sc
 import { View } from '../../components'
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
-import { collection, addDoc, onSnapshot, query, orderBy } from "firebase/firestore"; 
+import { collection, addDoc, onSnapshot, query, orderBy, doc } from "firebase/firestore"; 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Colors, db, storage } from '../../config';
 import { userInfoAtom } from '../../store';
 import { useRecoilValue } from 'recoil';
 import uuid from 'react-native-uuid';
+import axios from 'axios';
+import { Buffer } from 'buffer';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 const {width, height} = Dimensions.get('window');
 
@@ -19,8 +21,9 @@ export default function ChatScreen({navigation}) {
     const [message, setMessage] = useState('')
     const [chat, setChat] = useState([])
     const [imageUrl, setImage] = useState('')
+    const [imageAvatars, setimageAvatars] = useState({})
 
-    useEffect(() => {
+    useEffect(async () => {
         (async () => {
         if (Platform.OS !== 'web') {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -37,8 +40,33 @@ export default function ChatScreen({navigation}) {
 
         const colRef = collection(db, "Chat"+userInfo.uid)
         const q = query(colRef, orderBy("time_milisecconds", "asc"))
-        const unsub = onSnapshot(q, (querySnapshot) => {
+        const unsub = onSnapshot(q, async (querySnapshot) => {
             setChat(querySnapshot.docs.map((doc) => doc.data()))
+            let obj_imageAvatars = {};
+            setimageAvatars([]);
+            querySnapshot.docs.map((doc) => {
+                // chache avatar image to base64 to download 1 
+                // time from server to decrease bandwidth qouta
+                const {sender_uid, sender_url} = doc.data();
+                if (obj_imageAvatars[sender_uid] === undefined) {
+                    let buffer;
+                    axios({
+                        method: 'get',
+                        url: sender_url,
+                        responseType: 'arraybuffer'
+                    }).then((response) => {
+                        buffer = Buffer.from(response.data, 'binary').toString('base64')
+                        console.log(sender_uid);
+                        if (!obj_imageAvatars[sender_uid.toString()]) {
+                            console.log('fetch url');
+                            obj_imageAvatars[sender_uid.toString()] = buffer;
+                            setimageAvatars(prev => ({...prev, [sender_uid.toString()]: buffer}))
+                        } else {
+                            console.log('fetched');
+                        }
+                    });
+                }
+            })
         });
 
         return () => {
@@ -59,7 +87,7 @@ export default function ChatScreen({navigation}) {
                 [{ resize: { width: 480, height: (height/width*480) } }],
                 { format: SaveFormat.JPEG, compress: 1 }
             );
-            console.log(manipResult);
+            // console.log(manipResult);
             setImage(manipResult.uri);
         }
     };
@@ -94,16 +122,19 @@ export default function ChatScreen({navigation}) {
         const id = uuid.v4()
         const time = new Date()
         uploadImageAsync(imageUrl, 'chat-image/'+ id, (url) => {
-            console.log('upload ok');
-            addDoc(colRef,{
-                time_milisecconds: time.getTime(),
-                time_string: (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'medium', timeStyle: 'short' }).format(time.getTime())).toString(),
-                image: url,
-                sender_uid: userInfo.uid,
-                sender_name: userInfo.firstname,
-                sender_url: userInfo.urlImage,
-                type: 'image'
-            })
+            if (url !== '') {
+                console.log('upload ok');
+                const colRef = collection(db, "Chat"+userInfo.uid)
+                addDoc(colRef,{
+                    time_milisecconds: time.getTime(),
+                    time_string: (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'medium', timeStyle: 'short' }).format(time.getTime())).toString(),
+                    image: url,
+                    sender_uid: userInfo.uid,
+                    sender_name: userInfo.firstname,
+                    sender_url: userInfo.urlImage,
+                    type: 'image'
+                })
+            }
         })
     }
 
@@ -126,6 +157,84 @@ export default function ChatScreen({navigation}) {
         })
         setMessage('');
     }
+
+    const MessageBox = ({item, user_uid}) => {
+        return  (
+            <View>
+                <View 
+                    key={item.time_milisecconds}
+                    style={{
+                        width: width,
+                        height: 'auto',
+                        paddingHorizontal: 15,
+                        flexDirection: (item.sender_uid === user_uid) ? 'row-reverse' : 'row',
+                        alignItems: 'center'
+                    }}
+                >
+                    {!item.sender_url ? 
+                    <Image 
+                        style={{
+                            height: 40, 
+                            width: 40, 
+                            borderRadius: 40,
+                            margin: 12,
+                            alignSelf: 'flex-start'
+                        }}  
+                        source={require('../../assets/avatar.webp')}
+                    /> : 
+                    <Image 
+                        style={{
+                            height: 40, 
+                            width: 40, 
+                            borderRadius: 40,
+                            margin: 12,
+                            alignSelf: 'flex-start'
+                        }}
+                        source={{uri: "data:image/png;base64,"+imageAvatars[item.sender_uid]}}
+                    />}
+                    <Text style={{
+                        alignSelf: 'center',
+                        fontSize: 16 
+                    }}>{item.sender_name}</Text>
+                </View>
+                {item.type === 'text' ? <View style={{
+                        width: 'auto',
+                        height: 'auto',
+                        maxWidth: width * 0.7,
+                        backgroundColor: (item.sender_uid === user_uid) ? '#548CFF' : 'white',
+                        borderRadius: 10,
+                        paddingHorizontal: 5,
+                        marginHorizontal: 15,
+                        alignSelf: (item.sender_uid === user_uid) ? 'flex-end' : 'flex-start'
+                    }}>
+                    <Text style={{
+                        fontSize: 20, 
+                        fontWeight: '300', 
+                        padding: 5,
+                        color: (item.sender_uid === user_uid) ? 'white' : 'black'
+                    }}>{item.message}</Text>
+                </View> :
+                <Image 
+                    style={{
+                        height: 200, 
+                        width: 200, 
+                        borderRadius: 5,
+                        margin: 12,
+                        // resizeMode: 'contain',
+                        alignSelf: (item.sender_uid === user_uid) ? 'flex-end' : 'flex-start'
+                    }} 
+                    source={{uri: item.image}}
+                />}
+                <Text style={{
+                    alignSelf: (item.sender_uid === user_uid) ? 'flex-end' : 'flex-start' ,
+                    fontSize: 10, 
+                    fontWeight: '300', 
+                    marginHorizontal: 15,
+                    fontSize: 16
+                }}>{item.time_string}</Text>
+            </View>
+        )
+    }
     
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
@@ -145,7 +254,11 @@ export default function ChatScreen({navigation}) {
                         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
                     >
                         {chat.map((item) => {
-                            return (item.type === 'text') ? <MessageBox item={item} user_uid={userInfo.uid} key={item.time_milisecconds}/> : <MessageImageBox item={item} user_uid={userInfo.uid} key={item.time_milisecconds}/>
+                            return <MessageBox 
+                                    item={item} 
+                                    user_uid={userInfo.uid} 
+                                    key={item.time_milisecconds}
+                                />
                         })}
                     </ScrollView>
                 </View> 
@@ -175,133 +288,6 @@ export default function ChatScreen({navigation}) {
                 </View>
             </View> : null}
         </SafeAreaView>
-    )
-}
-
-const MessageImageBox = ({item, user_uid}) => {
-    return  (
-        <View>
-            <View 
-                key={item.time_milisecconds}
-                style={{
-                    width: width,
-                    height: 'auto',
-                    paddingHorizontal: 15,
-                    flexDirection: (item.sender_uid === user_uid) ? 'row-reverse' : 'row',
-                    alignItems: 'center'
-                }}
-            >
-                {!item.sender_url ? 
-                <Image 
-                    style={{
-                        height: 40, 
-                        width: 40, 
-                        borderRadius: 40,
-                        margin: 12,
-                        alignSelf: 'flex-start'
-                    }}  
-                    source={require('../../assets/avatar.webp')}
-                /> : 
-                <Image 
-                    style={{
-                        height: 40, 
-                        width: 40, 
-                        borderRadius: 40,
-                        margin: 12,
-                        alignSelf: 'flex-start'
-                    }} 
-                    source={{uri: item.sender_url}}
-                />}
-                <Text style={{
-                    alignSelf: 'center', 
-                    fontSize: 16
-                }}>{item.sender_name}</Text>
-            </View>
-            <Image 
-                style={{
-                    height: 150, 
-                    width: 150, 
-                    borderRadius: 5,
-                    margin: 12,
-                    alignSelf: (item.sender_uid === user_uid) ? 'flex-end' : 'flex-start'
-                }} 
-                source={{uri: item.sender_url}}
-            />
-            <Text style={{
-                alignSelf: (item.sender_uid === user_uid) ? 'flex-end' : 'flex-start' ,
-                fontSize: 10, 
-                fontWeight: '300', 
-                marginHorizontal: 15,
-                fontSize: 16
-            }}>{item.time_string}</Text>
-        </View>
-    )
-}
-
-const MessageBox = ({item, user_uid}) => {
-    return  (
-        <View>
-            <View 
-                key={item.time_milisecconds}
-                style={{
-                    width: width,
-                    height: 'auto',
-                    paddingHorizontal: 15,
-                    flexDirection: (item.sender_uid === user_uid) ? 'row-reverse' : 'row',
-                    alignItems: 'center'
-                }}
-            >
-                {!item.sender_url ? 
-                <Image 
-                    style={{
-                        height: 40, 
-                        width: 40, 
-                        borderRadius: 40,
-                        margin: 12,
-                        alignSelf: 'flex-start'
-                    }}  
-                    source={require('../../assets/avatar.webp')}
-                /> : 
-                <Image 
-                    style={{
-                        height: 40, 
-                        width: 40, 
-                        borderRadius: 40,
-                        margin: 12,
-                        alignSelf: 'flex-start'
-                    }}
-                    source={{uri: item.sender_url}}
-                />}
-                <Text style={{
-                    alignSelf: 'center',
-                    fontSize: 16 
-                }}>{item.sender_name}</Text>
-            </View>
-            <View style={{
-                    width: 'auto',
-                    height: 'auto',
-                    maxWidth: width * 0.7,
-                    backgroundColor: (item.sender_uid === user_uid) ? '#548CFF' : 'white',
-                    borderRadius: 10,
-                    paddingHorizontal: 5,
-                    marginHorizontal: 15,
-                    alignSelf: (item.sender_uid === user_uid) ? 'flex-end' : 'flex-start'
-                }}>
-                <Text style={{
-                    fontSize: 20, 
-                    fontWeight: '300', 
-                    padding: 5,
-                    color: (item.sender_uid === user_uid) ? 'white' : 'black'
-                }}>{item.message}</Text>
-            </View>
-            <Text style={{
-                alignSelf: (item.sender_uid === user_uid) ? 'flex-end' : 'flex-start' ,
-                fontSize: 10, 
-                fontWeight: '300', 
-                marginHorizontal: 15,
-                fontSize: 16
-            }}>{item.time_string}</Text>
-        </View>
     )
 }
 

@@ -69,7 +69,7 @@ export default function CreateList({navigation}) {
                 [{ resize: { width: 480, height: (height/width*480) } }],
                 { format: SaveFormat.JPEG, compress: 1 }
             );
-            console.log(manipResult);
+            // console.log(manipResult);
             setImage(manipResult.uri);
         }
     };
@@ -111,7 +111,12 @@ export default function CreateList({navigation}) {
     const uploadItemList = () => {
         setEnable(false)
         if (!title || !description) {
-            alert('กรุณาระบุรายละเอียด')
+            alert('กรุณาระบุรายละเอียด ให้ถูกต้อง')
+            setEnable(true)
+            return
+        }
+        if (date.getTime() < new Date().valueOf()) {
+            alert('กรุณาระบุวันที่ ให้ถูกต้อง')
             setEnable(true)
             return
         }

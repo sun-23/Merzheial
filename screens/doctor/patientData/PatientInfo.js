@@ -74,6 +74,10 @@ const PatientInfo = ({navigation, route}) => {
             Alert.alert("ระบุข้อความ","ระบุข้อความในช่องว่าง")
             return
         }
+        if (time.getTime() < new Date().valueOf()) {
+            alert('กรุณาระบุวันที่ ให้ถูกต้อง')
+            return
+        }
         const docRef = collection(db, 'meet_doctor')
         setEnable(false)
         await addDoc(docRef, {

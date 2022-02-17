@@ -45,7 +45,7 @@ export default function PatientNewFP({navigation}) {
             let { width, height } = result;
             const manipResult = await manipulateAsync(
                 result.uri,
-                [{ resize: { width: 480, height: (height/width*480) } }],
+                [{ resize: { width: 256, height: (height/width*256) } }],
                 { format: SaveFormat.JPEG, compress: 1 }
             );
             console.log(manipResult);

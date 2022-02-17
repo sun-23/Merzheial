@@ -6,7 +6,7 @@ import { View, TextInput, Logo, FormErrorMessage, Button } from '../components';
 import { DropdownList } from 'react-native-ultimate-modal-picker';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
-
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import { updateUserSchema } from '../utils';
 import { doc, setDoc } from "firebase/firestore"; 
 import { Images, Colors, auth, db, storage } from '../config';
@@ -50,9 +50,16 @@ export const UpdateUser = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
     });
-    console.log(result);
+    // console.log(result);
     if (!result.cancelled) {
-      setImage(result.uri);
+      let { width, height } = result;
+      const manipResult = await manipulateAsync(
+          result.uri,
+          [{ resize: { width: 480, height: (height/width*480) } }],
+          { format: SaveFormat.JPEG, compress: 1 }
+      );
+      console.log(manipResult);
+      setImage(manipResult.uri);
     }
   };
 
