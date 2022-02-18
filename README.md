@@ -117,13 +117,19 @@ Expo uses Firebase Web SDK and does not support all Firebase services such as ph
 ## ⚠️ How to print code
 
 1 move node_modules folder out
-2 run command ==> enscript -r -2 --file-align=2 --highlight --line-numbers -o - `find . -name '*.js'` | ps2pdf - printout/code_printout.pdf
+2 run command
+
+```bash
+$ enscript -r -2 --file-align=2 --highlight --line-numbers -o - `find . -name '*.js'` | ps2pdf - printout/code_printout.pdf
+```
 
 3 you can see code print out in printout/code_printout.pdf
 4 move node_modules folder back to folder
 
 ## Git
 
+```shell
 git remote add origin https://github.com/sun-23/Merzheial.git
 git branch -M main
 git push -u origin main
+```
