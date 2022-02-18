@@ -6,8 +6,8 @@ import PatientInfo from '../screens/doctor/patientData/PatientInfo'
 import DoctorMeetItem from '../screens/doctor/patientData/DoctorMeetItem'
 import PatientTests from '../screens/doctor/patientData/PatientTests'
 import TestInfo from '../screens/doctor/patientData/TestInfo'
-import CTakerPatientList from '../screens/caretaker/patientData/CTakerPatientList'
-import CTakerItemList from '../screens/caretaker/patientData/CTakerItemList'
+import DoctorItemList from '../screens/doctor/patientData/DoctorItemList'
+import DoctorPatientList from '../screens/doctor/patientData/DoctorPatientList'
 import PatientChatScreen from '../screens/doctor/patientData/PatientChat'
 
 const Stack = createStackNavigator()
@@ -24,10 +24,10 @@ export default function DoctorHomeStack() {
 
         {/* patient list
           todo
-          1. split code and add stat graph
+          1. add stat graph
          */}
-        <Stack.Screen name='List' component={CTakerPatientList} />
-        <Stack.Screen name='Item' component={CTakerItemList} />
+        <Stack.Screen name='List' component={DoctorPatientList} />
+        <Stack.Screen name='Item' component={DoctorItemList} />
       </Stack.Navigator>
     )
 }
