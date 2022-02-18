@@ -21,7 +21,10 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default function CreateList({navigation}) {
+export default function CTakerCreateList({navigation, route}) {
+
+    const { patientInfo } = route.params; 
+
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [imageUrl, setImage] = useState('')
@@ -121,7 +124,7 @@ export default function CreateList({navigation}) {
             return
         }
         const id = uuid.v4()
-        const listRef = doc(db, "users", auth.currentUser.uid , "List", id)
+        const listRef = doc(db, "users", patientInfo.uid , "List", id)
         const payload = {
             day: date,
             date_millisecconds: date.getTime(),
@@ -149,7 +152,7 @@ export default function CreateList({navigation}) {
         // console.log(trigger);
         let lol = await Notifications.scheduleNotificationAsync({
             content: {
-                title: "กิจกรรม: "+noti_title,
+                title: "กิจกรรมของผู้ป่วย "+ patientInfo.firstname + ": "+ noti_title,
                 body: text,
             },
             trigger,

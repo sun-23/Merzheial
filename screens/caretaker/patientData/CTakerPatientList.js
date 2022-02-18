@@ -9,7 +9,6 @@ import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 import { Ionicons } from '@expo/vector-icons';
 const {width} = Dimensions.get('window');
 
-
 export default function CTakerPatientList({ navigation, route }) {
     const { patientInfo } = route.params; 
 
@@ -135,6 +134,12 @@ export default function CTakerPatientList({ navigation, route }) {
                 </Pressable>
                 <Text style={styles.textHeader}>สิ่งที่ต้องทำของ {patientInfo.firstname} {patientInfo.lastname}</Text>
             </View>
+            <TouchableOpacity
+                style={styles.btn} 
+                onPress={() => navigation.navigate("Create_new", { patientInfo: patientInfo })}
+            >
+                <Text style={{color: 'white'}}>สร้างรายการใหม่</Text>
+            </TouchableOpacity>
             <ButtonGroup
                 onPress={onSelectIndex}
                 selectedIndex={indexSelect}

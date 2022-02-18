@@ -9,6 +9,7 @@ import TestInfo from '../screens/doctor/patientData/TestInfo'
 import CTakerPatientList from '../screens/caretaker/patientData/CTakerPatientList'
 import CTakerItemList from '../screens/caretaker/patientData/CTakerItemList'
 import PatientChatScreen from '../screens/doctor/patientData/PatientChat'
+import CTakerCreateList from '../screens/caretaker/patientData/CTakerCreateList'
 
 const Stack = createStackNavigator()
 
@@ -30,6 +31,7 @@ export default function CareTakerHomeStack() {
          */}
         <Stack.Screen name='List' component={CTakerPatientList} />
         <Stack.Screen name='Item' component={CTakerItemList} />
+        <Stack.Screen name='Create_new' component={CTakerCreateList}/>
       </Stack.Navigator>
     )
 }
