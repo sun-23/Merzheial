@@ -271,7 +271,7 @@ export default function ChatScreen({navigation}) {
                         <Image style={{width: width*0.8, height: height*0.8, resizeMode: 'contain'}} source={{uri: urlpreview}}/>
                     </View>
                 </Modal>
-                <View style={{flex: 1,backgroundColor: '#f3f3f3'}}>
+                <View style={{flex: 1,backgroundColor: '#f3f3f3', paddingBottom: 10}}>
                     <ScrollView 
                         ref={scrollViewRef}
                         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
