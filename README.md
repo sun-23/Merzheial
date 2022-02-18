@@ -121,3 +121,9 @@ Expo uses Firebase Web SDK and does not support all Firebase services such as ph
 
 3 you can see code print out in printout/code_printout.pdf
 4 move node_modules folder back to folder
+
+## Git
+
+git remote add origin https://github.com/sun-23/Merzheial.git
+git branch -M main
+git push -u origin main
