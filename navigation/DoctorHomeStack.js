@@ -8,6 +8,7 @@ import PatientTests from '../screens/doctor/patientData/PatientTests'
 import TestInfo from '../screens/doctor/patientData/TestInfo'
 import DoctorItemList from '../screens/doctor/patientData/DoctorItemList'
 import DoctorPatientList from '../screens/doctor/patientData/DoctorPatientList'
+import StatPatientList from '../screens/doctor/patientData/StatPatientList'
 import PatientChatScreen from '../screens/doctor/patientData/PatientChat'
 
 const Stack = createStackNavigator()
@@ -26,6 +27,7 @@ export default function DoctorHomeStack() {
           todo
           1. add stat graph
          */}
+        <Stack.Screen name='Stat' component={StatPatientList}/>
         <Stack.Screen name='List' component={DoctorPatientList} />
         <Stack.Screen name='Item' component={DoctorItemList} />
       </Stack.Navigator>

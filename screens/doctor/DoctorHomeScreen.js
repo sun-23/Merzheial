@@ -114,7 +114,13 @@ export const DoctorHomeScreen = ({navigation}) => {
     const r = checkSelectPatientInPatients(patient.uid)
     if (r === true) {
       const docRef = doc(db ,"users", auth.currentUser.uid, "all-patients", patient.uid);
-      await setDoc(docRef, {uid: patient.uid}, {merge: true}).then(() => {
+      // add patient and set percent good medium for stat
+      await setDoc(docRef, {
+        uid: patient.uid, 
+        percent_good: 25, 
+        percent_medium: 50, 
+        percent_list: 75
+      }, {merge: true}).then(() => {
         alertMessage("เสร็จสิ้น", "ผู้ป่วยถูกเพิ่มแล้ว");
       })
     } else {

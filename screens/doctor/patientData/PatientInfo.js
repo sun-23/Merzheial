@@ -158,6 +158,12 @@ const PatientInfo = ({navigation, route}) => {
                     borderless
                     onPress={() => navigation.navigate("List", { patientInfo: patientFireInfo })}
                 />
+                <Button
+                    style={{paddingRight: 5}} 
+                    title='สถิติ'
+                    borderless
+                    onPress={() => navigation.navigate("Stat", { patientInfo: patientFireInfo })}
+                />
             </View>
 
             {/* modal 1 */}
