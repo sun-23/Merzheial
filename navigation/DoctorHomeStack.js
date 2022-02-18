@@ -21,6 +21,11 @@ export default function DoctorHomeStack() {
         <Stack.Screen name='Tests' component={PatientTests} />
         <Stack.Screen name='TestInfo' component={TestInfo} />
         <Stack.Screen name='Chat' component={PatientChatScreen}/>
+
+        {/* patient list
+          todo
+          1. split code and add stat graph
+         */}
         <Stack.Screen name='List' component={CTakerPatientList} />
         <Stack.Screen name='Item' component={CTakerItemList} />
       </Stack.Navigator>

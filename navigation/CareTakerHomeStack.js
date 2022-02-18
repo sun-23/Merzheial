@@ -24,7 +24,10 @@ export default function CareTakerHomeStack() {
         <Stack.Screen name='TestInfo' component={TestInfo} />
         <Stack.Screen name='Chat' component={PatientChatScreen}/>
 
-        {/* patient list */}
+        {/* patient list
+          todo
+          1. add ctaker create patient list item
+         */}
         <Stack.Screen name='List' component={CTakerPatientList} />
         <Stack.Screen name='Item' component={CTakerItemList} />
       </Stack.Navigator>
