@@ -43,7 +43,16 @@ export const SignupScreen = ({ navigation }) => {
       //custom
       if (person_type == 'patient') {
         // add test point
-        await setDoc(docRef, { isTest: false, allergy: "", address: "", like: "", unlike: "", alzheimer_lv: "", medicine: "" }, { merge: true }).then(() => {
+        await setDoc(docRef, { 
+          isTest: false, 
+          allergy: "", 
+          address: "", 
+          like: "", 
+          unlike: "", 
+          alzheimer_lv: "", 
+          medicine: "",
+          alzheimer_stat_status: 'none' // none, stage1, stage2, stage3
+        }, { merge: true }).then(() => {
           console.log('add patient test point');
         }).catch(error => setErrorState(error.message));
       }

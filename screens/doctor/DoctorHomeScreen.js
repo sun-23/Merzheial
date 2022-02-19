@@ -164,6 +164,10 @@ export const DoctorHomeScreen = ({navigation}) => {
                     source={{uri: patient.urlImage}}
                 />}
                 <View style={styles.itemViewText}>
+                  <View style={[styles.status, {backgroundColor: (patient.alzheimer_stat_status !== 'none') ? ((patient.alzheimer_stat_status === 'stage1') ? "#65C18C" : ((patient.alzheimer_stat_status === 'stage2') ? "#FFD32D" : '#FC4F4F')) :'#404040' }]}>
+                      {/* alzheimer_stat_status: none, stage1, stage2, stage3 */}
+                      <Text style={styles.status_text}>{patient.alzheimer_stat_status}</Text>
+                  </View>
                   <Text style={styles.itemTitle}>{patient.firstname} {patient.lastname}</Text>
                   <Text style={styles.itemTitle}>อายุ: {patient.age}ปี เพศ: {patient.sex_type === "female" ? "หญิง" : "ชาย"}</Text>
                   <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>uid: {patient.uid}</Text>
@@ -361,6 +365,19 @@ const styles = StyleSheet.create({
     itemViewText: {
       alignSelf: 'center', 
       paddingLeft: 10
+    },
+    status: {
+      width: 'auto',
+      paddingHorizontal: 10,
+      height: 40,
+      borderRadius: 5,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    status_text: {
+      color: 'white', 
+      fontSize: 20, 
+      fontWeight: 'bold'
     },
 })
 

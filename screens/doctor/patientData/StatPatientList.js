@@ -8,6 +8,11 @@ import { useRecoilState } from 'recoil';
 import { Ionicons } from '@expo/vector-icons';
 const {width} = Dimensions.get('window');
 
+// todo
+// update alzheimer_stat_status
+// get percent done not done
+// graph
+
 export default function StatPatientList({ navigation, route }) {
     const { patientInfo } = route.params; 
 
@@ -52,7 +57,7 @@ export default function StatPatientList({ navigation, route }) {
                 <Pressable onPress={() => navigation.goBack()}>
                     <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
                 </Pressable>
-                <Text style={styles.textHeader}>สถิติต้องทำของ {patientInfo.firstname} {patientInfo.lastname}</Text>
+                <Text style={styles.textHeader}>สถิติของ {patientInfo.firstname} {patientInfo.lastname}</Text>
             </View>
         </View>
     )

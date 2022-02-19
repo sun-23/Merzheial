@@ -288,15 +288,21 @@ const PatientInfo = ({navigation, route}) => {
             <View style={styles.content}>
                 <Text style={[styles.textHeader, {alignSelf: 'flex-start'}]}>คนไข้</Text>
                 {patientFireInfo && <View style={[styles.item, styles.itemPatient, {maxHeight: height* 0.2}]}>
-                    {!patientFireInfo.urlImage ? 
-                        <Image 
-                            style={[styles.image, styles.imagePatient]}  
-                            source={require('../../../assets/avatar.webp')}
-                        /> : 
-                        <Image 
-                            style={[styles.image, styles.imagePatient]} 
-                            source={{uri: patientFireInfo.urlImage}}
-                    />}
+                    <View>
+                        {!patientFireInfo.urlImage ? 
+                            <Image 
+                                style={[styles.image, styles.imagePatient]}  
+                                source={require('../../../assets/avatar.webp')}
+                            /> : 
+                            <Image 
+                                style={[styles.image, styles.imagePatient]} 
+                                source={{uri: patientFireInfo.urlImage}}
+                        />}
+                        <View style={[styles.status, {backgroundColor: (patientFireInfo.alzheimer_stat_status !== 'none') ? ((patientFireInfo.alzheimer_stat_status === 'stage1') ? "#65C18C" : ((patientFireInfo.alzheimer_stat_status === 'stage2') ? "#FFD32D" : '#FC4F4F')) :'#404040' }]}>
+                            {/* alzheimer_stat_status: none, stage1, stage2, stage3 */}
+                            <Text style={styles.status_text}>{patientFireInfo.alzheimer_stat_status}</Text>
+                        </View>
+                    </View>
                     <View style={styles.itemViewText}>
                         <ScrollView>
                             <Text style={styles.itemTitle}>ชื่อ: {patientFireInfo.firstname}</Text>
@@ -441,5 +447,18 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         fontSize: 20,
         backgroundColor: "#f7f7f7",
+    },
+    status: {
+      width: 'auto',
+      paddingHorizontal: 10,
+      height: 40,
+      borderRadius: 5,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    status_text: {
+      color: 'white', 
+      fontSize: 20, 
+      fontWeight: 'bold'
     },
 })
