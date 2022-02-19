@@ -241,6 +241,7 @@ export const DoctorHomeScreen = ({navigation}) => {
               )
           }
       </View>: <View style={styles.scrollView}><LoadingIndicator/></View>}
+      <Text>pull to refresh</Text>
       <View style={{height: 5, width: width, backgroundColor: '#1597e5'}}></View>
       {!loadingPatients ? 
       (<ScrollView 
