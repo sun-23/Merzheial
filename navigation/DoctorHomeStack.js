@@ -22,11 +22,6 @@ export default function DoctorHomeStack() {
         <Stack.Screen name='Tests' component={PatientTests} />
         <Stack.Screen name='TestInfo' component={TestInfo} />
         <Stack.Screen name='Chat' component={PatientChatScreen}/>
-
-        {/* patient list
-          todo
-          1. add stat graph
-         */}
         <Stack.Screen name='Stat' component={StatPatientList}/>
         <Stack.Screen name='List' component={DoctorPatientList} />
         <Stack.Screen name='Item' component={DoctorItemList} />
