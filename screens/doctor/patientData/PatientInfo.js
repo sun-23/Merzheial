@@ -83,6 +83,7 @@ const PatientInfo = ({navigation, route}) => {
         await addDoc(docRef, {
             description: description,
             doctor_name: doctorInfo.firstname + " " + doctorInfo.lastname,
+            patient_name: patientInfo.firstname + " " + patientInfo.lastname,
             time: time,
             time_milisecconds: time.getTime(),
             uid_doctor: doctorInfo.uid,

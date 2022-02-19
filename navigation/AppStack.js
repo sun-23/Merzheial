@@ -8,6 +8,7 @@ import CareTakerHomeStack from './CareTakerHomeStack';
 
 // doctor screen
 import DoctorHomeStack from './DoctorHomeStack';
+import DoctorMeetStack from './DoctorMeetStack';
 
 // patient screen
 import Game from '../screens/patient/game/picture_puzzle/Game';
@@ -61,7 +62,7 @@ export const AppStack = () => {
 
     if (route.name === 'หน้าแรก') {
       iconName = focused ? 'ios-home' : 'ios-home-outline';
-    } else if (route.name === 'สถิติ') {
+    } else if (route.name === 'สถิติ' || route.name === 'นัดหมายคนไข้') {
       iconName = focused ? 'ios-today' : 'ios-today-outline';
     } else if (route.name === 'Social') {
       iconName = focused ? 'ios-chatbubble-ellipses' : 'ios-chatbubble-ellipses-outline';
@@ -94,6 +95,7 @@ export const AppStack = () => {
         })}
       >
         <Tab.Screen name='หน้าแรก' component={DoctorHomeStack} />
+        <Tab.Screen name='นัดหมายคนไข้' component={DoctorMeetStack}/>
         <Tab.Screen name='ผู้ใช้' component={UserStack} />
       </Tab.Navigator>
     );
