@@ -55,7 +55,7 @@ export default function StatPatientList({ navigation, route }) {
             orderBy("date_millisecconds", "desc")
         )
         const unsubscribe = onSnapshot(q2, (qureySnapshot) => {
-            processData(qureySnapshot.docs)
+            processDataCallBack(qureySnapshot.docs)
             setLoading(false)
         });
 
@@ -67,7 +67,7 @@ export default function StatPatientList({ navigation, route }) {
         }
     }, [])
 
-    const processData = (docs) => {
+    const processDataCallBack = (docs) => {
         let arraytime = []
         let day = new Date();
         day.setHours(0,0,0,0);
