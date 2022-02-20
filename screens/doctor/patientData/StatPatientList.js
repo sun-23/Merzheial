@@ -4,7 +4,7 @@ import { View, LoadingIndicator } from '../../../components'
 import { onSnapshot, query, where, orderBy, doc, collection } from "firebase/firestore"; 
 import { Colors, db } from '../../../config';
 import { listLastSevenDays, userInfoAtom } from '../../../store';
-import { Snapshot, useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { Ionicons } from '@expo/vector-icons';
 
 import ChartView from './ChartView';
@@ -12,9 +12,10 @@ import ChartView from './ChartView';
 const {width} = Dimensions.get('window');
 
 // todo
-// update alzheimer_stat_status
-// get percent done not done
-// graph
+// update percent status -> in progress
+// update alzheimer_stat_status -> in progress
+// get percent done not done -> done
+// graph -> done
 
 export default function StatPatientList({ navigation, route }) {
     const { patientInfo } = route.params; 
