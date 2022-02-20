@@ -340,6 +340,7 @@ const styles = StyleSheet.create({
     item:{
       height: 'auto',
       paddingHorizontal: width * 0.05,
+      paddingVertical: 10,
       borderBottomWidth: 4,
       borderColor: '#f0f0f0',
       paddingBottom: 5,
