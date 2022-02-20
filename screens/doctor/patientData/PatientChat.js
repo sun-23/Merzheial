@@ -140,6 +140,7 @@ export default function PatientChatScreen({navigation, route}) {
                 })
             }
         })
+        setImage('');
     }
 
     const uploadMessage = () => {
@@ -161,6 +162,7 @@ export default function PatientChatScreen({navigation, route}) {
             type: 'text'
         })
         setMessage('');
+        setImage('');
     }
 
 

@@ -138,6 +138,7 @@ export default function ChatScreen({navigation}) {
                 })
             }
         })
+        setImage('');
     }
 
     const uploadMessage = () => {
@@ -159,6 +160,7 @@ export default function ChatScreen({navigation}) {
             type: 'text'
         })
         setMessage('');
+        setImage('');
     }
 
 

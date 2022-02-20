@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     },
     textHeader: {
         fontWeight: 'bold', 
-        fontSize: 20,
+        fontSize: 30,
         marginLeft: 20,
     },
     btn: {

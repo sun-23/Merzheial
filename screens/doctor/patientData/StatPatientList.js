@@ -6,6 +6,9 @@ import { Colors, db } from '../../../config';
 import { listLastSevenDays, userInfoAtom } from '../../../store';
 import { Snapshot, useRecoilState, useRecoilValue } from 'recoil';
 import { Ionicons } from '@expo/vector-icons';
+
+import ChartView from './ChartView';
+
 const {width} = Dimensions.get('window');
 
 // todo
@@ -18,12 +21,20 @@ export default function StatPatientList({ navigation, route }) {
 
     const doctorInfo = useRecoilValue(userInfoAtom)
     const [percent, setPercent] = useState({})
+    const [patientFireInfo, setPatientFireInfo] = useState();
     const [loading, setLoading] = useState(true)
     const [processdata, setData] = useState({})
 
     useEffect(() => {
         // effect
         setLoading(true)
+
+        const patientRef = doc(db, "users", patientInfo.uid);
+        const unsubscribeUserRef = onSnapshot(patientRef, (doc) => {
+            // console.log("ddddd",/**/({id: doc.id, ...doc.data()})/**/);
+            setPatientFireInfo(/**/({id: doc.id, ...doc.data()})/**/);
+        });
+
         // set date
         let currentday = new Date();
         currentday.setHours(0,0,0,0)
@@ -64,6 +75,7 @@ export default function StatPatientList({ navigation, route }) {
             // cleanup
             unsub();
             unsubscribe();
+            unsubscribeUserRef();
         }
     }, [])
 
@@ -114,7 +126,9 @@ export default function StatPatientList({ navigation, route }) {
                 data: [],
                 percent: 0,
                 isnull: true
-            }
+            },
+            hideIndex:[],
+            percentDiv: 0
         }
 
         docs.map(doc => {
@@ -163,13 +177,24 @@ export default function StatPatientList({ navigation, route }) {
             }
         })
 
+        let allpercent = 0
+
+        for (let i = 0; i < 6; i++) {
+            if (alldata['day'+(i+1).toString()].isnull) {
+                alldata.hideIndex.push(i) // hide index for graph start from 0
+            }
+            allpercent += alldata['day'+(i+1).toString()].percent
+        }
+
+        alldata.percentDiv = (allpercent/7).toFixed(1)
+
         setData(alldata)
         // console.log(alldata);
     }
 
     const getPercent = (array) => {
         if (array.length === 0) {
-            return -1
+            return 0
         }
         let done = 0
         let ndone = 0
@@ -185,6 +210,15 @@ export default function StatPatientList({ navigation, route }) {
         return (ndone/(done+ndone)) * 100
     }
 
+    const onGraphClick = ({index, value, dataset, getColor, x, y}) => {
+        console.log(index, value, x, y);
+        console.log('click onGraphClick');
+    }
+
+    const setModalPercent = () => {
+        console.log('set modal percent');
+    }
+
     return (
         <View isSafe style={styles.container}>
             <View style={styles.viewHeader}>
@@ -193,7 +227,38 @@ export default function StatPatientList({ navigation, route }) {
                 </Pressable>
                 <Text style={styles.textHeader}>สถิติของ {patientInfo.firstname} {patientInfo.lastname}</Text>
             </View>
-            {/* <Text>{JSON.stringify(processdata)}</Text> */}
+            {!loading ? <ChartView 
+                title="กราฟ percent การลืม"
+                width={Dimensions.get('window').width * 0.9} 
+                height={220}
+                data={{
+                    labels: ['วันที่1', 'วันที่2', 'วันที่3', 'วันที่4', 'วันที่5', 'วันที่6', 'วันที่7'],
+                    datasets: [{
+                        data: [
+                            processdata.day1.percent,
+                            processdata.day2.percent,
+                            processdata.day3.percent,
+                            processdata.day4.percent,
+                            processdata.day5.percent,
+                            processdata.day6.percent,
+                            processdata.day7.percent,
+                        ]
+                    }]
+                }}
+                onDataPointClick={onGraphClick}
+                hidePointsAtIndex={processdata.hideIndex}
+            /> : <LoadingIndicator/>}
+            {!loading ? 
+            <View style={styles.stat}>
+                <View style={styles.stat_view}>
+                    <Text>%เฉลี่ย</Text>
+                    <Text>{processdata.percentDiv}%</Text>
+                </View>
+                <Pressable onPress={setModalPercent} style={[styles.status, {backgroundColor: (patientFireInfo.alzheimer_stat_status !== 'none') ? ((patientFireInfo.alzheimer_stat_status === 'stage1') ? "#65C18C" : ((patientFireInfo.alzheimer_stat_status === 'stage2') ? "#FFD32D" : '#FC4F4F')) :'#404040' }]}>
+                    {/* alzheimer_stat_status: none, stage1, stage2, stage3 */}
+                    <Text style={styles.status_text}>{patientFireInfo.alzheimer_stat_status}</Text>
+                </Pressable>
+            </View> :null}
         </View>
     )
 }
@@ -207,7 +272,7 @@ const styles = StyleSheet.create({
     },
     textHeader: {
         fontWeight: 'bold', 
-        fontSize: 20,
+        fontSize: 30,
         marginLeft: 20,
     },
     btn: {
@@ -241,5 +306,39 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         alignSelf: 'center'
+    },
+    stat: {
+        width: '100%',
+        flexDirection: 'row', 
+        padding: 15,
+        justifyContent: 'space-around', 
+    },
+    stat_view: {
+      width: 'auto',
+      height: 'auto',
+      padding: 20,
+      backgroundColor: "white",
+      borderRadius: 5,
+      shadowRadius: 2.62,
+      shadowOpacity: 0.23,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      elevation: 4,
+    },
+    status: {
+      width: 'auto',
+      paddingHorizontal: 50,
+      height: 'auto',
+      borderRadius: 5,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    status_text: {
+      color: 'white', 
+      fontSize: 20, 
+      fontWeight: 'bold'
     },
 })
