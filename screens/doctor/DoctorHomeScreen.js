@@ -119,7 +119,7 @@ export const DoctorHomeScreen = ({navigation}) => {
         uid: patient.uid, 
         percent_good: 25, 
         percent_medium: 50, 
-        percent_list: 75
+        percent_bad: 75
       }, {merge: true}).then(() => {
         alertMessage("เสร็จสิ้น", "ผู้ป่วยถูกเพิ่มแล้ว");
       })
@@ -164,7 +164,7 @@ export const DoctorHomeScreen = ({navigation}) => {
                     source={{uri: patient.urlImage}}
                 />}
                 <View style={styles.itemViewText}>
-                  <View style={[styles.status, {backgroundColor: (patient.alzheimer_stat_status !== 'none') ? ((patient.alzheimer_stat_status === 'stage1') ? "#65C18C" : ((patient.alzheimer_stat_status === 'stage2') ? "#FFD32D" : '#FC4F4F')) :'#404040' }]}>
+                  <View style={[styles.status, {backgroundColor: (patient.alzheimer_stat_status !== 'none') ? ((patient.alzheimer_stat_status === 'stage1') ? "#65C18C" : ((patient.alzheimer_stat_status === 'stage2') ? "#F6D860" : '#FC4F4F')) :'#404040' }]}>
                       {/* alzheimer_stat_status: none, stage1, stage2, stage3 */}
                       <Text style={styles.status_text}>{patient.alzheimer_stat_status}</Text>
                   </View>

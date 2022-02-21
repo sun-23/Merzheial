@@ -29,7 +29,7 @@ const ChartView = ({
           fillShadowGradientTo: '#BFFFF0',
           fillShadowGradientOpacity: 0.7,
           color: () => '#EF7777',
-          labelColor: () => "black"
+          labelColor: () => "black",
         }}
         bezier
         onDataPointClick={onDataPointClick}
@@ -38,6 +38,7 @@ const ChartView = ({
         fromZero
         renderDotContent={renderDotContent}
         segments={4}
+        getDotColor={()=> 'black'}
       />
     </View>
   )

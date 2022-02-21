@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, ScrollView, Dimensions, Pressable} from 'react-native'
+import { StyleSheet, Text, Dimensions, Pressable, Modal, KeyboardAvoidingView, TextInput} from 'react-native'
 import { View, LoadingIndicator } from '../../../components'
-import { onSnapshot, query, where, orderBy, doc, collection } from "firebase/firestore"; 
+import { onSnapshot, query, where, orderBy, doc, collection, setDoc } from "firebase/firestore"; 
 import { Colors, db } from '../../../config';
-import { listLastSevenDays, userInfoAtom } from '../../../store';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { userInfoAtom } from '../../../store';
+import { useRecoilValue } from 'recoil';
+import { DropdownList } from 'react-native-ultimate-modal-picker';
+
 import { Ionicons } from '@expo/vector-icons';
 
 import ChartView from './ChartView';
 
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 // todo
 // update percent status -> in progress
@@ -25,6 +27,11 @@ export default function StatPatientList({ navigation, route }) {
     const [patientFireInfo, setPatientFireInfo] = useState();
     const [loading, setLoading] = useState(true)
     const [processdata, setData] = useState({})
+    const [modalVisible, setModalVisible] = useState(false)
+    const [ps1, setPs1] = useState(0)
+    const [ps2, setPs2] = useState(0)
+    const [ps3, setPs3] = useState(0)
+    const [stage, setStage] = useState('')
 
     useEffect(() => {
         // effect
@@ -47,7 +54,7 @@ export default function StatPatientList({ navigation, route }) {
         const unsub = onSnapshot(percentRef, (snapshot) => {
             // Object {
             //   "percent_good": 25,
-            //   "percent_list": 75,
+            //   "percent_bad": 75,
             //   "percent_medium": 50,
             //   "uid": "wx4pbvu3glhDhQzzN0ng3yRf3NI3",
             // }
@@ -180,15 +187,16 @@ export default function StatPatientList({ navigation, route }) {
 
         let allpercent = 0
 
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i <= 6; i++) {
+            // console.log(alldata['day'+(i+1).toString()].isnull);
             if (alldata['day'+(i+1).toString()].isnull) {
                 alldata.hideIndex.push(i) // hide index for graph start from 0
             }
             allpercent += alldata['day'+(i+1).toString()].percent
         }
 
-        alldata.percentDiv = (allpercent/7).toFixed(1)
-
+        const total = 7 - alldata.hideIndex.length
+        alldata.percentDiv = (allpercent/total).toFixed(1)
         setData(alldata)
         // console.log(alldata);
     }
@@ -211,13 +219,47 @@ export default function StatPatientList({ navigation, route }) {
         return (ndone/(done+ndone)) * 100
     }
 
-    const onGraphClick = ({index, value, dataset, getColor, x, y}) => {
-        console.log(index, value, x, y);
-        console.log('click onGraphClick');
+    // const onGraphClick = ({index, value, dataset, getColor, x, y}) => {
+    //     console.log(index, value, x, y);
+    //     console.log('click onGraphClick');
+    // }
+
+    const updatePercentState = () => {
+        if (ps1 >= ps2 || ps2 >= ps3 || ps1 >= ps3) {
+            alert('percent stage1 ต้องน้อยกว่า stage2 \n stage2 ต้องน้อยกว่า stage3 ')
+            return
+        }
+        const percentRef = doc(db ,"users", doctorInfo.uid, "all-patients", patientInfo.uid);
+        setDoc(percentRef, {
+            percent_good: ps1,
+            percent_medium: ps2,
+            percent_bad: ps3,
+        }, {merge: true})
+        setPs1(0)
+        setPs2(0)
+        setPs3(0)
+        setModalVisible(false)
+    }
+
+    const updatePatientStage = () => {
+        if (stage === '') {
+            alert('กรุณาเลือก stage')
+            return
+        }
+        const percentRef = doc(db ,"users", patientInfo.uid);
+        setDoc(percentRef, {
+            alzheimer_stat_status: stage,
+        }, {merge: true})
+        setStage('')
     }
 
     const setModalPercent = () => {
         console.log('set modal percent');
+        setModalVisible(true);
+    }
+
+    if  (loading) {
+        return <LoadingIndicator/>
     }
 
     return (
@@ -228,8 +270,58 @@ export default function StatPatientList({ navigation, route }) {
                 </Pressable>
                 <Text style={styles.textHeader}>สถิติของ {patientInfo.firstname} {patientInfo.lastname}</Text>
             </View>
-            {!loading ? <ChartView 
-                title="กราฟ percent การลืม"
+            {/* modal percent */}
+            <Modal
+                animationType="slide"
+                visible={modalVisible} 
+            >
+                <KeyboardAvoidingView>
+                    <View isSafe style={[styles.container, {height: height}]}>
+                        <View style={styles.viewHeader}>
+                            <Pressable 
+                                onPress={() => {
+                                    setModalVisible(false)
+                                    setPs1(0)
+                                    setPs2(0)
+                                    setPs3(0)
+                                }}
+                            >
+                                <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
+                            </Pressable> 
+                            <Text style={styles.textHeader}>แก้ไข alzheimer state</Text>
+                        </View>
+                        <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>stage1</Text>
+                        <TextInput 
+                            style={styles.titleInput}
+                            value={ps1}
+                            onChangeText={setPs1}
+                            keyboardType="decimal-pad"
+                            maxLength={2}
+                        />
+                        <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>stage2</Text>
+                        <TextInput 
+                            style={styles.titleInput}
+                            value={ps2}
+                            onChangeText={setPs2}
+                            keyboardType="decimal-pad"
+                            maxLength={2}
+                        />
+                        <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>stage3</Text>
+                        <TextInput 
+                            style={styles.titleInput}
+                            value={ps3}
+                            onChangeText={setPs3}
+                            keyboardType="decimal-pad"
+                            maxLength={2}
+                        />
+                        <Pressable onPress={updatePercentState} style={[styles.btn, {marginLeft: 12}]}>
+                            <Text style={[styles.textStyle, {color: "white"}]}>อัพเดต percent</Text>
+                        </Pressable>
+                    </View>
+                </KeyboardAvoidingView>
+            </Modal>
+            <ChartView 
+                title="กราฟ percent การลืม7วันที่ผ่านมา"
                 width={Dimensions.get('window').width * 0.9} 
                 height={220}
                 data={{
@@ -246,20 +338,47 @@ export default function StatPatientList({ navigation, route }) {
                         ]
                     }]
                 }}
-                onDataPointClick={onGraphClick}
+                // onDataPointClick={onGraphClick}
                 hidePointsAtIndex={processdata.hideIndex}
-            /> : <LoadingIndicator/>}
-            {!loading ? 
-            <View style={styles.stat}>
-                <View style={styles.stat_view}>
-                    <Text>%เฉลี่ย</Text>
-                    <Text>{processdata.percentDiv}%</Text>
+            />
+            <Text>จุดบนกราฟคือวันที่มีกิจกรรม</Text>
+            <View style={[styles.textStyle, styles.stat]}>
+                <View style={{backgroundColor: '#65C18C', width: 'auto', padding: 5, paddingHorizontal:10, borderRadius: 5}}>
+                    <Text style={styles.status_text}>{percent.percent_good}%</Text>
                 </View>
-                <Pressable onPress={setModalPercent} style={[styles.status, {backgroundColor: (patientFireInfo.alzheimer_stat_status !== 'none') ? ((patientFireInfo.alzheimer_stat_status === 'stage1') ? "#65C18C" : ((patientFireInfo.alzheimer_stat_status === 'stage2') ? "#FFD32D" : '#FC4F4F')) :'#404040' }]}>
+                <View style={{backgroundColor: '#F6D860', width: 'auto', padding: 5, paddingHorizontal:10, borderRadius: 5}}>
+                    <Text style={styles.status_text}>{percent.percent_medium}%</Text>
+                </View>
+                <View style={{backgroundColor: '#FC4F4F', width: 'auto', padding: 5, paddingHorizontal:10, borderRadius: 5}}>
+                    <Text style={styles.status_text}>{percent.percent_bad}%</Text>
+                </View>
+            </View>
+            <View style={styles.stat}>
+                <Pressable onPress={setModalPercent} style={[styles.stat_view, {backgroundColor: (processdata.percentDiv > percent.percent_medium) ? '#FC4F4F': ((processdata.percentDiv > percent.percent_good) ? '#F6D860':'#65C18C')}]}>
+                    <Text style={styles.status_text}>เฉลี่ย</Text>
+                    <Text style={styles.status_text}>{processdata.percentDiv}%</Text>
+                    <Text style={{color:'white'}}>กดเพื่อเปลี่ยนแปลง percent</Text>
+                </Pressable>
+                <View style={[styles.status, {backgroundColor: (patientFireInfo.alzheimer_stat_status !== 'none') ? ((patientFireInfo.alzheimer_stat_status === 'stage1') ? "#65C18C" : ((patientFireInfo.alzheimer_stat_status === 'stage2') ? "#F6D860" : '#FC4F4F')) :'#404040' }]}>
                     {/* alzheimer_stat_status: none, stage1, stage2, stage3 */}
                     <Text style={styles.status_text}>{patientFireInfo.alzheimer_stat_status}</Text>
-                </Pressable>
-            </View> :null}
+                </View>
+            </View>
+            <View style={{padding: 10}}>
+                <DropdownList
+                    items={[
+                        { label: 'Select', value: '' },
+                        { label: 'stage1', value: 'stage1' },
+                        { label: 'stage2', value: 'stage2' },
+                        { label: 'stage3', value: 'stage3' },
+                    ]}
+                    title="เปลี่ยน stage"
+                    onChange={setStage}
+                />
+            </View>
+            <Pressable onPress={updatePatientStage} style={[styles.btn, {alignSelf: 'center'}]}>
+                <Text style={[styles.textStyle, {color: "white"}]}>อัพเดต stage</Text>
+            </Pressable>
         </View>
     )
 }
@@ -275,6 +394,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold', 
         fontSize: 30,
         marginLeft: 20,
+    },
+    textStyle: {
+        fontWeight: "bold",
+        fontSize: 20,
     },
     btn: {
         width: width*0.9,
@@ -311,27 +434,21 @@ const styles = StyleSheet.create({
     stat: {
         width: '100%',
         flexDirection: 'row', 
-        padding: 15,
-        justifyContent: 'space-around', 
+        paddingTop: 10,
+        paddingHorizontal: 15,
+        justifyContent: "space-evenly", 
     },
     stat_view: {
       width: 'auto',
       height: 'auto',
-      padding: 20,
-      backgroundColor: "white",
+      padding: 10,
       borderRadius: 5,
-      shadowRadius: 2.62,
-      shadowOpacity: 0.23,
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2
-      },
-      elevation: 4,
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     status: {
       width: 'auto',
-      paddingHorizontal: 50,
+      padding: 10,
       height: 'auto',
       borderRadius: 5,
       alignItems: 'center',
@@ -341,5 +458,14 @@ const styles = StyleSheet.create({
       color: 'white', 
       fontSize: 20, 
       fontWeight: 'bold'
+    },
+    titleInput:{
+        height: 50,
+        width: width*0.9,
+        margin: 12,
+        padding: 10,
+        borderRadius: 5,
+        fontSize: 20,
+        backgroundColor: "#f7f7f7",
     },
 })

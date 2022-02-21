@@ -298,7 +298,7 @@ const PatientInfo = ({navigation, route}) => {
                                 style={[styles.image, styles.imagePatient]} 
                                 source={{uri: patientFireInfo.urlImage}}
                         />}
-                        <View style={[styles.status, {backgroundColor: (patientFireInfo.alzheimer_stat_status !== 'none') ? ((patientFireInfo.alzheimer_stat_status === 'stage1') ? "#65C18C" : ((patientFireInfo.alzheimer_stat_status === 'stage2') ? "#FFD32D" : '#FC4F4F')) :'#404040' }]}>
+                        <View style={[styles.status, {backgroundColor: (patientFireInfo.alzheimer_stat_status !== 'none') ? ((patientFireInfo.alzheimer_stat_status === 'stage1') ? "#65C18C" : ((patientFireInfo.alzheimer_stat_status === 'stage2') ? "#F6D860" : '#FC4F4F')) :'#404040' }]}>
                             {/* alzheimer_stat_status: none, stage1, stage2, stage3 */}
                             <Text style={styles.status_text}>{patientFireInfo.alzheimer_stat_status}</Text>
                         </View>
