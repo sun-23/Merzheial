@@ -139,9 +139,6 @@ export const AppStack = () => {
           headerShown: false
         })}
       >
-        {/* todo
-          create web game and like to it
-         */}
         <Tab.Screen name='Social' component={PatientSocialScreen}/>
         <Tab.Screen name='Game' component={Game}/>
         <Tab.Screen name='สถิติ' component={PatientStatStack}/>
