@@ -13,12 +13,6 @@ import ChartView from './ChartView';
 
 const {width, height} = Dimensions.get('window');
 
-// todo
-// update percent status -> in progress
-// update alzheimer_stat_status -> in progress
-// get percent done not done -> done
-// graph -> done
-
 export default function StatPatientList({ navigation, route }) {
     const { patientInfo } = route.params; 
 

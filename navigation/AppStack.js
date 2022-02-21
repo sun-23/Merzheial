@@ -18,6 +18,9 @@ import PatientListStack from './PatientListStack';
 import PatientStatStack from './PatiantStatStack';
 import { FamilyStack } from './PatientFamilyStack';
 
+//pdpa
+import PDPA from '../screens/PDPA';
+
 import { userInfoAtom, dayAtom } from '../store';
 import { useRecoilState } from 'recoil';
 import { doc, onSnapshot } from "firebase/firestore";
@@ -80,6 +83,10 @@ export const AppStack = () => {
 
   if (isLoading) {
     return <LoadingIndicator />
+  }
+
+  if (!userInfo.allowPDPA) {
+    return <PDPA />
   }
 
   if (userInfo.person_type === 'doctor') {

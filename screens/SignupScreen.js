@@ -35,7 +35,8 @@ export const SignupScreen = ({ navigation }) => {
         person_type: person_type,
         email: auth.currentUser.email,
         uid: auth.currentUser.uid,
-        urlImage: ''
+        urlImage: '',
+        allowPDPA: false
       };
       console.log(payload);
       console.log('click');
