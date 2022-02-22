@@ -2,22 +2,22 @@ import React, {useEffect} from 'react'
 import { StyleSheet, Text, Dimensions, ScrollView, Pressable } from 'react-native'
 import { View } from '../../../components'
 import { Colors, db } from '../../../config';
-import { collection, onSnapshot } from 'firebase/firestore';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { sortcurrentPatientTests, currentPatientTests } from '../../../store';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { useRecoilState } from 'recoil';
+import { currentPatientTests } from '../../../store';
 import { Ionicons } from '@expo/vector-icons';
 const {width, height} = Dimensions.get('window');
 
 const PatientTests = ({navigation, route}) => {
     const { patientInfo } = route.params; 
 
-    const [e,setCurrentPatienTests] = useRecoilState(currentPatientTests);
-    const sortCurrentPatientTests = useRecoilValue(sortcurrentPatientTests);
+    const [sortCurrentPatientTests,setCurrentPatienTests] = useRecoilState(currentPatientTests);
 
     useEffect(() => {
         // effect
         const collectionTests = collection(db, "users", patientInfo.uid, "patient_test");
-        const unsubscribe = onSnapshot(collectionTests, (snapshot) => {
+        const q = query(collectionTests, orderBy("time_miliseconds", "desc"))
+        const unsubscribe = onSnapshot(q, (snapshot) => {
             setCurrentPatienTests(snapshot.docs.map((doc) => /**/({id: doc.id, ...doc.data()})/**/));
         });
         return () => {

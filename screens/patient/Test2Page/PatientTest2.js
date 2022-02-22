@@ -353,7 +353,8 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
             choice12: choice[13],
             choice13: choice[14],
             choice14: choice[15],
-            total_score: score
+            total_score: score,
+            time_miliseconds: new Date().valueOf()
         }
      
         await setDoc(docRef, payload).then(() => {

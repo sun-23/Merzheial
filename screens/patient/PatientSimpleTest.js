@@ -294,6 +294,7 @@ export const PatientSimpleTest = ({navigation}) => {
             description: '',
             uuid: uuid_v4,
             choice: choice,
+            time_miliseconds: new Date().valueOf(),
             type: 'simple'
         }
         if (point >= 14 && point <= 19) {
