@@ -24,33 +24,33 @@ const TestInfo = ({navigation, route}) => {
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>ข้อ 1 {data.choice1.title}</Text>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>เฉลย: {data.choice1.text1} {data.choice1.text2} {data.choice1.text3}</Text>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>คำตอบ: {data.choice1.anstext1} {data.choice1.anstext2} {data.choice1.anstext3}</Text>
-                    <View style={{height: 4, width: 'auto', backgroundColor: '#f0f0f0'}}></View>
+                    <View style={{height: 4, width: 'auto', backgroundColor: '#f0f0f0', marginBottom: 10}}></View>
 
                     {/* 2 */}
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>ข้อ 2 {data.choice2.title}</Text>
                     <Image style={{width: width * 0.8, height: width * 0.8, borderRadius: 5, marginVertical: 5}} source={require("../../../assets/dog.webp")}/>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>เฉลย: {data.choice2.answer}</Text>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>คำตอบ: {data.choice2.user_answer}</Text>
-                    <View style={{height: 4, width: 'auto', backgroundColor: '#f0f0f0'}}></View>
+                    <View style={{height: 4, width: 'auto', backgroundColor: '#f0f0f0', marginBottom: 10}}></View>
 
                     {/* 3 */}
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>ข้อ 3 {data.choice3.title}</Text>
                     <Image style={{width: width * 0.8, height: width * 0.8, borderRadius: 5, marginVertical: 5}} source={require("../../../assets/lion.jpeg")}/>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>เฉลย: {data.choice3.answer}</Text>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>คำตอบ: {data.choice3.user_answer}</Text>
-                    <View style={{height: 4, width: 'auto', backgroundColor: '#f0f0f0'}}></View>
+                    <View style={{height: 4, width: 'auto', backgroundColor: '#f0f0f0', marginBottom: 10}}></View>
 
                     {/* 4 */}
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>ข้อ 4 {data.choice4.title}</Text>
                     <Image style={{width: width * 0.8, height: width * 0.8, borderRadius: 5, marginVertical: 5}} source={require("../../../assets/camel.jpg")}/>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>เฉลย: {data.choice4.answer}</Text>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>คำตอบ: {data.choice4.user_answer}</Text>
-                    <View style={{height: 4, width: 'auto', backgroundColor: '#f0f0f0'}}></View>
+                    <View style={{height: 4, width: 'auto', backgroundColor: '#f0f0f0', marginBottom: 10}}></View>
 
                     {/* 5 */}
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>ข้อ 5 {data.choice5.title}</Text>
                     <Image style={{width: width * 0.8, height: width * 0.8, borderRadius: 5, marginVertical: 5}} source={{uri: data.choice5.url}}/>
-                    <View style={{height: 4, width: 'auto', backgroundColor: '#f0f0f0'}}></View>
+                    <View style={{height: 4, width: 'auto', backgroundColor: '#f0f0f0', marginBottom: 10}}></View>
 
                     {/* 6 */}
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>ข้อ 6 {data.choice6.title}</Text>
@@ -58,15 +58,12 @@ const TestInfo = ({navigation, route}) => {
                 </ScrollView>
             )
         } else if (data.type === "simple") {
-            return <ScrollView style={{marginBottom: 100}}>
-                <View style={{height: 4, width: 'auto', backgroundColor: '#f0f0f0'}}></View>
-                <Text style={[styles.textStyle, {fontWeight: "bold"}]}>ผล: {data.description}</Text>
+            return <ScrollView style={{marginBottom: 200}}>
                 {data.choice.map((item) => {
                     if (item.isTest) {
-                        return <View key={item.id}>
+                        return <View key={item.id} style={{height: 'auto', width: 'auto', paddingVertical: 20}}>
                             <Text style={[styles.textStyle, {fontWeight: "bold"}]}>ข้อ{item.id} {item.title}</Text>
                             <Text style={[styles.textStyle, {fontWeight: "normal"}]}>คำตอบ: เลือกข้อ{item.choose_num} {answer_type[item.choose_num-1]}</Text>
-                            <View style={{height: 4, width: 'auto', backgroundColor: '#f0f0f0'}}></View>
                         </View>
                     }
                 })}
@@ -86,6 +83,8 @@ const TestInfo = ({navigation, route}) => {
             </View>
             <View style={styles.content}>
                 <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.user_time.seconds * 1000)))).toString()}</Text>
+                {data.type === 'simple' ? <Text style={[styles.textStyle, {fontWeight: "bold", paddingBottom: 10}]}>ผล: {data.description}</Text> : null}
+                <View style={{height: 4, width: width, backgroundColor: '#f0f0f0'}}></View>
                 <RenderTest/>
             </View>
         </View>

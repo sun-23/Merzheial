@@ -29,7 +29,7 @@ export const UserScreen = ({ navigation }) => {
                 }} 
               /> : 
               <Image 
-                source={Images.logo} 
+                source={require('../assets/avatar.webp')} 
                 style={{ 
                   width: 200, 
                   height: 200, 
@@ -64,14 +64,6 @@ export const UserScreen = ({ navigation }) => {
                 borderless
                 title={'chat กับหมอ'}
                 onPress={() => navigation.navigate('Chat')}
-              /> :
-            null}
-            {userInfo.person_type === 'patient' ? 
-              <Button
-                style={styles.borderlessButtonContainer}
-                borderless
-                title={'ทำแบบทดสอบ moca'}
-                onPress={() => navigation.navigate('DoTestMOCA')}
               /> :
             null}
             {userInfo.person_type === 'patient' ? 
