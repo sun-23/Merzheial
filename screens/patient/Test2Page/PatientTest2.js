@@ -257,7 +257,7 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
 
         if (choice[2].user_answer.toLowerCase() === 'dog' || choice[2].user_answer === 'หมา') {
             score += 1
-            console.log('dog t');
+            // console.log('dog t');
         }
         // console.log(choice[2].user_answer.toLowerCase());
 
@@ -281,7 +281,7 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
         
         if (choice[8].anstext.toLowerCase() === '1a2b3c4d5e') {
             score += 1
-            console.log(choice[8].anstext.toLowerCase());
+            // console.log(choice[8].anstext.toLowerCase());
         }
 
         score += (choice[9].is1True ? 1 : 0)
@@ -315,12 +315,15 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
 
         console.log('score', score);
         console.log('max score', 30);
+
+        return score;
     }
 
     const putPointToFirebase = async () => {
         console.log(choice);
-        checkScore();
-        return // debug
+        const score = checkScore();
+        console.log(score);
+        
         setEnable(false);
         const uuid_v4 = uuid.v4(); // => ex.'11edc52b-2918-4d71-9058-f7285e29d894'
         const docRef = doc(db, "users", auth.currentUser.uid , "patient_test", uuid_v4)
@@ -342,6 +345,15 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
             choice2: choice[2],
             choice3: choice[3],
             choice4: choice[4],
+            choice7: choice[8],
+            choice8: choice[9],
+            choice9: choice[10],
+            choice10: choice[11],
+            choice11: choice[12],
+            choice12: choice[13],
+            choice13: choice[14],
+            choice14: choice[15],
+            total_score: score
         }
      
         await setDoc(docRef, payload).then(() => {
@@ -354,7 +366,9 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
                 choice5: {
                     url: url,
                     title: choice[6].title,
-                    isSimilar: choice[6].isSimilar
+                    contour: choice[6].contour,
+                    hands: choice[6].hands,
+                    numbers_pos: choice[6].numbers_pos
                 }
             } ,{merge: true}).then(() => {
                 console.log('upload choice 5');
