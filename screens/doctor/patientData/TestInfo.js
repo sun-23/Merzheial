@@ -60,6 +60,7 @@ const TestInfo = ({navigation, route}) => {
         } else if (data.type === "simple") {
             return <ScrollView style={{marginBottom: 100}}>
                 <View style={{height: 4, width: 'auto', backgroundColor: '#f0f0f0'}}></View>
+                <Text style={[styles.textStyle, {fontWeight: "bold"}]}>ผล: {data.description}</Text>
                 {data.choice.map((item) => {
                     if (item.isTest) {
                         return <View key={item.id}>
