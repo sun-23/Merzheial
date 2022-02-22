@@ -64,7 +64,7 @@ const slides = [
     },
     {
         id: 5,
-        title: 'จำได้ไหม 3 คำ ที่บอกให้จำตอนแรกมีอะไรบ้าง',
+        title: 'จำได้ไหม 5 คำ ที่บอกให้จำตอนแรกมีอะไรบ้าง',
         subtitle: 'ยังจำได้ไหม จำได้หรือเปล่า?',
         anstext1: '',
         anstext2: '',
@@ -273,14 +273,48 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
         }
         // console.log(choice[4].user_answer.toLowerCase());
 
-        score += (choice[6].isSimilar ? 1 : 0)
-        score += (choice[7].isSimilar ? 1 : 0)
+        score += (choice[6].contour ? 1 : 0)
+        score += (choice[6].hands ? 1 : 0)
+        score += (choice[6].numbers_pos ? 1 : 0)
 
-        // console.log(choice[6].isSimilar);
-        // console.log(choice[7].isSimilar);
+        score += (choice[7].isSimilar ? 1 : 0)
+        
+        if (choice[8].anstext.toLowerCase() === '1a2b3c4d5e') {
+            score += 1
+            console.log(choice[8].anstext.toLowerCase());
+        }
+
+        score += (choice[9].is1True ? 1 : 0)
+        score += (choice[9].is2True ? 1 : 0)
+        score += (choice[10].isTrue ? 1 : 0)
+
+        let c11correct = 0;
+        for (let i = 1; i <= 5; i++) {
+            // console.log(choice[11]['ans'+i], choice[11]['key'+i]);
+            if (choice[11]['ans'+i] == choice[11]['key'+i]) {
+                c11correct += 1
+            }
+        }
+        // console.log('c11 point', (c11correct >= 4 ? 3 : (c11correct >= 2 ? 2 : (c11correct >= 1 ? 1 : 0))));
+        score += (c11correct >= 4 ? 3 : (c11correct >= 2 ? 2 : (c11correct >= 1 ? 1 : 0)))
+
+        score += (choice[12].is1True ? 1 : 0)
+        score += (choice[12].is2True ? 1 : 0)
+
+        score += (choice[13].isTrue ? 1 : 0)
+
+        score += (choice[14].is1True ? 1 : 0)
+        score += (choice[14].is2True ? 1 : 0)
+
+        score += (choice[15].is1True ? 1 : 0)
+        score += (choice[15].is2True ? 1 : 0)
+        score += (choice[15].is3True ? 1 : 0)
+        score += (choice[15].is4True ? 1 : 0)
+        score += (choice[15].is5True ? 1 : 0)
+        score += (choice[15].is6True ? 1 : 0)
 
         console.log('score', score);
-        console.log('max score', 8);
+        console.log('max score', 30);
     }
 
     const putPointToFirebase = async () => {

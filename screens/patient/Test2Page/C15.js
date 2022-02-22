@@ -9,6 +9,9 @@ export function C15({item, setChoice, choice}) {
 
     const [checkboxDisplay1, setCBDisplay1] = useState(false);
     const [checkboxDisplay2, setCBDisplay2] = useState(false);
+    const [checkboxDisplay3, setCBDisplay3] = useState(false);
+    const [checkboxDisplay4, setCBDisplay4] = useState(false);
+    const [checkboxDisplay5, setCBDisplay5] = useState(false);
 
     const setIsSub1 = (value) => {
         setCBDisplay1(value)
@@ -25,20 +28,20 @@ export function C15({item, setChoice, choice}) {
     }
 
     const setIsSub3 = (value) => {
-        setCBDisplay2(value)
+        setCBDisplay3(value)
         var newChoice = choice
         newChoice[item.id].is3True = value
         setChoice(newChoice);
     }
 
     const setIsSub4 = (value) => {
-        setCBDisplay2(value)
+        setCBDisplay4(value)
         var newChoice = choice
         newChoice[item.id].is4True = value
         setChoice(newChoice);
     }
     const setIsSub5 = (value) => {
-        setCBDisplay2(value)
+        setCBDisplay5(value)
         var newChoice = choice
         newChoice[item.id].is5True = value
         setChoice(newChoice);
@@ -67,24 +70,24 @@ export function C15({item, setChoice, choice}) {
                 <View style={{flexDirection: 'row-reverse', alignItems: 'center'}}>
                     <Text style={styles.subtitle}>{item.sub3}</Text>
                     <Checkbox
-                        value={checkboxDisplay2}
-                        color={checkboxDisplay2 ? '#4630EB' : undefined}
+                        value={checkboxDisplay3}
+                        color={checkboxDisplay3 ? '#4630EB' : undefined}
                         onValueChange={(newValue) => setIsSub3(newValue)}
                     />
                 </View>
                 <View style={{flexDirection: 'row-reverse', alignItems: 'center'}}>
                     <Text style={styles.subtitle}>{item.sub4}</Text>
                     <Checkbox
-                        value={checkboxDisplay2}
-                        color={checkboxDisplay2 ? '#4630EB' : undefined}
+                        value={checkboxDisplay4}
+                        color={checkboxDisplay4 ? '#4630EB' : undefined}
                         onValueChange={(newValue) => setIsSub4(newValue)}
                     />
                 </View>
                 <View style={{flexDirection: 'row-reverse', alignItems: 'center'}}>
                     <Text style={styles.subtitle}>{item.sub5}</Text>
                     <Checkbox
-                        value={checkboxDisplay2}
-                        color={checkboxDisplay2 ? '#4630EB' : undefined}
+                        value={checkboxDisplay5}
+                        color={checkboxDisplay5 ? '#4630EB' : undefined}
                         onValueChange={(newValue) => setIsSub5(newValue)}
                     />
                 </View>
