@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
+import Checkbox from 'expo-checkbox';
 
 const {width, height} = Dimensions.get('window');
 const COLORS = {primary: '#282534', white: '#fff'};
@@ -9,6 +10,7 @@ const COLORS = {primary: '#282534', white: '#fff'};
 export function DrawBlock({item, setChoice, choice}) {
 
     const [image, setImage] = useState();
+    const [checkboxDisplay, setCBDisplay] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -42,6 +44,13 @@ export function DrawBlock({item, setChoice, choice}) {
         }
     };
 
+    const setIsSimilar = (value) => {
+        setCBDisplay(value)
+        var newChoice = choice
+        newChoice[item.id].isSimilar = value
+        setChoice(newChoice);
+    }
+
     return (
         <View style={{flex: 1, width: width, alignItems: 'center', justifyContent: 'center'}}>
             <View style={{alignItems: 'center', width: width * 0.9}}>
@@ -58,8 +67,8 @@ export function DrawBlock({item, setChoice, choice}) {
                 {image ? 
                     <Image 
                         style={{
-                            height: width*0.7, 
-                            width: width*0.7, 
+                            height: width*0.5, 
+                            width: width*0.5, 
                             borderRadius: 5,
                             margin: 15
                         }}  
@@ -67,6 +76,12 @@ export function DrawBlock({item, setChoice, choice}) {
                     /> : 
                     null
                 }
+                <Text style={styles.subtitle}>ให้ติก checkbox ถ้าภาพมีความเหมือนกัน</Text>
+                <Checkbox
+                    value={checkboxDisplay}
+                    color={checkboxDisplay ? '#4630EB' : undefined}
+                    onValueChange={(newValue) => setIsSimilar(newValue)}
+                />
                 <TouchableOpacity 
                     style={{
                         height: 60,
@@ -92,6 +107,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginTop: 20,
+    textAlign: 'center',
+  },
+  subtitle: {
+    color: COLORS.white,
+    fontSize: 20,
+    margin: 10,
     textAlign: 'center',
   },
   input: {

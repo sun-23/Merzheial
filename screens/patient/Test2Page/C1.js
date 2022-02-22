@@ -11,7 +11,7 @@ function found(arrayX, x) {
 function random(alltext){
     var n = [];
     var pushed_index = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 5; i++) {
         var index = Math.floor(Math.random() * alltext.length)
         if (!found(pushed_index, index)) {
             n.push(alltext[index])
@@ -33,6 +33,8 @@ export const C1 = ({item, setChoice, choice}) => {
         newChoice[item.id].text1 = testtext[0]
         newChoice[item.id].text2 = testtext[1]
         newChoice[item.id].text3 = testtext[2]
+        newChoice[item.id].text4 = testtext[3]
+        newChoice[item.id].text5 = testtext[4]
         setChoice(newChoice)
         setText(testtext)
     }, [])
@@ -42,7 +44,7 @@ export const C1 = ({item, setChoice, choice}) => {
             <View style={{alignItems: 'center', width: width * 0.9}}>
                 <Text style={styles.title}>{item.title}</Text>
                 <Text style={styles.title}>{item.subtitle}</Text>
-                <Text style={styles.title}>{test_text[0]} {test_text[1]} {test_text[2]}</Text>
+                <Text style={styles.title}>{test_text[0]} {test_text[1]} {test_text[2]} {test_text[3]} {test_text[4]}</Text>
             </View>
         </View>
     )

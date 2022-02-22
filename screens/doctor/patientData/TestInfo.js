@@ -54,6 +54,7 @@ const TestInfo = ({navigation, route}) => {
 
                     {/* 6 */}
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>ข้อ 6 {data.choice6.title}</Text>
+                    <Text style={[styles.textStyle, {fontWeight: '300'}]}>ความถูกต้อง {data.choice6.isSimilar ? 'เหมือน' : 'ไม่เหมือน'}</Text>
                     <Image style={{width: width * 0.8, height: width * 0.8, borderRadius: 5, marginVertical: 5}} source={{uri: data.choice6.url}}/>
                 </ScrollView>
             )

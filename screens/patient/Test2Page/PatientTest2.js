@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { StyleSheet, Text, FlatList, TouchableOpacity, Dimensions, StatusBar, SafeAreaView, View, Modal} from 'react-native'
+import { StyleSheet, Text, FlatList, TouchableOpacity, Dimensions, StatusBar, SafeAreaView, View, Modal, ScrollView} from 'react-native'
 import { doc, setDoc, Timestamp } from "firebase/firestore"; 
 import { Colors, auth, db, storage } from '../../../config';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -14,6 +14,11 @@ import { Cimage } from './Cimage';
 import { DrawClock } from './DrawClock';
 import { DrawBlock } from './DrawBlock';
 import { Outtro } from './Outtro';
+import { C1CheckBox } from './C_that1checkbox';
+import { C2CheckBox } from './C_that2checkbox';
+import { C8 } from './C8';
+import { C11 } from './C11';
+import { C15 } from './C15';
 
 const {width, height} = Dimensions.get('window');
 const COLORS = {primary: '#282534', white: '#fff'};
@@ -28,11 +33,13 @@ const slides = [
     {
         id: 1,
         title: 'จำได้ไหม',
-        subtitle: 'จำคำที่กำหนดให้ 3 คำต่อไปนี้ เดี๋ยวกลับมาถามนะ',
+        subtitle: 'จำคำที่กำหนดให้ 4 คำต่อไปนี้ เดี๋ยวกลับมาถามนะ',
         alltext: ['หมี', 'โรงเรียน', 'แตงกวา', 'ไก่', 'งู', 'ส้มโอ', 'รถยนต์', 'เครื่องบิน'],
         text1: '',
         text2: '',
         text3: '',
+        text4: '',
+        text5: '',
     },
     {
         id: 2,
@@ -62,20 +69,95 @@ const slides = [
         anstext1: '',
         anstext2: '',
         anstext3: '',
+        anstext4: '',
+        anstext5: '',
     },
     {
         id: 6,
-        title: 'วาดนาฬิกา',
+        title: 'วาดนาฬิกาเวลา 10:30',
         url: '',
+        contour: false,
+        hands: false,
+        numbers_pos: false,
     },
     {
         id: 7,
         title: 'วาดรูปกล่องตามภาพ',
         boxurl: require('../../../assets/Block.png'),
         url: '',
+        isSimilar: false,
     },
     {
         id: 8,
+        title: 'เรียงตัวเลขสลับกับตัวอักษรเช่น 1A2B3C... โดยต้องไม่เว้นวรรค จงพิมพ์คำตอบจากตัวอักษรดังนี้ ABCDE 12345',
+        anstext: '',
+    },
+    {
+        id: 9,
+        title: 'จงพูด 21854 ไปข้างหน้า และ 742 ย้อนกลับ',
+        sub1: '2 1 8 5 4',
+        sub2: '7 4 2',
+        is1True: false,
+        is2True: false,
+    },
+    {
+        id: 10,
+        title: 'ตบมือทุกครั้งที่มีตัว A พร้อมพูดจากตัวอักษร FBACMNAAJKLBAFAKDEAAAJAMOFAAB',
+        isTrue: false,
+    },
+    {
+        id: 11,
+        title: 'ลบเลขจาก 100 ทีละ 7 ตามลำดับจำนวน 5 ตัว',
+        ans1: 0,
+        ans2: 0,
+        ans3: 0,
+        ans4: 0,
+        ans5: 0,
+        key1: 93,
+        key2: 86,
+        key3: 79,
+        key4: 72,
+        key5: 65,
+    },
+    {
+        id: 12,
+        title: 'จงพูดประโยคดังนี้ให้ถูกต้อง',
+        sub1: 'ฉันรู้ว่าจอมเป็นคนเดียวที่มาช่วยงานวันนี้',
+        sub2: 'แมวมักซ่อนตัวอยู่หลังเก้าอี้เมื่อมีหมาอยู่ในห้อง',
+        is1True: false,
+        is2True: false,
+    },
+    {
+        id: 13,
+        title: 'จงพูดคำที่ขึ้นต้นด้วย ก ให้มากที่สุด',
+        isTrue: false,
+    },
+    {
+        id: 14,
+        title: 'จงบอกความเหมือนของสิงต่อไปนี้',
+        sub1: 'รถไฟ-จักรยาน',
+        sub2: 'นาฬิกา-ไม้บรรทัด',
+        is1True: false,
+        is2True: false,
+    },
+    {
+        id: 15,
+        title: 'จงบอกวันที่ เดือน ปี วันในสัปดาห์ สถานที่ จังหวัด',
+        sub1: 'วันที่',
+        sub2: 'เดือน',
+        sub3: 'ปี',
+        sub4: 'วันในสัปดาห์',
+        sub5: 'สถานที่',
+        sub6: 'จังหวัด',
+        is1True: false,
+        is2True: false,
+        is3True: false,
+        is4True: false,
+        is5True: false,
+        is6True: false,
+    },
+    {
+        id: 16,
         title: 'เสร็จสิ้น'
     }
 ]
@@ -98,6 +180,16 @@ const Slide = ({item, goNext, choice, setChoice}) => {
     } else if (item.id === 7) {
         return <DrawBlock item={item} choice={choice} setChoice={setChoice}/>
     } else if (item.id === 8){
+        return <C8 item={item} choice={choice} setChoice={setChoice}/>
+    } else if (item.id === 11){
+        return <C11 item={item} choice={choice} setChoice={setChoice}/>
+    } else if (item.id === 15){
+        return <C15 item={item} choice={choice} setChoice={setChoice}/>
+    } else if (item.id === 9 || item.id === 12 || item.id === 14){
+        return <C2CheckBox item={item} choice={choice} setChoice={setChoice}/>
+    } else if (item.id === 10 || item.id === 13){
+        return <C1CheckBox item={item} choice={choice} setChoice={setChoice}/>
+    } else if (item.id === 16){
         return <Outtro item={item}/>
     } else {
         return <View><Text>error item {item.id}</Text></View>
@@ -155,8 +247,46 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
         }
     }
 
+    const checkScore = () => {
+        let score = 0;
+        let c1answer = [choice[5].anstext2, choice[5].anstext1, choice[5].anstext3, choice[5].anstext4, choice[5].anstext5]
+        let c1answerKey = [choice[1].text2, choice[1].text1, choice[1].text3, choice[1].text4, choice[1].text5]
+        let c1IntersectionAnsAndKey = c1answer.filter(value => c1answerKey.includes(value))
+        console.log(c1IntersectionAnsAndKey, c1answer, c1answerKey);
+        score += c1IntersectionAnsAndKey.length
+
+        if (choice[2].user_answer.toLowerCase() === 'dog' || choice[2].user_answer === 'หมา') {
+            score += 1
+            console.log('dog t');
+        }
+        // console.log(choice[2].user_answer.toLowerCase());
+
+        if (choice[3].user_answer.toLowerCase() === 'lion' || choice[3].user_answer === 'สิงโต') {
+            score += 1
+            // console.log('lion t');
+        }
+        // console.log(choice[3].user_answer.toLowerCase());
+
+        if (choice[4].user_answer.toLowerCase() === 'camel' || choice[4].user_answer === 'อูฐ') {
+            score += 1
+            // console.log('camel t');
+        }
+        // console.log(choice[4].user_answer.toLowerCase());
+
+        score += (choice[6].isSimilar ? 1 : 0)
+        score += (choice[7].isSimilar ? 1 : 0)
+
+        // console.log(choice[6].isSimilar);
+        // console.log(choice[7].isSimilar);
+
+        console.log('score', score);
+        console.log('max score', 8);
+    }
+
     const putPointToFirebase = async () => {
         console.log(choice);
+        checkScore();
+        return // debug
         setEnable(false);
         const uuid_v4 = uuid.v4(); // => ex.'11edc52b-2918-4d71-9058-f7285e29d894'
         const docRef = doc(db, "users", auth.currentUser.uid , "patient_test", uuid_v4)
@@ -189,7 +319,8 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
             await setDoc(docRef, {
                 choice5: {
                     url: url,
-                    title: choice[6].title
+                    title: choice[6].title,
+                    isSimilar: choice[6].isSimilar
                 }
             } ,{merge: true}).then(() => {
                 console.log('upload choice 5');
@@ -201,7 +332,8 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
             await setDoc(docRef, {
                 choice6: {
                     url: url,
-                    title: choice[7].title
+                    title: choice[7].title,
+                    isSimilar: choice[7].isSimilar
                 }
             } ,{merge: true}).then(() => {
                 console.log('upload choice 6');
@@ -307,23 +439,26 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
                     </View>
                 </View>
             </Modal>
-            <FlatList 
-                ref={refSlide}
-                onMomentumScrollEnd={updateCurrentSlideIndex}
-                contentContainerStyle={{height: height * 0.75}}
-                showsHorizontalScrollIndicator={false}
-                horizontal
-                data={slides}
-                pagingEnabled
-                renderItem={({item}) => 
-                    <Slide 
-                        item={item} 
-                        goNext={goToNextSlide} 
-                        choice={choice}
-                        setChoice={setChoice}
-                    />
-                }
-            />
+                <FlatList 
+                    ref={refSlide}
+                    onMomentumScrollEnd={updateCurrentSlideIndex}
+                    contentContainerStyle={{height: height * 0.75}}
+                    showsHorizontalScrollIndicator={false}
+                    horizontal
+                    data={slides}
+                    pagingEnabled
+                    renderItem={({item}) => 
+                        <ScrollView>
+                            <Slide 
+                                item={item} 
+                                goNext={goToNextSlide} 
+                                choice={choice}
+                                setChoice={setChoice}
+                            />
+                        </ScrollView>
+                    }
+                />
+            
             <Footer />
         </SafeAreaView>
     )

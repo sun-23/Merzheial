@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
+import Checkbox from 'expo-checkbox';
 
 const {width, height} = Dimensions.get('window');
 const COLORS = {primary: '#282534', white: '#fff'};
@@ -9,6 +10,9 @@ const COLORS = {primary: '#282534', white: '#fff'};
 export function DrawClock({item, setChoice, choice}) {
 
     const [image, setImage] = useState();
+    const [checkboxDisplay1, setCBDisplay1] = useState(false);
+    const [checkboxDisplay2, setCBDisplay2] = useState(false);
+    const [checkboxDisplay3, setCBDisplay3] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -42,6 +46,26 @@ export function DrawClock({item, setChoice, choice}) {
         }
     };
 
+    const setIsContour = (value) => {
+        setCBDisplay1(value)
+        var newChoice = choice
+        newChoice[item.id].contour = value
+        setChoice(newChoice);
+    }
+
+    const setIsHands = (value) => {
+        setCBDisplay2(value)
+        var newChoice = choice
+        newChoice[item.id].hands = value
+        setChoice(newChoice);
+    }
+
+    const setIsNumbers = (value) => {
+        setCBDisplay3(value)
+        var newChoice = choice
+        newChoice[item.id].numbers_pos = value
+        setChoice(newChoice);
+    }
 
     return (
         <View style={{flex: 1, width: width, alignItems: 'center', justifyContent: 'center'}}>
@@ -50,8 +74,8 @@ export function DrawClock({item, setChoice, choice}) {
                 {image ? 
                     <Image 
                         style={{
-                            height: width*0.7, 
-                            width: width*0.7, 
+                            height: width*0.5, 
+                            width: width*0.5, 
                             borderRadius: 5,
                             margin: 15
                         }}  
@@ -59,6 +83,31 @@ export function DrawClock({item, setChoice, choice}) {
                     /> : 
                     null
                 }
+                <Text style={styles.subtitle}>ให้ติก checkbox ถ้าภาพมีความเหมือนกัน</Text>
+                <View style={{flexDirection: 'row-reverse', alignItems: 'center'}}>
+                    <Text style={styles.subtitle}>รูปร่าง</Text>
+                    <Checkbox
+                        value={checkboxDisplay1}
+                        color={checkboxDisplay1 ? '#4630EB' : undefined}
+                        onValueChange={(newValue) => setIsContour(newValue)}
+                    />
+                </View>
+                <View style={{flexDirection: 'row-reverse', alignItems: 'center'}}>
+                    <Text style={styles.subtitle}>เข็มนาฬิกา</Text>
+                    <Checkbox
+                        value={checkboxDisplay2}
+                        color={checkboxDisplay2 ? '#4630EB' : undefined}
+                        onValueChange={(newValue) => setIsHands(newValue)}
+                    />
+                </View>
+                <View style={{flexDirection: 'row-reverse', alignItems: 'center'}}>
+                    <Text style={styles.subtitle}>ตำแหน่งตัวเลข</Text>
+                    <Checkbox
+                        value={checkboxDisplay3}
+                        color={checkboxDisplay3 ? '#4630EB' : undefined}
+                        onValueChange={(newValue) => setIsNumbers(newValue)}
+                    />
+                </View>
                 <TouchableOpacity 
                     style={{
                         height: 60,
@@ -84,6 +133,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginTop: 20,
+    textAlign: 'center',
+  },
+  subtitle: {
+    color: COLORS.white,
+    fontSize: 20,
+    margin: 10,
     textAlign: 'center',
   },
   input: {
