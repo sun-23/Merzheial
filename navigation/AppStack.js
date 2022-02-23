@@ -95,6 +95,7 @@ export const AppStack = () => {
   if (userInfo.person_type === 'doctor') {
     return (
       <Tab.Navigator 
+        initialRouteName="หน้าแรก"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             return renderIcons({ focused, color, size, route })
@@ -104,14 +105,15 @@ export const AppStack = () => {
           headerShown: false
         })}
       >
-        <Tab.Screen name='หน้าแรก' component={DoctorHomeStack} />
         <Tab.Screen name='นัดหมายคนไข้' component={DoctorMeetStack}/>
+        <Tab.Screen name='หน้าแรก' component={DoctorHomeStack} />
         <Tab.Screen name='ผู้ใช้' component={UserStack} />
       </Tab.Navigator>
     );
   } else if (userInfo.person_type === 'caretaker') {
     return (
-      <Tab.Navigator 
+      <Tab.Navigator
+        initialRouteName="หน้าแรก" 
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             return renderIcons({ focused, color, size, route })

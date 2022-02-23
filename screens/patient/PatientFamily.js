@@ -51,6 +51,7 @@ export default function PatientFamily({ navigation }) {
                         <View style={styles.itemViewText}>
                             <Text style={styles.itemTitle}>{item.name} {item.lastname}</Text>
                             <Text style={styles.itemTitle}>{item.relations}</Text>
+                            <Text style={styles.itemTitle}>เบอร์โทรศัพท์: {item.phone}</Text>
                         </View>
                     </View>
         })

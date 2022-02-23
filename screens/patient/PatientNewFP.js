@@ -15,6 +15,7 @@ export default function PatientNewFP({navigation}) {
     const [name, setName] = useState('')
     const [lastname, setLastname] = useState('')
     const [relations, setRelations] = useState('')
+    const [phone, setPhone] = useState('')
     const [imageUrl, setImage] = useState('')
     const [enable, setEnable] = useState(true)
     const [percentUp, setPercent] = useState(0)
@@ -94,7 +95,8 @@ export default function PatientNewFP({navigation}) {
             lastname: lastname,
             relations: relations,
             id: id,
-            avatarURL: ''
+            avatarURL: '',
+            phone: phone
         }
         setDoc(refRef, payload, {merge: true})
         uploadImageAsync(imageUrl, 'family-image/'+ id, (result) => {
@@ -144,6 +146,14 @@ export default function PatientNewFP({navigation}) {
                         style={styles.titleInput}
                         value={relations}
                         onChangeText={setRelations}
+                    />
+                    <TextInput 
+                        placeholder='เบอร์โทรศัพท์'
+                        multiline={true}
+                        style={styles.titleInput}
+                        value={phone}
+                        onChangeText={setPhone}
+                        keyboardType='number-pad'
                     />
                     <Text style={styles.textStyle}>เพิ่มภาพ</Text>
                     {imageUrl ? 
