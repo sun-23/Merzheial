@@ -7,7 +7,7 @@ import { allPatientsAtom } from '../../store';
 import { useRecoilState } from 'recoil';
 const {width, height} = Dimensions.get('window');
 
-// add patient and list patient
+// todo
 export const CaretakerHomeScreen = ({navigation}) => {
 
   // patients of doctor

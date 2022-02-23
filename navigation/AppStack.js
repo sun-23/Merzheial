@@ -5,6 +5,7 @@ import { UserStack } from './UserStack';
 
 // caretaker screen
 import CareTakerHomeStack from './CareTakerHomeStack';
+import { Blog } from '../screens/caretaker/Blog';
 
 // doctor screen
 import DoctorHomeStack from './DoctorHomeStack';
@@ -75,6 +76,8 @@ export const AppStack = () => {
       iconName = focused ? 'ios-person' : 'ios-person-outline';
     } else if (route.name === 'Game') {
       iconName = focused ? 'game-controller' : 'game-controller-outline';
+    } else if (route.name === 'Blog') {
+      iconName = focused ? 'newspaper' : 'newspaper-outline';
     }
 
     // You can return any component that you like here!
@@ -119,6 +122,7 @@ export const AppStack = () => {
         })}
       >
         <Tab.Screen name='หน้าแรก' component={CareTakerHomeStack} />
+        <Tab.Screen name='Blog' component={Blog} />
         <Tab.Screen name='ผู้ใช้' component={UserStack} />
       </Tab.Navigator>
     )
