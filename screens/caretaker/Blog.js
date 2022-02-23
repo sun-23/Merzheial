@@ -82,7 +82,12 @@ export const Blog = () => {
         <ScrollView style={{flex: 1, paddingHorizontal: 10, marginBottom: 50}}>
           {data.map(item => {
             return <Pressable key={item.id} style={styles.link_item} onPress={() => openLink(item.url)}>
-              <ImageBackground imageStyle={{ borderRadius: 10 }} resizeMode="stretch" style={styles.image} source={{uri: item.imageUrl}}>
+              <ImageBackground 
+                imageStyle={{ borderRadius: 10 }} 
+                resizeMode="stretch" 
+                style={styles.image} 
+                source={{uri: item.imageUrl}}
+              >
                 <Text style={styles.link_item_text}>{item.title}</Text>
               </ImageBackground>
             </Pressable>

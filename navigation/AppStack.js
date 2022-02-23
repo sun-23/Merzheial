@@ -121,6 +121,7 @@ export const AppStack = () => {
           headerShown: false
         })}
       >
+        <Tab.Screen name='Social' component={PatientSocialScreen}/>
         <Tab.Screen name='หน้าแรก' component={CareTakerHomeStack} />
         <Tab.Screen name='Blog' component={Blog} />
         <Tab.Screen name='ผู้ใช้' component={UserStack} />
