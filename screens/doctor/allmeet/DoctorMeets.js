@@ -47,7 +47,7 @@ export const DoctorMeets = ({navigation}) => {
                     onPress={() => navigation.navigate("MeetDocDesc", { data: data })}
                 >
                     <Text style={styles.itemTitle}>{data.title}</Text>
-                    <Text style={styles.itemTime}>แพทย์: {data.paitent_name}</Text>
+                    <Text style={styles.itemTime}>ผู้ป่วย: {data.patient_name}</Text>
                     {/* (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.item.time.seconds * 1000)))).toString() */}
                     <Text style={styles.itemTime}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
                 </TouchableOpacity>
