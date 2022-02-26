@@ -30,8 +30,9 @@ const PatientInfo = ({navigation, route}) => {
         // effect
 
         const docRef = doc(db, "users", patientInfo.uid);
-        let currentday = new Date();
-        currentday.setHours(0,0,0,0)
+        let last7day = new Date();
+        last7day.setHours(0,0,0,0)
+        last7day.setDate(last7day.getDate() - 7);
 
         const unsubscribeUserRef = onSnapshot(docRef, (doc) => {
             // console.log("ddddd",/**/({id: doc.id, ...doc.data()})/**/);
@@ -49,7 +50,7 @@ const PatientInfo = ({navigation, route}) => {
             collectionMeetRef,  
             where("uid_patient", "==", patientInfo.uid), 
             where("uid_doctor", "==", doctorInfo.uid),
-            where("time_milisecconds", ">=", currentday.getTime()), 
+            where("time_milisecconds", ">=", last7day.getTime()), 
             orderBy("time_milisecconds", "asc")
         )
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
