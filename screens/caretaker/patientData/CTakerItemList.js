@@ -38,7 +38,9 @@ const CTakerItemList = ({navigation, route}) => {
                             <Image 
                                 style={{
                                     height: width*0.7, 
-                                    width: width*0.7, 
+                                    width: width*0.7,
+                                    maxHeight: 500,
+                                    maxWidth: 500, 
                                     borderRadius: 5,
                                     marginVertical: 12,
                                     alignSelf: 'flex-start'
@@ -49,7 +51,9 @@ const CTakerItemList = ({navigation, route}) => {
                         <View 
                             style={{
                                 height: width*0.7, 
-                                width: width*0.7, 
+                                width: width*0.7,
+                                maxHeight: 500,
+                                maxWidth: 500,  
                                 borderRadius: 5,
                                 marginVertical: 12,
                                 alignSelf: 'flex-start',
