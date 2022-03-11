@@ -190,9 +190,9 @@ export default function StatPatientList({ navigation, route }) {
         }
 
         const total = 7 - alldata.hideIndex.length
-        alldata.percentDiv = (allpercent/total).toFixed(1)
+        alldata.percentDiv = (allpercent/total)
         setData(alldata)
-        // console.log(alldata);
+        console.log(alldata);
     }
 
     const getPercent = (array) => {
@@ -348,7 +348,7 @@ export default function StatPatientList({ navigation, route }) {
                 </View>
             </View>
             <View style={styles.stat}>
-                <Pressable onPress={setModalPercent} style={[styles.stat_view, {backgroundColor: (processdata.percentDiv > percent.percent_medium) ? '#FC4F4F': ((processdata.percentDiv > percent.percent_good) ? '#F6D860':'#65C18C')}]}>
+                <Pressable onPress={setModalPercent} style={[styles.stat_view, {backgroundColor: ((processdata.percentDiv >= percent.percent_bad) ? '#FC4F4F': ((processdata.percentDiv >= percent.percent_good) ? '#F6D860':'#65C18C'))}]}>
                     <Text style={styles.status_text}>เฉลี่ย</Text>
                     <Text style={styles.status_text}>{processdata.percentDiv}%</Text>
                     <Text style={{color:'white'}}>กดเพื่อเปลี่ยนแปลง percent</Text>
