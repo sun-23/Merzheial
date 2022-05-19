@@ -38,7 +38,7 @@ export const DoctorMeets = ({navigation}) => {
 
   return (
     <View isSafe style={styles.container}>
-      <Text style={styles.header}>นัดกับคนไข้</Text>
+      <Text style={styles.header}>appointment with the patient</Text>
       <View style={{height: 4, width: width, backgroundColor: '#f0f0f0'}}></View>
       <ScrollView>
         {meets.map((data) => {
@@ -48,7 +48,7 @@ export const DoctorMeets = ({navigation}) => {
                     onPress={() => navigation.navigate("MeetDocDesc", { data: data })}
                 >
                     <Text style={styles.itemTitle}>{data.title}</Text>
-                    <Text style={styles.itemTime}>ผู้ป่วย: {data.patient_name}</Text>
+                    <Text style={styles.itemTime}>patient: {data.patient_name}</Text>
                     {/* (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.item.time.seconds * 1000)))).toString() */}
                     <Text style={styles.itemTime}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
                 </TouchableOpacity>

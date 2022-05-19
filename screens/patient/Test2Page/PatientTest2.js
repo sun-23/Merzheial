@@ -26,15 +26,15 @@ const COLORS = {primary: '#282534', white: '#fff'};
 const slides = [
     {
         id: 0,
-        title: 'แบบทดสอบความจำ',
+        title: 'memory test',
         subtitle: 'MONTREAL COGNITIVE ASSESSMENT (MOCA)',
         description: 'www.mocatest.org',
     },
     {
         id: 1,
-        title: 'จำได้ไหม',
-        subtitle: 'จำคำที่กำหนดให้ 4 คำต่อไปนี้ เดี๋ยวกลับมาถามนะ',
-        alltext: ['หมี', 'โรงเรียน', 'แตงกวา', 'ไก่', 'งู', 'ส้มโอ', 'รถยนต์', 'เครื่องบิน'],
+        title: 'Do you remember',
+        subtitle: 'Remember the words given to the following 4 words. Come back to ask.',
+        alltext: ['bear', 'school', 'cucumber', 'chicken', 'snake', 'pomelo', 'car', 'plane'],
         text1: '',
         text2: '',
         text3: '',
@@ -43,29 +43,29 @@ const slides = [
     },
     {
         id: 2,
-        title: 'ภาพนี้คือภาพอะไร',
+        title: 'what is this picture',
         url: require('../../../assets/dog.webp'),
         user_answer: '',
-        answer: 'หมา',
+        answer: 'dog',
     },
     {
         id: 3,
-        title: 'ภาพนี้คือภาพอะไร',
+        title: 'what is this picture',
         url: require('../../../assets/lion.jpeg'),
-        answer: 'สิงโต',
+        answer: 'lion',
         user_answer: '',
     },
     {
         id: 4,
-        title: 'ภาพนี้คือภาพอะไร',
+        title: 'what is this picture',
         url: require('../../../assets/camel.jpg'),
-        answer: 'อูฐ',
+        answer: 'camel',
         user_answer: '',
     },
     {
         id: 5,
-        title: 'จำได้ไหม 5 คำ ที่บอกให้จำตอนแรกมีอะไรบ้าง',
-        subtitle: 'ยังจำได้ไหม จำได้หรือเปล่า?',
+        title: 'Do you remember the 5 words that told you to remember the first time?',
+        subtitle: 'Do you still remember, do you remember?',
         anstext1: '',
         anstext2: '',
         anstext3: '',
@@ -74,7 +74,7 @@ const slides = [
     },
     {
         id: 6,
-        title: 'วาดนาฬิกาเวลา 10:30',
+        title: 'Draw a clock at 10:30',
         url: '',
         contour: false,
         hands: false,
@@ -82,19 +82,19 @@ const slides = [
     },
     {
         id: 7,
-        title: 'วาดรูปกล่องตามภาพ',
+        title: 'Draw the box as in the picture.',
         boxurl: require('../../../assets/Block.png'),
         url: '',
         isSimilar: false,
     },
     {
         id: 8,
-        title: 'เรียงตัวเลขสลับกับตัวอักษรเช่น 1A2B3C... โดยต้องไม่เว้นวรรค จงพิมพ์คำตอบจากตัวอักษรดังนี้ ABCDE 12345',
+        title: 'Alternate numbers with letters such as 1A2B3C... without spaces. Type an answer from the letters ABCDE 12345.',
         anstext: '',
     },
     {
         id: 9,
-        title: 'จงพูด 21854 ไปข้างหน้า และ 742 ย้อนกลับ',
+        title: 'Say 21854 forward and 742 backward.',
         sub1: '2 1 8 5 4',
         sub2: '7 4 2',
         is1True: false,
@@ -102,12 +102,12 @@ const slides = [
     },
     {
         id: 10,
-        title: 'ตบมือทุกครั้งที่มีตัว A พร้อมพูดจากตัวอักษร FBACMNAAJKLBAFAKDEAAAJAMOFAAB',
+        title: 'Clap your hands whenever there is an A, ready to speak from the letter. FBACMNAAJKLBAFAKDEAAAJAMOFAAB',
         isTrue: false,
     },
     {
         id: 11,
-        title: 'ลบเลขจาก 100 ทีละ 7 ตามลำดับจำนวน 5 ตัว',
+        title: 'Subtract numbers from 100 by 7 in sequence of 5 numbers.',
         ans1: 0,
         ans2: 0,
         ans3: 0,
@@ -121,34 +121,34 @@ const slides = [
     },
     {
         id: 12,
-        title: 'จงพูดประโยคดังนี้ให้ถูกต้อง',
-        sub1: 'ฉันรู้ว่าจอมเป็นคนเดียวที่มาช่วยงานวันนี้',
-        sub2: 'แมวมักซ่อนตัวอยู่หลังเก้าอี้เมื่อมีหมาอยู่ในห้อง',
+        title: 'Say the following sentences correctly.',
+        sub1: 'I know Jom was the only one who came to help today.',
+        sub2: 'Cats tend to hide behind chairs when there is a dog in the room.',
         is1True: false,
         is2True: false,
     },
     {
         id: 13,
-        title: 'จงพูดคำที่ขึ้นต้นด้วย ก ให้มากที่สุด',
+        title: 'Say as many words that start with A.',
         isTrue: false,
     },
     {
         id: 14,
-        title: 'จงบอกความเหมือนของสิงต่อไปนี้',
-        sub1: 'รถไฟ-จักรยาน',
-        sub2: 'นาฬิกา-ไม้บรรทัด',
+        title: 'Tell the similarities of the following.',
+        sub1: 'train-bicycle',
+        sub2: 'clock-ruler',
         is1True: false,
         is2True: false,
     },
     {
         id: 15,
-        title: 'จงบอกวันที่ เดือน ปี วันในสัปดาห์ สถานที่ จังหวัด',
-        sub1: 'วันที่',
-        sub2: 'เดือน',
-        sub3: 'ปี',
-        sub4: 'วันในสัปดาห์',
-        sub5: 'สถานที่',
-        sub6: 'จังหวัด',
+        title: 'State the date, month, year, day of the week, place, province.',
+        sub1: 'date',
+        sub2: 'month',
+        sub3: 'year',
+        sub4: 'day of the week',
+        sub5: 'place',
+        sub6: 'province',
         is1True: false,
         is2True: false,
         is3True: false,
@@ -158,7 +158,7 @@ const slides = [
     },
     {
         id: 16,
-        title: 'เสร็จสิ้น'
+        title: 'finish'
     }
 ]
 
@@ -437,7 +437,7 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
                         style={styles.btn}
                         onPress={putPointToFirebase}>
                         <Text style={{fontWeight: 'bold', fontSize: 15}}>
-                        ตกลง
+                        submit
                         </Text>
                     </TouchableOpacity>
                     </View>
@@ -450,7 +450,7 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
                             onPress={goToNextSlide}
                             style={styles.btn}>
                             <Text style={{fontWeight: 'bold', fontSize: 15}}>
-                            ต่อไป
+                            next
                             </Text>
                         </TouchableOpacity>
                     </View> : 
@@ -465,7 +465,7 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
                             }}
                             style={styles.btn}>
                             <Text style={{fontWeight: 'bold', fontSize: 15, color: "red"}}>
-                            ยกเลิก
+                            cancel
                             </Text>
                         </TouchableOpacity> : null}
                     </View> 
@@ -484,7 +484,7 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
             >
                 <View style={{flex: 1 ,justifyContent: 'center', alignItems: 'center'}}>
                     <View style={styles.modalView}>
-                        <Text style={[styles.textStyle, {color: 'black'}]}>อัพโหลดภาพแล้ว{percentUp}%</Text>
+                        <Text style={[styles.textStyle, {color: 'black'}]}>Image uploaded {percentUp}%</Text>
                     </View>
                 </View>
             </Modal>

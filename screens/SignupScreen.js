@@ -77,7 +77,7 @@ export const SignupScreen = ({ navigation }) => {
         {/* LogoContainer: consits app logo and screen title */}
         <View style={styles.logoContainer}>
           <Logo uri={Images.logo} />
-          <Text style={styles.screenTitle}>สร้างบัญชีผู้ใช้ใหม่</Text>
+          <Text style={styles.screenTitle}>Create a new account</Text>
         </View>
         {/* Formik Wrapper */}
         <Formik
@@ -154,7 +154,7 @@ export const SignupScreen = ({ navigation }) => {
               />
               <TextInput
                 name='name_lastname'
-                placeholder='กรุณาระบุชื่อ'
+                placeholder='Please enter your first name'
                 autoCapitalize='none'
                 autoFocus={true}
                 value={values.name}
@@ -167,7 +167,7 @@ export const SignupScreen = ({ navigation }) => {
               />
               <TextInput
                 name='lastname'
-                placeholder='กรุณาระบุนามสกุล'
+                placeholder='Please enter your last'
                 autoCapitalize='none'
                 autoFocus={true}
                 value={values.lastname}
@@ -180,7 +180,7 @@ export const SignupScreen = ({ navigation }) => {
               />
               <TextInput
                 name='age'
-                placeholder='ใส่อายุของคุณ'
+                placeholder='enter your age'
                 autoCapitalize='none'
                 autoFocus={true}
                 value={values.age}
@@ -193,11 +193,11 @@ export const SignupScreen = ({ navigation }) => {
               />
               <DropdownList
                 items={[
-                  { label: 'แพทย์', value: 'doctor' },
-                  { label: 'ผุ้ป่วย', value: 'patient' },
-                  { label: 'ผุ้ดูแล', value: 'caretaker' },
+                  { label: 'doctor', value: 'doctor' },
+                  { label: 'patient', value: 'patient' },
+                  { label: 'caretaker', value: 'caretaker' },
                 ]}
-                title="เลือกหน้าที่"
+                title="choose duty"
                 onChange={handleChange('person_type')}
               />
               <FormErrorMessage
@@ -205,10 +205,10 @@ export const SignupScreen = ({ navigation }) => {
                 visible={touched.person_type}
               />
               <DropdownList
-                title="เลือกเพศ"
+                title="select gender"
                 items={[
-                  { label: 'หญิง', value: 'female' },
-                  { label: 'ชาย', value: 'male' },
+                  { label: 'female', value: 'female' },
+                  { label: 'male', value: 'male' },
                 ]}
                 onChange={handleChange('sex_type')}
               />
@@ -223,7 +223,7 @@ export const SignupScreen = ({ navigation }) => {
               
               {/* Signup button */}
               <Button style={styles.button} onPress={handleSubmit}>
-                <Text style={styles.buttonText}>สร้างบัญชีผู้ใช้</Text>
+                <Text style={styles.buttonText}>submit</Text>
               </Button>
             </>
           )}
@@ -232,7 +232,7 @@ export const SignupScreen = ({ navigation }) => {
         <Button
           style={styles.borderlessButtonContainer}
           borderless
-          title={'เป็นสมาชิกแล้ว'}
+          title={'Already have an account?'}
           onPress={() => navigation.navigate('Login')}
         />
       </KeyboardAwareScrollView>

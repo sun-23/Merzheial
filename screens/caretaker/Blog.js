@@ -9,61 +9,61 @@ const {width} = Dimensions.get('window');
 const data = [
   {
     id: 0,
-    title: "การรักษาโรคอัลไซเมอร์",
+    title: "Alzheimer's disease treatment",
     url: "https://hd.co.th/treatment-of-alzheimers",
     imageUrl: "https://static.hd.co.th/989x504/system/blog_articles/main_hero_images/000/004/162/original/iStock-479454564.jpg"
   },
   {
     id: 1,
-    title: "การดูแลผู้ป่วยอัลไซเมอร์ที่บ้าน",
+    title: "Caring for Alzheimer's patients at home",
     url: "https://ram-hosp.co.th/news_detail/58",
     imageUrl: "https://www.ram-hosp.co.th/upload/ck/1565930585.jpg"
   },
   {
     id: 2,
-    title: "“วิธีดูแลผู้ป่วยโรคอัลไซเมอร์” ในช่วงโควิด-19 ระบาด",
+    title: "“How to care for Alzheimer's disease patients” during the Covid-19 epidemic",
     url: "https://www.chula.ac.th/news/41231/",
     imageUrl: "https://www.chula.ac.th/wp-content/uploads/2021/02/20210130_1_Edit1_hotnews.jpg"
   },
   {
     id: 3,
-    title: "ดูแลผู้ป่วยอัลไซเมอร์อย่างไร ให้ทั้งตนเองและผู้ป่วยมีความสุข",
+    title: "How to care for Alzheimer's patients? make both oneself and the patient happy",
     url: "https://www.phyathai.com/article_detail/2190/th/ดูแลผู้ป่วยอัลไซเมอร์อย่างไร_ให้ทั้งตนเองและผู้ป่วยมีความสุข",
     imageUrl: "http://www.phyathai.com/photo/forms/db7d3a72862992a19559e7b91fcacdd3.jpg"
   },
   {
     id: 4,
-    title: "อัลไซเมอร์โรคที่ทำให้เข้าใจโลก ฟังวิธีรับมือของลูกที่ดูแลแม่ป่วยอัลไซเมอร์",
+    title: "How to cope with children caring for mothers with Alzheimer's disease",
     url: "https://www.youtube.com/watch?v=W83IFnZDugk",
     imageUrl: "https://i3.ytimg.com/vi/W83IFnZDugk/maxresdefault.jpg"
   },
   {
     id: 5,
-    title: "อัลไซเมอร์กับผู้สูงวัย... สู้ด้วยพลังใจคนใกล้ตัว | บำรุงราษฎร์",
+    title: "Alzheimer's and the elderly | Bumrungrad",
     url: "https://www.youtube.com/watch?v=tceO0zyw1mE",
     imageUrl: "https://i3.ytimg.com/vi/tceO0zyw1mE/maxresdefault.jpg"
   },
   {
     id: 6,
-    title: "“อัลไซเมอร์” อาการป่วยที่คนรอบข้างควรใส่ใจ",
+    title: "“Alzheimer” Illnesses that people around you should pay attention to it.",
     url: "https://www.youtube.com/watch?v=Xmhkz8z3wZs",
     imageUrl: "https://i3.ytimg.com/vi/Xmhkz8z3wZs/hqdefault.jpg"
   },
   {
     id: 7,
-    title: "อัลไซเมอร์",
+    title: "Alzheimer",
     url: "https://www.bumrungrad.com/th/conditions/alzheimer",
     imageUrl: "https://positioningmag.com/wp-content/uploads/importedmedia/blogmedia-21768.jpg"
   },
   {
     id: 8,
-    title: "การดูแลผู้ป่วยอัลไซเมอร์",
+    title: "Alzheimer's care",
     url: "https://www.siamhealth.net/public_html/Disease/neuro/alzheimer/alzheimers_care.html",
     imageUrl: "https://www.siamhealth.net/public_html/images/stroke/alz.jpg"
   },
   {
     id: 9,
-    title: "การดูแลผู้ป่วยอัลไซเมอร์",
+    title: "Alzheimer's care",
     url: "http://www.azthai.org/เกี่ยวกับสมองเสื่อม/6-เทคนิคการดูแล-1044-การดูแลผู้ป่วยอัลไซเมอร์",
     imageUrl: "http://www.azthai.org/elctfl/article/article1-1044.jpg"
   },

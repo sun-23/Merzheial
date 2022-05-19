@@ -27,7 +27,7 @@ export const LoginScreen = ({ navigation }) => {
           {/* LogoContainer: consits app logo and screen title */}
           <View style={styles.logoContainer}>
             <Logo uri={Images.logo} />
-            <Text style={styles.screenTitle}>ลงชื่อเข้าใช้งาน merzheial</Text>
+            <Text style={styles.screenTitle}>login to merzheial</Text>
           </View>
           <Formik
             initialValues={{
@@ -50,7 +50,7 @@ export const LoginScreen = ({ navigation }) => {
                 <TextInput
                   name='email'
                   leftIconName='email'
-                  placeholder='กรุณาใส่ email'
+                  placeholder='please enter email'
                   autoCapitalize='none'
                   keyboardType='email-address'
                   textContentType='emailAddress'
@@ -66,7 +66,7 @@ export const LoginScreen = ({ navigation }) => {
                 <TextInput
                   name='password'
                   leftIconName='key-variant'
-                  placeholder='กรุณาใส่รหัสผ่าน'
+                  placeholder='Please enter password'
                   autoCapitalize='none'
                   autoCorrect={false}
                   secureTextEntry={passwordVisibility}
@@ -87,7 +87,7 @@ export const LoginScreen = ({ navigation }) => {
                 ) : null}
                 {/* Login button */}
                 <Button style={styles.button} onPress={handleSubmit}>
-                  <Text style={styles.buttonText}>ลงชื่อเข้าใช้งาน</Text>
+                  <Text style={styles.buttonText}>Sign in</Text>
                 </Button>
               </>
             )}
@@ -96,13 +96,13 @@ export const LoginScreen = ({ navigation }) => {
           <Button
             style={styles.borderlessButtonContainer}
             borderless
-            title={'สร้างบัญชีผู้ใช้ใหม่'}
+            title={'Create a new account.'}
             onPress={() => navigation.navigate('Signup')}
           />
           <Button
             style={styles.borderlessButtonContainer}
             borderless
-            title={'ลืมรหัสผ่าน'}
+            title={'forgot password'}
             onPress={() => navigation.navigate('ForgotPassword')}
           />
         </KeyboardAwareScrollView>

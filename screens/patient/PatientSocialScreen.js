@@ -23,7 +23,7 @@ export const PatientSocialScreen = () => {
             style={styles.image} 
             source={{uri: "https://www.familyhappiness.co/wp-content/uploads/2020/12/02-2.jpg"}}
           >
-            <Text style={styles.link_item_text}>พูดคุยกิจกรรม</Text>
+            <Text style={styles.link_item_text}>talk activities</Text>
           </ImageBackground>
         </Pressable>
       </View>

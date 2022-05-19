@@ -21,7 +21,7 @@ export function C1CheckBox({item, setChoice, choice}) {
             <View style={{alignItems: 'center', width: width * 0.9}}>
                 <Text style={styles.title}>{item.title}</Text>
                 <View style={{flexDirection: 'row-reverse', alignItems: 'center'}}>
-                    <Text style={styles.subtitle}>ถูกต้องไหม</Text>
+                    <Text style={styles.subtitle}>Is that correct?</Text>
                         <Checkbox
                         value={checkboxDisplay1}
                         color={checkboxDisplay1 ? '#4630EB' : undefined}

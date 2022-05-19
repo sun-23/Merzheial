@@ -19,7 +19,7 @@ export default function PatientList({ navigation }) {
 
     const [indexSelect, setIndex] = useState(2)
     const [loading, setLoading] = useState(true)
-    const buttonsSelect = ['ทำเสร็จแล้ว', 'ยังไม่ได้ทำ', '7วันที่ผ่านมา']
+    const buttonsSelect = ['done', 'not done yet', '7 days ago']
 
     useEffect(() => {
         // effect
@@ -106,7 +106,7 @@ export default function PatientList({ navigation }) {
                     >
                         <Text style={styles.itemTitle}>{item.title}</Text>
                         {/* show status */}
-                        <Text style={[styles.itemTitle, {color: (item.isDone) ? "#00bf0b" : "red" }]}>{(item.isDone) ? "ทำแล้ว" : "ลืมทำ" }</Text>
+                        <Text style={[styles.itemTitle, {color: (item.isDone) ? "#00bf0b" : "red" }]}>{(item.isDone) ? "done" : "forgot" }</Text>
                         <Text style={styles.itemTime}>{item.day_string}</Text>
                     </TouchableOpacity>
         })
@@ -114,11 +114,11 @@ export default function PatientList({ navigation }) {
 
     const SwichRender = () => {
         switch (buttonsSelect[indexSelect]) {
-            case 'ทำเสร็จแล้ว':
+            case 'done':
                 return <RenderItemDone/>
-            case 'ยังไม่ได้ทำ':
+            case 'not done yet':
                 return <RenderItemNotDone/>
-            case '7วันที่ผ่านมา':
+            case '7 days ago':
                 return <RenderItemAll/>
             default:
                 break;
@@ -127,12 +127,12 @@ export default function PatientList({ navigation }) {
 
     return (
         <View isSafe style={styles.container}>
-            <Text style={styles.header}>สิ่งที่ต้องทำ</Text>
+            <Text style={styles.header}>todo list</Text>
             <TouchableOpacity 
                 style={styles.btn} 
                 onPress={() => navigation.navigate("Create_new")}
             >
-                <Text style={{color: 'white'}}>สร้างรายการใหม่</Text>
+                <Text style={{color: 'white'}}>new item</Text>
             </TouchableOpacity>
             <ButtonGroup
                 onPress={onSelectIndex}

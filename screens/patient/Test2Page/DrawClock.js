@@ -83,9 +83,9 @@ export function DrawClock({item, setChoice, choice}) {
                     /> : 
                     null
                 }
-                <Text style={styles.subtitle}>ให้ติก checkbox ถ้าภาพมีความเหมือนกัน</Text>
+                <Text style={styles.subtitle}>Please tick the checkbox if the images are the same.</Text>
                 <View style={{flexDirection: 'row-reverse', alignItems: 'center'}}>
-                    <Text style={styles.subtitle}>รูปร่าง</Text>
+                    <Text style={styles.subtitle}>shape</Text>
                     <Checkbox
                         value={checkboxDisplay1}
                         color={checkboxDisplay1 ? '#4630EB' : undefined}
@@ -93,7 +93,7 @@ export function DrawClock({item, setChoice, choice}) {
                     />
                 </View>
                 <View style={{flexDirection: 'row-reverse', alignItems: 'center'}}>
-                    <Text style={styles.subtitle}>เข็มนาฬิกา</Text>
+                    <Text style={styles.subtitle}>clockwise</Text>
                     <Checkbox
                         value={checkboxDisplay2}
                         color={checkboxDisplay2 ? '#4630EB' : undefined}
@@ -101,7 +101,7 @@ export function DrawClock({item, setChoice, choice}) {
                     />
                 </View>
                 <View style={{flexDirection: 'row-reverse', alignItems: 'center'}}>
-                    <Text style={styles.subtitle}>ตำแหน่งตัวเลข</Text>
+                    <Text style={styles.subtitle}>number position</Text>
                     <Checkbox
                         value={checkboxDisplay3}
                         color={checkboxDisplay3 ? '#4630EB' : undefined}
@@ -120,7 +120,7 @@ export function DrawClock({item, setChoice, choice}) {
                     }} 
                     onPress={pickImage}
                 >
-                    <Text>เลือกภาพวาด</Text>
+                    <Text>choose image</Text>
                 </TouchableOpacity>
             </View>
         </View>

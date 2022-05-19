@@ -128,34 +128,34 @@ export default function PatientNewFP({navigation}) {
                         <Text style={styles.textHeader}>เพิ่มคนรู้จัก</Text>
                     </View>
                     <TextInput 
-                        placeholder='ชื่อ'
+                        placeholder='first name'
                         style={styles.titleInput}
                         value={name}
                         onChangeText={setName}
                     />
                     <TextInput 
-                        placeholder='นามสกุล'
+                        placeholder='last name'
                         multiline={true}
                         style={styles.titleInput}
                         value={lastname}
                         onChangeText={setLastname}
                     />
                     <TextInput 
-                        placeholder='ความสัมพันธ์'
+                        placeholder='relationship'
                         multiline={true}
                         style={styles.titleInput}
                         value={relations}
                         onChangeText={setRelations}
                     />
                     <TextInput 
-                        placeholder='เบอร์โทรศัพท์'
+                        placeholder='phone number'
                         multiline={true}
                         style={styles.titleInput}
                         value={phone}
                         onChangeText={setPhone}
                         keyboardType='number-pad'
                     />
-                    <Text style={styles.textStyle}>เพิ่มภาพ</Text>
+                    <Text style={styles.textStyle}>Add Image</Text>
                     {imageUrl ? 
                         <Image 
                             style={{
@@ -172,14 +172,14 @@ export default function PatientNewFP({navigation}) {
                         style={[styles.button, styles.buttonOpen]} 
                         onPress={pickImage}
                     >
-                        <Text style={styles.textStyle}>เลือกภาพ</Text>
+                        <Text style={styles.textStyle}>Choose Image</Text>
                     </Pressable>
                     <Pressable
                         disabled={!enable}
                         style={[styles.button, styles.buttonSummit, {marginBottom: 100, opacity: enable ? 1 : 0.5}]}
                         onPress={uploadItemList}
                         >
-                        <Text style={styles.textStyle}>ตกลง</Text>
+                        <Text style={styles.textStyle}>submit</Text>
                     </Pressable>
                 </View>
             </KeyboardAwareScrollView>

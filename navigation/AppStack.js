@@ -64,15 +64,15 @@ export const AppStack = () => {
   const renderIcons = ({ focused, color, size, route }) => {
     let iconName;
 
-    if (route.name === 'หน้าแรก') {
+    if (route.name === 'Home') {
       iconName = focused ? 'ios-home' : 'ios-home-outline';
-    } else if (route.name === 'สถิติ' || route.name === 'นัดหมายคนไข้') {
+    } else if (route.name === 'Statistic' || route.name === 'appointments') {
       iconName = focused ? 'ios-today' : 'ios-today-outline';
     } else if (route.name === 'Social') {
       iconName = focused ? 'ios-chatbubble-ellipses' : 'ios-chatbubble-ellipses-outline';
-    } else if (route.name === 'ญาติ') {
+    } else if (route.name === 'Family') {
       iconName = focused ? 'ios-people' : 'ios-people-outline';
-    } else if (route.name === 'ผู้ใช้') {
+    } else if (route.name === 'User') {
       iconName = focused ? 'ios-person' : 'ios-person-outline';
     } else if (route.name === 'Game') {
       iconName = focused ? 'game-controller' : 'game-controller-outline';
@@ -95,7 +95,7 @@ export const AppStack = () => {
   if (userInfo.person_type === 'doctor') {
     return (
       <Tab.Navigator 
-        initialRouteName="หน้าแรก"
+        initialRouteName="Home"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             return renderIcons({ focused, color, size, route })
@@ -105,15 +105,15 @@ export const AppStack = () => {
           headerShown: false
         })}
       >
-        <Tab.Screen name='นัดหมายคนไข้' component={DoctorMeetStack}/>
-        <Tab.Screen name='หน้าแรก' component={DoctorHomeStack} />
-        <Tab.Screen name='ผู้ใช้' component={UserStack} />
+        <Tab.Screen name='Home' component={DoctorHomeStack} />
+        <Tab.Screen name='appointments' component={DoctorMeetStack}/>
+        <Tab.Screen name='User' component={UserStack} />
       </Tab.Navigator>
     );
   } else if (userInfo.person_type === 'caretaker') {
     return (
       <Tab.Navigator
-        initialRouteName="หน้าแรก" 
+        initialRouteName="Home" 
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             return renderIcons({ focused, color, size, route })
@@ -123,10 +123,10 @@ export const AppStack = () => {
           headerShown: false
         })}
       >
+        <Tab.Screen name='Home' component={CareTakerHomeStack} />
         <Tab.Screen name='Social' component={PatientSocialScreen}/>
-        <Tab.Screen name='หน้าแรก' component={CareTakerHomeStack} />
         <Tab.Screen name='Blog' component={Blog} />
-        <Tab.Screen name='ผู้ใช้' component={UserStack} />
+        <Tab.Screen name='User' component={UserStack} />
       </Tab.Navigator>
     )
   } else if (userInfo.person_type === 'patient' && !userInfo.isTest) {
@@ -136,7 +136,7 @@ export const AppStack = () => {
   } else if (userInfo.person_type === 'patient' && userInfo.isTest) {
     return (
       <Tab.Navigator 
-        initialRouteName="หน้าแรก" 
+        initialRouteName="Home" 
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             return renderIcons({ focused, color, size, route })
@@ -146,12 +146,12 @@ export const AppStack = () => {
           headerShown: false
         })}
       >
+        <Tab.Screen name='Home' component={PatientListStack}/>
         <Tab.Screen name='Social' component={PatientSocialScreen}/>
         <Tab.Screen name='Game' component={Game}/>
-        <Tab.Screen name='สถิติ' component={PatientStatStack}/>
-        <Tab.Screen name='หน้าแรก' component={PatientListStack}/>
-        <Tab.Screen name='ญาติ' component={FamilyStack}/>
-        <Tab.Screen name='ผู้ใช้' component={UserStack}/>
+        <Tab.Screen name='Statistic' component={PatientStatStack}/>
+        <Tab.Screen name='Family' component={FamilyStack}/>
+        <Tab.Screen name='User' component={UserStack}/>
       </Tab.Navigator>
     );
   }

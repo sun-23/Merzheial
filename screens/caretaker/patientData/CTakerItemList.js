@@ -20,7 +20,7 @@ const CTakerItemList = ({navigation, route}) => {
                 </View>
                 <View style={styles.content}>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>{route.params.data.day_string}</Text>
-                    <Text style={styles.textStyle}>รายละเอียด: {route.params.data.description}</Text>
+                    <Text style={styles.textStyle}>description: {route.params.data.description}</Text>
                     <Modal 
                         visible={(urlpreview) ? true : false}
                         animationType="slide"
@@ -62,12 +62,12 @@ const CTakerItemList = ({navigation, route}) => {
                                 justifyContent: 'center'
                             }}
                         > 
-                            <Text style={[styles.textStyle, {alignSelf: 'center', color: 'white'}]}>ไม่มีภาพ</Text>
+                            <Text style={[styles.textStyle, {alignSelf: 'center', color: 'white'}]}>No Image</Text>
                         </View>
                     }
                     {route.params.data.isDone === false ?
-                        <Text style={styles.textHeader}>ผู้ป่วยยังไม่ได้ทำ</Text> :
-                        <Text style={styles.textHeader}>ผู้ป่วยทำเสร็จแล้ว</Text>
+                        <Text style={styles.textHeader}>The patient has not done</Text> :
+                        <Text style={styles.textHeader}>The patient is finished</Text>
                     }
                 </View>
             </View>

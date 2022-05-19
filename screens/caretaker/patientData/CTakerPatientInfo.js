@@ -53,13 +53,13 @@ const CTakerPatientInfo = ({navigation, route}) => {
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                     <Button
                         style={{paddingRight: 5}} 
-                        title='ผลแบบทดสอบ'
+                        title='test results'
                         borderless
                         onPress={() => navigation.navigate("Tests", { patientInfo: patientInfo })}
                     />
                     <Button
                         style={{paddingRight: 5}} 
-                        title='ห้อง chat กับผู้ป่วย'
+                        title='chat room with patient'
                         borderless
                         onPress={() => navigation.navigate("Chat", { patientInfo: patientInfo })}
                         // ทำ screen list all test
@@ -67,7 +67,7 @@ const CTakerPatientInfo = ({navigation, route}) => {
                     />
                     <Button
                         style={{paddingRight: 5}} 
-                        title='กิจกรรม'
+                        title='activity'
                         borderless
                         onPress={() => navigation.navigate("List", { patientInfo: patientFireInfo })}
                     />
@@ -75,7 +75,7 @@ const CTakerPatientInfo = ({navigation, route}) => {
             </View>
            
             <View style={styles.content}>
-                <Text style={[styles.textHeader, {alignSelf: 'flex-start'}]}>คนไข้</Text>
+                <Text style={[styles.textHeader, {alignSelf: 'flex-start'}]}>patients</Text>
                 {patientFireInfo && <View style={[styles.item, styles.itemPatient, {maxHeight: height* 0.2}]}>
                     {!patientFireInfo.urlImage ? 
                         <Image 
@@ -88,21 +88,21 @@ const CTakerPatientInfo = ({navigation, route}) => {
                     />}
                     <View style={styles.itemViewText}>
                         <ScrollView>
-                            <Text style={styles.itemTitle}>ชื่อ: {patientFireInfo.firstname}</Text>
-                            <Text style={styles.itemTitle}>นามสกุล: {patientFireInfo.lastname}</Text>
-                            <Text style={styles.itemTitle}>อายุ: {patientFireInfo.age}ปี เพศ: {patientFireInfo.sex_type === "female" ? "หญิง" : "ชาย"}</Text>
-                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ชอบ {patientFireInfo.like}</Text>
-                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ไม่ชอบ {patientFireInfo.unlike}</Text>
-                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่แพ้ {patientFireInfo.allergy}</Text>
-                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>ที่อยู่ {patientFireInfo.address}</Text>
+                            <Text style={styles.itemTitle}>first name: {patientFireInfo.firstname}</Text>
+                            <Text style={styles.itemTitle}>last name: {patientFireInfo.lastname}</Text>
+                            <Text style={styles.itemTitle}>age: {patientFireInfo.age}years sex: {patientFireInfo.sex_type === "female" ? "female" : "male"}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>like {patientFireInfo.like}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>not like {patientFireInfo.unlike}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>allergy {patientFireInfo.allergy}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>address {patientFireInfo.address}</Text>
                             <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>uid: {patientFireInfo.uid}</Text>
-                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.alzheimer_lv !== "") ? "black" : "red"}]}>ระยะอาการ: {patientFireInfo.alzheimer_lv !== "" ? patientFireInfo.alzheimer_lv : "ให้แพทย์ประเมิณ"}</Text>
-                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.medicine !== "") ? "black" : "red"}]}>ยาที่ต้องรับประทาน: {patientFireInfo.medicine !== "" ? patientFireInfo.medicine : "ให้แพทย์ประเมิณ"}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.alzheimer_lv !== "") ? "black" : "red"}]}>state: {patientFireInfo.alzheimer_lv !== "" ? patientFireInfo.alzheimer_lv : "Please have a doctor evaluate."}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.medicine !== "") ? "black" : "red"}]}>medication to take: {patientFireInfo.medicine !== "" ? patientFireInfo.medicine : "Please have a doctor evaluate."}</Text>
                         </ScrollView>
                     </View>
                 </View>}
             </View>
-            <Text style={styles.textStyle}>รายการนัดหมาย</Text>
+            <Text style={styles.textStyle}>appointment list</Text>
             <ScrollView style={{height: 'auto', width: width}}>
                 <View style={{height: 4, width: width, backgroundColor: '#f0f0f0'}}></View>
                 {currentPatientMeet.map((data) => {

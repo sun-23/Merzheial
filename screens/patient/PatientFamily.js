@@ -51,7 +51,7 @@ export default function PatientFamily({ navigation }) {
                         <View style={styles.itemViewText}>
                             <Text style={styles.itemTitle}>{item.name} {item.lastname}</Text>
                             <Text style={styles.itemTitle}>{item.relations}</Text>
-                            <Text style={styles.itemTitle}>เบอร์โทรศัพท์: {item.phone}</Text>
+                            <Text style={styles.itemTitle}>phone number: {item.phone}</Text>
                         </View>
                     </View>
         })
@@ -59,12 +59,12 @@ export default function PatientFamily({ navigation }) {
 
     return (
         <View isSafe style={styles.container}>
-            <Text style={styles.header}>รายชื่อคนรู้จัก</Text>
+            <Text style={styles.header}>list of acquaintances</Text>
             <TouchableOpacity 
                 style={styles.btn} 
                 onPress={() => navigation.navigate("New-person")}
             >
-                <Text style={{color: 'white'}}>เพิ่มรายชื่อคนรู้จัก</Text>
+                <Text style={{color: 'white'}}>add acquaintance</Text>
             </TouchableOpacity>
             {!loading ? (<ScrollView>
                 <View style={{height: 4, width: width, backgroundColor: '#f0f0f0'}}></View>

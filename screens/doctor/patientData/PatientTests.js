@@ -32,7 +32,7 @@ const PatientTests = ({navigation, route}) => {
                 <Pressable onPress={() => navigation.goBack()}>
                     <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
                 </Pressable>
-                <Text style={styles.textHeader}>ผลการทำแบบทดสอบ</Text>
+                <Text style={styles.textHeader}>test results</Text>
             </View>
             <ScrollView style={{height: 'auto', width: width}}>
                 <View style={{height: 4, width: width, backgroundColor: '#f0f0f0'}}></View>

@@ -20,7 +20,7 @@ export default function CTakerPatientList({ navigation, route }) {
 
     const [indexSelect, setIndex] = useState(2)
     const [loading, setLoading] = useState(true)
-    const buttonsSelect = ['ผู้ป่วยทำเสร็จแล้ว', 'ผู้ป่วยยังไม่ได้ทำ', '7วันที่ผ่านมา']
+    const buttonsSelect = ['The patient is finished', 'The patient has not done', '7 days ago']
 
     useEffect(() => {
         // effect
@@ -107,7 +107,7 @@ export default function CTakerPatientList({ navigation, route }) {
                     >
                         <Text style={styles.itemTitle}>{item.title}</Text>
                         {/* show status */}
-                        <Text style={[styles.itemTitle, {color: (item.isDone) ? "#00bf0b" : ((curDay - (item.day.seconds * 1000) > 0) ? "red" : "#fbbf00")}]}>{(item.isDone) ? "ทำแล้ว" : ((curDay - (item.day.seconds * 1000) >= 0) ? "ลืมทำ" : "ยังไม่ได้ทำ")}</Text>
+                        <Text style={[styles.itemTitle, {color: (item.isDone) ? "#00bf0b" : ((curDay - (item.day.seconds * 1000) > 0) ? "red" : "#fbbf00")}]}>{(item.isDone) ? "done" : ((curDay - (item.day.seconds * 1000) >= 0) ? "forgot" : "not done yet")}</Text>
                         <Text style={styles.itemTime}>{item.day_string}</Text>
                     </TouchableOpacity>
         })
@@ -115,11 +115,11 @@ export default function CTakerPatientList({ navigation, route }) {
 
     const SwichRender = () => {
         switch (buttonsSelect[indexSelect]) {
-            case 'ผู้ป่วยทำเสร็จแล้ว':
+            case 'The patient is finished':
                 return <RenderItemDone/>
-            case 'ผู้ป่วยยังไม่ได้ทำ':
+            case 'The patient has not done':
                 return <RenderItemNotDone/>
-            case '7วันที่ผ่านมา':
+            case '7 days ago':
                 return <RenderItemAll/>
             default:
                 break;
@@ -132,13 +132,13 @@ export default function CTakerPatientList({ navigation, route }) {
                 <Pressable onPress={() => navigation.goBack()}>
                     <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
                 </Pressable>
-                <Text style={styles.textHeader}>สิ่งที่ต้องทำของ {patientInfo.firstname} {patientInfo.lastname}</Text>
+                <Text style={styles.textHeader}>{patientInfo.firstname} {patientInfo.lastname}'s to-do list</Text>
             </View>
             <TouchableOpacity
                 style={styles.btn} 
                 onPress={() => navigation.navigate("Create_new", { patientInfo: patientInfo })}
             >
-                <Text style={{color: 'white'}}>สร้างรายการใหม่</Text>
+                <Text style={{color: 'white'}}>new item</Text>
             </TouchableOpacity>
             <ButtonGroup
                 onPress={onSelectIndex}

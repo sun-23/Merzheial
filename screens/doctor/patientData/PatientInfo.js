@@ -72,11 +72,11 @@ const PatientInfo = ({navigation, route}) => {
 
     const createMeet = async () => {
         if (title === "" || description === "") {
-            Alert.alert("ระบุข้อความ","ระบุข้อความในช่องว่าง")
+            Alert.alert("specify a message","specify a message in the blank")
             return
         }
         if (time.getTime() < new Date().valueOf()) {
-            alert('กรุณาระบุวันที่ ให้ถูกต้อง')
+            alert('Please enter a valid date.')
             return
         }
         const docRef = collection(db, 'meet_doctor')
@@ -101,7 +101,7 @@ const PatientInfo = ({navigation, route}) => {
 
     const update_lv = async () => {
         if (description_al_lv === "" || medicine === "") {
-            Alert.alert("ระบุข้อความ","ระบุข้อความในช่องว่าง")
+            Alert.alert("specify a message","specify a message in the blank")
             return
         }
         const docRef = doc(db, 'users', patientInfo.uid)
@@ -125,7 +125,7 @@ const PatientInfo = ({navigation, route}) => {
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                     <Button
                         style={{paddingRight: 5}} 
-                        title='ผลแบบทดสอบ'
+                        title='test results'
                         borderless
                         onPress={() => navigation.navigate("Tests", { patientInfo: patientInfo })}
                         // ทำ screen list all test
@@ -133,13 +133,13 @@ const PatientInfo = ({navigation, route}) => {
                     />
                     <Button 
                         style={{paddingHorizontal: 5}} 
-                        title='อัพเดตข้อมูลผุ้ป่วย'
+                        title='update patient information'
                         borderless
                         onPress={() => setModalAl(true)}
                     />
                     <Button 
                         style={{paddingHorizontal: 5}} 
-                        title='สร้างนัด'
+                        title='make an appointment'
                         borderless
                         onPress={() => setModalVisible(true)}
                     />
@@ -148,7 +148,7 @@ const PatientInfo = ({navigation, route}) => {
             <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
                 <Button
                     style={{paddingRight: 5}} 
-                    title='ห้อง chat กับผู้ป่วย'
+                    title='chat room with patient'
                     borderless
                     onPress={() => navigation.navigate("Chat", { patientInfo: patientInfo })}
                     // ทำ screen list all test
@@ -156,13 +156,13 @@ const PatientInfo = ({navigation, route}) => {
                 />
                 <Button
                     style={{paddingRight: 5}} 
-                    title='กิจกรรม'
+                    title='activity'
                     borderless
                     onPress={() => navigation.navigate("List", { patientInfo: patientFireInfo })}
                 />
                 <Button
                     style={{paddingRight: 5}} 
-                    title='สถิติ'
+                    title='Statistic'
                     borderless
                     onPress={() => navigation.navigate("Stat", { patientInfo: patientFireInfo })}
                 />
@@ -185,19 +185,19 @@ const PatientInfo = ({navigation, route}) => {
                         >
                             <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
                         </Pressable>
-                        <Text style={styles.textHeader}>เปลี่ยนแปลงอาการ</Text>
+                        <Text style={styles.textHeader}>change the patient's stage of symptoms</Text>
                     </View>
-                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>รายละเอียดอาการ</Text>
+                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>change the patient's stage of symptoms</Text>
                     <TextInput 
-                        placeholder='รายละเอียด'
+                        placeholder='description'
                         multiline={true}
                         style={styles.multiInput}
                         value={description_al_lv}
                         onChangeText={setDescription_al_lv}
                     />
-                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>รายละเอียดยาที่ต้องรับประทาน</Text>
+                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>medication to take</Text>
                     <TextInput 
-                        placeholder='รายละเอียด'
+                        placeholder='description'
                         multiline={true}
                         style={styles.multiInput}
                         value={medicine}
@@ -207,7 +207,7 @@ const PatientInfo = ({navigation, route}) => {
                         style={[styles.button, styles.buttonSummit, {marginBottom: 100, opacity: enable ? 1 : 0.5}]}
                         onPress={update_lv}
                         >
-                        <Text style={[styles.textStyle, {color: 'white'}]}>ตกลง</Text>
+                        <Text style={[styles.textStyle, {color: 'white'}]}>submit</Text>
                     </Pressable>
                 </View>
                 </KeyboardAwareScrollView>
@@ -230,18 +230,18 @@ const PatientInfo = ({navigation, route}) => {
                         >
                             <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
                         </Pressable> 
-                        <Text style={styles.textHeader}>สร้างนัด</Text>
+                        <Text style={styles.textHeader}>make an appointment</Text>
                     </View>
-                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>หัวข้อ</Text>
+                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>title</Text>
                     <TextInput 
-                        placeholder='หัวข้อ'
+                        placeholder='title'
                         style={styles.titleInput}
                         value={title}
                         onChangeText={setTitle}
                     />
-                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>รายละเอียด</Text>
+                    <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>description</Text>
                     <TextInput 
-                        placeholder='รายละเอียด'
+                        placeholder='description'
                         multiline={true}
                         style={styles.multiInput}
                         value={description}
@@ -273,13 +273,13 @@ const PatientInfo = ({navigation, route}) => {
                         style={[styles.button, styles.buttonOpen]}
                         onPress={() => setShow(true)}
                         >
-                        <Text style={[styles.textStyle, {color: 'white'}]}>เลือกวันที่และเวลา</Text>
+                        <Text style={[styles.textStyle, {color: 'white'}]}>select date and time</Text>
                     </Pressable>
                     <Pressable
                         style={[styles.button, styles.buttonSummit, {marginBottom: 100, opacity: enable ? 1 : 0.5}]}
                         onPress={createMeet}
                         >
-                        <Text style={[styles.textStyle, {color: 'white'}]}>ตกลง</Text>
+                        <Text style={[styles.textStyle, {color: 'white'}]}>submit</Text>
                     </Pressable>
                 </View>
                 </KeyboardAwareScrollView>
@@ -287,7 +287,7 @@ const PatientInfo = ({navigation, route}) => {
 
             {/* content */}
             <View style={styles.content}>
-                <Text style={[styles.textHeader, {alignSelf: 'flex-start'}]}>คนไข้</Text>
+                <Text style={[styles.textHeader, {alignSelf: 'flex-start'}]}>patients</Text>
                 {patientFireInfo && <View style={[styles.item, styles.itemPatient, {maxHeight: height* 0.2}]}>
                     <View>
                         {!patientFireInfo.urlImage ? 
@@ -306,21 +306,21 @@ const PatientInfo = ({navigation, route}) => {
                     </View>
                     <View style={styles.itemViewText}>
                         <ScrollView>
-                            <Text style={styles.itemTitle}>ชื่อ: {patientFireInfo.firstname}</Text>
-                            <Text style={styles.itemTitle}>นามสกุล: {patientFireInfo.lastname}</Text>
-                            <Text style={styles.itemTitle}>อายุ: {patientFireInfo.age}ปี เพศ: {patientFireInfo.sex_type === "female" ? "หญิง" : "ชาย"}</Text>
-                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ชอบ {patientFireInfo.like}</Text>
-                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่ไม่ชอบ {patientFireInfo.unlike}</Text>
-                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>สิ่งที่แพ้ {patientFireInfo.allergy}</Text>
-                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>ที่อยู่ {patientFireInfo.address}</Text>
+                            <Text style={styles.itemTitle}>first name: {patientFireInfo.firstname}</Text>
+                            <Text style={styles.itemTitle}>last name: {patientFireInfo.lastname}</Text>
+                            <Text style={styles.itemTitle}>age: {patientFireInfo.age}years sex: {patientFireInfo.sex_type === "female" ? "female" : "male"}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>like {patientFireInfo.like}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>not like {patientFireInfo.unlike}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>allergy {patientFireInfo.allergy}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>address {patientFireInfo.address}</Text>
                             <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>uid: {patientFireInfo.uid}</Text>
-                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.alzheimer_lv !== "") ? "black" : "red"}]}>ระยะอาการ: {patientFireInfo.alzheimer_lv !== "" ? patientFireInfo.alzheimer_lv : "ให้แพทย์ประเมิณ"}</Text>
-                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.medicine !== "") ? "black" : "red"}]}>ยาที่ต้องรับประทาน: {patientFireInfo.medicine !== "" ? patientFireInfo.medicine : "ให้แพทย์ประเมิณ"}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.alzheimer_lv !== "") ? "black" : "red"}]}>stage of symptoms: {patientFireInfo.alzheimer_lv !== "" ? patientFireInfo.alzheimer_lv : "Please have a doctor evaluate."}</Text>
+                            <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3, color: (patientFireInfo.medicine !== "") ? "black" : "red"}]}>medication to take: {patientFireInfo.medicine !== "" ? patientFireInfo.medicine : "Please have a doctor evaluate."}</Text>
                         </ScrollView>
                     </View>
                 </View>}
             </View>
-            <Text style={styles.textStyle}>รายการนัดหมาย</Text>
+            <Text style={styles.textStyle}>appointment list</Text>
             <ScrollView style={{height: 'auto', width: width}}>
                 <View style={{height: 4, width: width, backgroundColor: '#f0f0f0'}}></View>
                 {currentPatientMeet.map((data) => {

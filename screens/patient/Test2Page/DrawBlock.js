@@ -76,7 +76,7 @@ export function DrawBlock({item, setChoice, choice}) {
                     /> : 
                     null
                 }
-                <Text style={styles.subtitle}>ให้ติก checkbox ถ้าภาพมีความเหมือนกัน</Text>
+                <Text style={styles.subtitle}>Please tick the checkbox if the images are the same.</Text>
                 <Checkbox
                     value={checkboxDisplay}
                     color={checkboxDisplay ? '#4630EB' : undefined}
@@ -94,7 +94,7 @@ export function DrawBlock({item, setChoice, choice}) {
                     }} 
                     onPress={pickImage}
                 >
-                    <Text>เลือกภาพวาด</Text>
+                    <Text>choose image</Text>
                 </TouchableOpacity>
             </View>
         </View>

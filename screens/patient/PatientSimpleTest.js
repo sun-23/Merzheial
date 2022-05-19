@@ -10,119 +10,119 @@ const COLORS = {primary: '#282534', white: '#fff'};
 const slides = [
     {
         id: 0,
-        title: 'แบบคัดกรองสมรรถภาพความจำ 14 คำถาม',
-        subtitle: 'คำ ชี้แจง',
-        des1: 'คะแนน 1 เมื่อเหตุการณ์นั้นไม่เคยเกิดขึ้นเลยหรืออาจจะเกิดขึ้นนานๆ ครั้ง ในระยะเวลา 1 ปี',
-        des2: 'คะแนน 2 เมื่อเหตุการณ์นั้นเกิดขึ้นไม่บ่อยนักหรืออาจจะเกิดขึ้น 1 หรือ 2 ครั้ง ในระยะเวลา 1 เดือน',
-        des3: 'คะแนน 3 เมื่อเหตุการณ์นั้นเกิดขึ้นค่อนข้างบ่อยหรืออาจจะเกิดขึ้นเกือบทุกสัปดาห์',
-        des4: 'คะแนน 4 เมื่อเหตุการณ์นั้นเกิดขึ้นเกือบทุกวัน',
-        description: 'ที่มา : แปลจากบทความใน British Medical Association โดย ชาญกัญญา ตันติลีปิกร (วท.ม.จิตวิทยาคลินิก) สถาบันวิจัยและพัฒนาวิทยาศาสตร์และเทคโนโลยีมหาวิทยาลัยมหิดล และพญ.โสภา เกริกไกรกุล หน่วยประสาทวิทยา วิทยาลัยแพทยศาสตร์ กรุงเทพฯและวชิรพยาบาล',
+        title: 'Memory Performance Screening 14 Questions',
+        subtitle: 'clarification',
+        des1: 'Score 1 when the event has never happened or may happen infrequently in 1 year',
+        des2: 'Score 2 when the event is infrequent or may occur 1 or 2 times in 1 month',
+        des3: 'Score 3 when the event happens relatively frequently or may occur almost weekly',
+        des4: 'Score 4 when that happens most days',
+        description: 'Source: Translated from an article in the British Medical Association by Chankanya Tantileepicorn (M.Sc. in Clinical Psychology), Mahidol University Science and Technology Research and Development Institute, and Dr. Sopa Krikkraikul, Neurology Unit. College of Medicine Bangkok and Vajira Hospital',
         isTest: false,
     },
     {
         id: 1,
-        title: 'หาของใช้ในบ้านไม่พบ',
+        title: 'Can not find household items',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 2,
-        title: 'จำสถานที่ที่เคยไปบ่อยๆ ไม่ได้',
+        title: 'Can not remember the places I have been to often',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 3,
-        title: 'ต้องกลับไปทบทวนงานที่แม้จะตั้งใจทำ ซํ้าถึง 2 ครั้ง',
+        title: 'Had to go back and review the work even though it was intended to be done twice.',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 4,
-        title: 'ลืมสิ่งของที่ตั้งใจว่าจะนำเอาออกไปนอกบ้านด้วย',
+        title: 'Forget about the things that you intend to take out of the house as well.',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 5,
-        title: 'ไม่สามารถเข้าใจเนื้อเรื่องในหนังสือพิมพ์ หรือวารสารที่อ่าน',
+        title: 'inability to understand the subject matter in the newspaper or journals that I read.',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 6,
-        title: 'ลืมเรื่องที่ได้รับฟังมาเมื่อวานนี้ หรือ เมื่อ 2-3 วันก่อน',
+        title: 'Forget what you heard yesterday or a few days ago.',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 7,
-        title: 'ลืมบอกข้อความที่คนอื่นวานให้\nมาบอกอีกคนหนึ่ง',
+        title: 'Forgot to share the message that someone else gave you.\nTell someone else.',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 8,
-        title: 'ลืมข้อมูลส่วนตัวของตนเอง เช่น วันเกิด ที่อยู่',
+        title: 'Forgetting personal information such as date of birth, address',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 9,
-        title: 'สับสนในรายละเอียดของเรื่องที่ได้รับฟังมา',
+        title: 'confused about the details of what was heard',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 10,
-        title: 'ลืมที่ที่เคยวางสิ่งของนั้นเป็นประจำ หรือ มองหาสิ่งของนั้นในที่ที่ไม่น่าจะวางไว้',
+        title: 'Forget where the item was placed on a regular basis, or look for it in a place where it was unlikely to be placed.',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 11,
-        title: 'ขณะเดินทาง หรือเดินเล่น หรืออยู่ในอาคารที่เคยไปบ่อย ๆ มักเกิดอาการหลงทิศหรือหลงทาง',
+        title: 'While traveling or walking, or in a building that you used to visit often, you tend to get lost or lost.',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 12,
-        title: 'ต้องทำกิจวัตรประจำวันบางอย่างซํ้าถึง 2 ครั้ง เพราะมีความผิดพลาดเกิดขึ้น เช่น ใส่นํ้าตาลมากเกินไปในเวลาปรุงอาหาร หรือเดินไปหวีผมซํ้าอีกครั้ง ซึ่งเมื่อซักครู่เพิ่งได้หวีผมเสร็จไป',
+        title: 'Certain routines have to be repeated twice because mistakes occur, such as adding too much sugar to the cooking time. or walk to comb the hair again which, after a while, had just finished combing his hair.',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 13,
-        title: 'เล่าเรื่องเดิมซํ้าอีกครั้งซึ่งเมื่อสักครู่เพิ่งได้เล่าเสร็จ',
+        title: 'Tell the same story over and over again, which just a moment ago.',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 14,
-        title: 'ลืมเพื่อนสนิท หรือ ญาติสนิท หรือ บุคคลที่คบหากันบ่อยๆ',
+        title: 'Forget close friends or close relatives or people who are in close contact with each other often.',
         choose_num: null,
         isTest: true, 
     },
     {
         id: 15,
-        title: 'เสร็จสิ้น',
-        subtitle: 'คำแนะนำ',
+        title: 'finish',
+        subtitle: 'advice',
         isTest: false,
     },
 ]
 
 const answer_type = [
-    "เหตุการณ์ไม่เคยเกิดขึ้นเลยหรือเกิดขึ้นนานๆ ครั้ง ใน 1 ปี",
-    "เหตุการณ์เกิดขึ้น 1 หรือ 2 ครั้ง ในระยะเวลา 1 เดือน",
-    "เหตุการณ์เกิดขึ้นเกือบทุกสัปดาห์",
-    "เหตุการณ์เกิดขึ้นเกือบทุกวัน"
+    "An event that never happened or happened very rarely in 1 year.",
+    "The incident happened once or twice in a 1-month period.",
+    "The event happened almost every week.",
+    "The incident happened almost every day."
 ]
 
 const result_type = {
-    a: 'สมรรถภาพทางสมองอยู่ในเกณฑ์ดีมาก',
-    b: 'สมรรถภาพทางสมองอยู่ในระดับปานกลางควรเข้ารับคำแนะนำเพื่อเพิ่มสมรรถภาพทางสมอง',
-    c: 'สมรรถภาพทางสมองอยู่ในระดับค่อนข้างตํ่าควรเข้ารับคำแนะนำเพื่อเพิ่มสมรรถภาพทางสมอง',
-    d: 'สมรรถภาพทางสมองตํ่า ควรพบแพทย์'
+    a: 'Very good cerebral performance',
+    b: 'Moderate brain function, should be advised to improve cognitive function',
+    c: 'Relatively low cognitive performance, advice should be given to improve cognitive performance',
+    d: 'Poor brain function, seek medical attention'
 }
 
 const TestItem = ({item, clickChioce}) => {
@@ -355,7 +355,7 @@ export const PatientSimpleTest = ({navigation}) => {
                         style={styles.btn}
                         onPress={putPointToFirebase}>
                         <Text style={{fontWeight: 'bold', fontSize: 15}}>
-                        ตกลง
+                        submit
                         </Text>
                     </TouchableOpacity>
                     </View>
@@ -368,7 +368,7 @@ export const PatientSimpleTest = ({navigation}) => {
                                 onPress={goToPrevSlide}
                                 style={styles.btn}>
                                 <Text style={{fontWeight: 'bold', fontSize: 15}}>
-                                ข้อก่อนหน้า
+                                goBack
                                 </Text>
                             </TouchableOpacity>
                         </View> : (
@@ -382,7 +382,7 @@ export const PatientSimpleTest = ({navigation}) => {
                                     }}
                                     style={styles.btn}>
                                     <Text style={{fontWeight: 'bold', fontSize: 15, color: "red"}}>
-                                    ยกเลิก
+                                    cancel
                                     </Text>
                                 </TouchableOpacity>
                             </View> : null

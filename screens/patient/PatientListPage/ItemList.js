@@ -28,7 +28,7 @@ const ItemList = ({navigation, route}) => {
                 </View>
                 <View style={styles.content}>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>{route.params.data.day_string}</Text>
-                    <Text style={styles.textStyle}>รายละเอียด: {route.params.data.description}</Text>
+                    <Text style={styles.textStyle}>description: {route.params.data.description}</Text>
                     <Modal 
                         visible={(urlpreview) ? true : false}
                         animationType="slide"
@@ -66,7 +66,7 @@ const ItemList = ({navigation, route}) => {
                                 justifyContent: 'center'
                             }}
                         > 
-                            <Text style={[styles.textStyle, {alignSelf: 'center', color: 'white'}]}>ไม่มีภาพ</Text>
+                            <Text style={[styles.textStyle, {alignSelf: 'center', color: 'white'}]}>No Image</Text>
                         </View>
                     }
                     {route.params.data.isDone === false ?
@@ -74,9 +74,9 @@ const ItemList = ({navigation, route}) => {
                             style={[styles.button, styles.buttonOpen]} 
                             onPress={onDone}
                         >
-                            <Text style={[styles.textStyle, {alignSelf: 'center', color: 'white'}]}>ทำแล้ว</Text>
+                            <Text style={[styles.textStyle, {alignSelf: 'center', color: 'white'}]}>done</Text>
                         </Button> :
-                        <Text style={styles.textHeader}>ทำเสร็จแล้ว</Text>
+                        <Text style={styles.textHeader}>done</Text>
                     }
                 </View>
             </View>

@@ -55,18 +55,18 @@ export const PatientStatScreen = ({navigation}) => {
 
   return (
     <View isSafe style={styles.container}>
-      <Text style={styles.header}>สถิติ 7วันที่ผ่านมา</Text>
+      <Text style={styles.header}>Statistic 7 days ago</Text>
       <View style={styles.stat_view}>
         <View style={styles.stat_item}>
           <Text style={styles.numSize}>{numDone}</Text>
-          <Text style={styles.stat_text}>ทำเสร็จแล้ว</Text>
+          <Text style={styles.stat_text}>done</Text>
         </View>
         <View style={styles.stat_item}>
           <Text style={styles.numSize}>{numNotDone}</Text>
-          <Text style={styles.stat_text}>ไม่ได้ทำ</Text>
+          <Text style={styles.stat_text}>did not do</Text>
         </View>
       </View>
-      <Text style={styles.stat_text}>รายการนัดแพทย์</Text>
+      <Text style={styles.stat_text}>list of appointments with the doctor</Text>
       <ScrollView>
         <View style={{height: 4, width: width, backgroundColor: '#f0f0f0'}}></View>
         {meetDoctors.map((data) => {

@@ -36,7 +36,6 @@ export default function CreateList({navigation}) {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
             if (status !== 'granted') {
                 Alert.alert(
-                    "การเข้าถึงรูปภาพ",
                     "Sorry, we need camera roll permissions to make pick the photo",
                 [
                     { text: "OK", onPress: () => console.log("OK Pressed") }
@@ -46,8 +45,8 @@ export default function CreateList({navigation}) {
             const result = await Notifications.requestPermissionsAsync();
             if (result.status !== 'granted') {
                 Alert.alert(
-                    "การแจ้งเตือนกิจกรรม",
-                    "เปิดการแจ้งเตือนเพื่อการแจ้งเตือนกิจกรรม",
+                    "activity notification",
+                    "Turn on notifications for activity notifications.",
                 [
                     { text: "OK", onPress: () => console.log("OK Pressed") }
                 ])
@@ -111,12 +110,12 @@ export default function CreateList({navigation}) {
     const uploadItemList = () => {
         setEnable(false)
         if (!title || !description) {
-            alert('กรุณาระบุรายละเอียด ให้ถูกต้อง')
+            alert('Please enter details correctly.')
             setEnable(true)
             return
         }
         if (date.getTime() < new Date().valueOf()) {
-            alert('กรุณาระบุวันที่ ให้ถูกต้อง')
+            alert('Please enter a valid date.')
             setEnable(true)
             return
         }
@@ -149,7 +148,7 @@ export default function CreateList({navigation}) {
         // console.log(trigger);
         let lol = await Notifications.scheduleNotificationAsync({
             content: {
-                title: "กิจกรรม: "+noti_title,
+                title: "activity: "+noti_title,
                 body: text,
             },
             trigger,
@@ -168,7 +167,7 @@ export default function CreateList({navigation}) {
                     >
                         <View style={{flex: 1 ,justifyContent: 'center', alignItems: 'center'}}>
                             <View style={styles.modalView}>
-                                <Text style={[styles.textStyle, {color: 'black'}]}>อัพโหลดแล้ว{percentUp}%</Text>
+                                <Text style={[styles.textStyle, {color: 'black'}]}>uploaded {percentUp}%</Text>
                             </View>
                         </View>
                     </Modal>
@@ -176,22 +175,22 @@ export default function CreateList({navigation}) {
                         <Pressable onPress={() => navigation.goBack()}>
                             <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
                         </Pressable>
-                        <Text style={styles.textHeader}>สร้างรายการใหม่</Text>
+                        <Text style={styles.textHeader}>new item</Text>
                     </View>
                     <TextInput 
-                        placeholder='หัวข้อ'
+                        placeholder='title'
                         style={styles.titleInput}
                         value={title}
                         onChangeText={setTitle}
                     />
                     <TextInput 
-                        placeholder='รายละเอียด'
+                        placeholder='description'
                         multiline={true}
                         style={styles.multiInput}
                         value={description}
                         onChangeText={setDescription}
                     />
-                    <Text style={styles.textStyle}>เพิ่มภาพ</Text>
+                    <Text style={styles.textStyle}>Add Image</Text>
                     {imageUrl ? 
                         <Image 
                             style={{
@@ -208,7 +207,7 @@ export default function CreateList({navigation}) {
                         style={[styles.button, styles.buttonOpen]} 
                         onPress={pickImage}
                     >
-                        <Text style={styles.textStyle}>เลือกภาพ</Text>
+                        <Text style={styles.textStyle}>Choose Image</Text>
                     </Pressable>
                     {show &&
                         <View style={{width: '100%'}}>
@@ -237,14 +236,14 @@ export default function CreateList({navigation}) {
                         style={[styles.button, styles.buttonOpen]}
                         onPress={() => setShow(true)}
                         >
-                        <Text style={styles.textStyle}>เลือกวันที่และเวลา</Text>
+                        <Text style={styles.textStyle}>select date and time</Text>
                     </Pressable>
                     <Pressable
                         disabled={!enable}
                         style={[styles.button, styles.buttonSummit, {marginBottom: 100, opacity: enable ? 1 : 0.5}]}
                         onPress={uploadItemList}
                         >
-                        <Text style={styles.textStyle}>ตกลง</Text>
+                        <Text style={styles.textStyle}>submit</Text>
                     </Pressable>
                 </View>
             </KeyboardAwareScrollView>

@@ -22,7 +22,7 @@ export const Intro = ({item, goNext}) => {
                     }} 
                     onPress={goNext}
                 >
-                    <Text>เริ่มกันเลย</Text>
+                    <Text>Let's start</Text>
                 </TouchableOpacity>
             </View>
         </View>

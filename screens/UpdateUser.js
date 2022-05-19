@@ -150,17 +150,17 @@ export const UpdateUser = ({ navigation }) => {
         <Pressable onPress={() => navigation.goBack()} disabled={!btnEnable}>
           <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
         </Pressable>
-        <Text style={styles.textHeader}>อัพเดตข้อมูลผู้ใช้</Text>        
+        <Text style={styles.textHeader}>update user information</Text>        
       </View>
       <KeyboardAwareScrollView enableOnAndroid={true}>
         {/* LogoContainer: consits app logo and screen title */}
         <View style={styles.logoContainer}>
           {image ? <Image source={{ uri: image }} style={{ width: 200, height: 200, borderRadius: 100 }} /> : <Logo uri={Images.logo} />}
-          <Text style={styles.screenTitle}>เปลี่ยนแปลงข้อมูลผุ้ใช้</Text>
+          <Text style={styles.screenTitle}>change user information</Text>
           <Button style={styles.button} onPress={pickImage} disabled={!btnEnable}>
-            <Text style={styles.buttonText}>เลือกรูปภาพโปรไฟล์</Text>
+            <Text style={styles.buttonText}>select profile picture</Text>
           </Button>
-          {!btnEnable ? <Text style={{paddingVertical: 16}}>อัพโหลดรูปภาพแล้ว {uploadProgess} %</Text> : null}
+          {!btnEnable ? <Text style={{paddingVertical: 16}}>Image uploaded {uploadProgess} %</Text> : null}
         </View>
         {/* Formik Wrapper */}
         <Formik
@@ -186,7 +186,7 @@ export const UpdateUser = ({ navigation }) => {
               {/* name */}
               <TextInput
                 name='name_lastname'
-                placeholder='กรุณาระบุชื่อ'
+                placeholder='Please enter your first name'
                 autoCapitalize='none'
                 autoFocus={true}
                 value={values.name}
@@ -199,7 +199,7 @@ export const UpdateUser = ({ navigation }) => {
               />
               <TextInput
                 name='lastname'
-                placeholder='กรุณาระบุนามสกุล'
+                placeholder='Please enter your last name'
                 autoCapitalize='none'
                 autoFocus={true}
                 value={values.lastname}
@@ -213,7 +213,7 @@ export const UpdateUser = ({ navigation }) => {
               {/* age */}
               <TextInput
                 name='age'
-                placeholder='ใส่อายุของคุณ'
+                placeholder='enter your age'
                 autoCapitalize='none'
                 autoFocus={true}
                 value={values.age}
@@ -229,32 +229,32 @@ export const UpdateUser = ({ navigation }) => {
               {userInfo.person_type === 'patient' ?
                 <>
                 <TextInput
-                  name='สิ่งที่แพ้'
-                  placeholder='กรุณาระบุสิ่งที่แพ้'
+                  name='allergy'
+                  placeholder='Please specify what you are allergic to.'
                   autoCapitalize='none'
                   autoFocus={true}
                   value={allergy}
                   onChangeText={setAllergy}
                 />
                 <TextInput
-                  name='สิ่งที่ชอบ'
-                  placeholder='กรุณาระบุสิ่งที่ชอบ'
+                  name='like'
+                  placeholder='Please specify what you like.'
                   autoCapitalize='none'
                   autoFocus={true}
                   value={like}
                   onChangeText={setLike}
                 />
                 <TextInput
-                  name='สิ่งที่ไม่ชอบ'
-                  placeholder='กรุณาระบุสิ่งที่ไม่ชอบ'
+                  name='not like'
+                  placeholder='Please specify what you do not like.'
                   autoCapitalize='none'
                   autoFocus={true}
                   value={unlike}
                   onChangeText={setUnlike}
                 />
                 <TextInput
-                  name='ที่อยู่'
-                  placeholder='กรุณาระบุที่อยู่'
+                  name='address'
+                  placeholder='Please specify address'
                   autoCapitalize='none'
                   autoFocus={true}
                   value={address}
@@ -266,10 +266,10 @@ export const UpdateUser = ({ navigation }) => {
 
               {/* picker sex type */}
               <DropdownList
-                title="เลือกเพศ"
+                title="select gender"
                 items={[
-                  { label: 'หญิง', value: 'female' },
-                  { label: 'ชาย', value: 'male' },
+                  { label: 'female', value: 'female' },
+                  { label: 'male', value: 'male' },
                 ]}
                 onChange={handleChange('sex_type')}
               />
@@ -284,7 +284,7 @@ export const UpdateUser = ({ navigation }) => {
               ) : null}
               {/* Update button */}
               <Button style={styles.button} onPress={handleSubmit} disabled={(!isSubmitting == btnEnable) ? false : true}>
-                <Text style={styles.buttonText}>เปลี่ยนแปลงข้อมูลผุ้ใช้</Text>
+                <Text style={styles.buttonText}>submit</Text>
               </Button>
             </>
           )}

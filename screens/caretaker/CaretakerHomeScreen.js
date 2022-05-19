@@ -114,10 +114,10 @@ export const CaretakerHomeScreen = ({navigation}) => {
     if (r === true) {
       const docRef = doc(db ,"users", auth.currentUser.uid, "all-patients", patient.uid);
       await setDoc(docRef, {uid: patient.uid}, {merge: true}).then(() => {
-        alertMessage("เสร็จสิ้น", "ผู้ป่วยถูกเพิ่มแล้ว");
+        alertMessage("success", "The patient has been added");
       })
     } else {
-      alertMessage("ไม่สามารถเพิ่มผู้ป่วยได้", "ผู้ป่วยถูกเพิ่มไปแล้วก่อนหน้านี้");
+      alertMessage("Can't add patients", "The patient was previously added.");
     }
   }
 
@@ -126,7 +126,7 @@ export const CaretakerHomeScreen = ({navigation}) => {
       title, 
       message, 
       [
-        { text: "ตกลง", onPress: () => {}}
+        { text: "OK", onPress: () => {}}
       ]
     );
   }
@@ -158,7 +158,7 @@ export const CaretakerHomeScreen = ({navigation}) => {
                 />}
                 <View style={styles.itemViewText}>
                   <Text style={styles.itemTitle}>{patient.firstname} {patient.lastname}</Text>
-                  <Text style={styles.itemTitle}>อายุ: {patient.age}ปี เพศ: {patient.sex_type === "female" ? "หญิง" : "ชาย"}</Text>
+                  <Text style={styles.itemTitle}>age: {patient.age}years sex: {patient.sex_type === "female" ? "female" : "male"}</Text>
                   <Text style={[styles.itemTitle, {fontSize: 14, paddingTop: 3}]}>uid: {patient.uid}</Text>
                 </View>
         </Pressable>
@@ -167,11 +167,11 @@ export const CaretakerHomeScreen = ({navigation}) => {
 
   return (
     <View isSafe style={styles.container}>
-      <Text style={styles.textHeader}>รายชื่อคนไข้</Text>
+      <Text style={styles.textHeader}>patient list</Text>
       <View style={styles.viewHeader}>
         <TextInput 
           onChangeText={setSearch} 
-          placeholder="พิมพ์ uid ของคนใข้" 
+          placeholder="Type the uid of the patient." 
           value={search}
           style={styles.titleInput}
         />
@@ -181,11 +181,11 @@ export const CaretakerHomeScreen = ({navigation}) => {
             loadOptions(search)
           }}
         >
-          <Text style={styles.textBtn}>ค้นหา</Text>
+          <Text style={styles.textBtn}>search</Text>
         </Pressable>
       </View>
       {!isLoading ? <View style={styles.scrollView}>
-          {searchPatient.length == 0 ? <Text>ไม่พบผู้ป่วยที่ uid ขึ้นต้นด้วย {search}</Text>
+          {searchPatient.length == 0 ? <Text>Can't find patients whose uid starts with {search}</Text>
            : (
              <ScrollView>
               <View style={{height: 4, width: width*0.8, backgroundColor: '#f0f0f0'}}></View>
@@ -214,7 +214,7 @@ export const CaretakerHomeScreen = ({navigation}) => {
                               addPatient(patient)
                             }}
                           >
-                            <Text style={styles.textBtn}>เพิ่มคนไข้</Text>
+                            <Text style={styles.textBtn}>add patient</Text>
                           </Pressable>
                          : 
                           <Pressable 
@@ -224,7 +224,7 @@ export const CaretakerHomeScreen = ({navigation}) => {
                               gotoPatientInfo(patient)
                             }}
                           >
-                           <Text style={styles.textBtn}>ไปที่ข้อมูล</Text>
+                           <Text style={styles.textBtn}>go to info</Text>
                         </Pressable>}
                       </View>
                     }

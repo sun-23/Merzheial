@@ -220,7 +220,7 @@ export default function StatPatientList({ navigation, route }) {
 
     const updatePercentState = () => {
         if (ps1 >= ps2 || ps2 >= ps3 || ps1 >= ps3) {
-            alert('percent stage1 ต้องน้อยกว่า stage2 \n stage2 ต้องน้อยกว่า stage3 ')
+            alert('percent stage1 must less than stage2 \n stage2 must less than stage3 ')
             return
         }
         const percentRef = doc(db ,"users", doctorInfo.uid, "all-patients", patientInfo.uid);
@@ -237,7 +237,7 @@ export default function StatPatientList({ navigation, route }) {
 
     const updatePatientStage = () => {
         if (stage === '') {
-            alert('กรุณาเลือก stage')
+            alert('Please select a stage')
             return
         }
         const percentRef = doc(db ,"users", patientInfo.uid);
@@ -262,7 +262,7 @@ export default function StatPatientList({ navigation, route }) {
                 <Pressable onPress={() => navigation.goBack()}>
                     <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
                 </Pressable>
-                <Text style={styles.textHeader}>สถิติของ {patientInfo.firstname} {patientInfo.lastname}</Text>
+                <Text style={styles.textHeader}>Statisticของ {patientInfo.firstname} {patientInfo.lastname}</Text>
             </View>
             {/* modal percent */}
             <Modal
@@ -282,7 +282,7 @@ export default function StatPatientList({ navigation, route }) {
                             >
                                 <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
                             </Pressable> 
-                            <Text style={styles.textHeader}>แก้ไข alzheimer state</Text>
+                            <Text style={styles.textHeader}>chenge alzheimer state</Text>
                         </View>
                         <Text style={[styles.textStyle, {marginLeft: width*0.05}]}>stage1</Text>
                         <TextInput 
@@ -309,17 +309,17 @@ export default function StatPatientList({ navigation, route }) {
                             maxLength={2}
                         />
                         <Pressable onPress={updatePercentState} style={[styles.btn, {marginLeft: 12}]}>
-                            <Text style={[styles.textStyle, {color: "white"}]}>อัพเดต percent</Text>
+                            <Text style={[styles.textStyle, {color: "white"}]}>update percent of state condition</Text>
                         </Pressable>
                     </View>
                 </KeyboardAvoidingView>
             </Modal>
             <ChartView 
-                title="กราฟ percent การลืม7วันที่ผ่านมา"
+                title="Forgotten percent percent graph in 7 days ago"
                 width={Dimensions.get('window').width * 0.9} 
                 height={220}
                 data={{
-                    labels: ['วันที่1', 'วันที่2', 'วันที่3', 'วันที่4', 'วันที่5', 'วันที่6', 'วันที่7'],
+                    labels: ['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7'],
                     datasets: [{
                         data: [
                             processdata.day1.percent,
@@ -349,9 +349,9 @@ export default function StatPatientList({ navigation, route }) {
             </View>
             <View style={styles.stat}>
                 <Pressable onPress={setModalPercent} style={[styles.stat_view, {backgroundColor: ((processdata.percentDiv >= percent.percent_bad) ? '#FC4F4F': ((processdata.percentDiv >= percent.percent_good) ? '#F6D860':'#65C18C'))}]}>
-                    <Text style={styles.status_text}>เฉลี่ย</Text>
+                    <Text style={styles.status_text}>average</Text>
                     <Text style={styles.status_text}>{processdata.percentDiv}%</Text>
-                    <Text style={{color:'white'}}>กดเพื่อเปลี่ยนแปลง percent</Text>
+                    <Text style={{color:'white'}}>Press to change percent.</Text>
                 </Pressable>
                 <View style={[styles.status, {backgroundColor: (patientFireInfo.alzheimer_stat_status !== 'none') ? ((patientFireInfo.alzheimer_stat_status === 'stage1') ? "#65C18C" : ((patientFireInfo.alzheimer_stat_status === 'stage2') ? "#F6D860" : '#FC4F4F')) :'#404040' }]}>
                     {/* alzheimer_stat_status: none, stage1, stage2, stage3 */}
@@ -366,12 +366,12 @@ export default function StatPatientList({ navigation, route }) {
                         { label: 'stage2', value: 'stage2' },
                         { label: 'stage3', value: 'stage3' },
                     ]}
-                    title="เปลี่ยน stage"
+                    title="change stage"
                     onChange={setStage}
                 />
             </View>
             <Pressable onPress={updatePatientStage} style={[styles.btn, {alignSelf: 'center'}]}>
-                <Text style={[styles.textStyle, {color: "white"}]}>อัพเดต stage</Text>
+                <Text style={[styles.textStyle, {color: "white"}]}>update stage</Text>
             </Pressable>
         </View>
     )

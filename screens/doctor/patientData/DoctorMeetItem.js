@@ -27,7 +27,6 @@ const DoctorMeetItem = ({navigation, route}) => {
                 const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
                 if (status !== 'granted') {
                     Alert.alert(
-                        "การเข้าถึงรูปภาพ",
                         "Sorry, we need camera roll permissions to make pick the photo",
                     [
                         { text: "OK", onPress: () => console.log("OK Pressed") }
@@ -83,7 +82,7 @@ const DoctorMeetItem = ({navigation, route}) => {
 
     const updateNote = async () => {
         if (note.length === 0) {
-            Alert.alert("ระบุข้อความ","ระบุข้อความในช่องว่าง")
+            Alert.alert("specify a message","specify a message in the blank")
             return
         }
         setEnable(false)
@@ -149,7 +148,7 @@ const DoctorMeetItem = ({navigation, route}) => {
                             >
                                 <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
                             </Pressable>
-                            <Text style={styles.textHeader}>เปลี่ยนแปลง note</Text>
+                            <Text style={styles.textHeader}>change note</Text>
                         </View>
                         {imageUrl ? 
                             <Image 
@@ -167,7 +166,7 @@ const DoctorMeetItem = ({navigation, route}) => {
                             style={[styles.button, styles.buttonOpen]} 
                             onPress={pickImage}
                         >
-                            <Text style={[styles.textStyle, {color: 'white', alignSelf: 'center'}]}>เลือกภาพ</Text>
+                            <Text style={[styles.textStyle, {color: 'white', alignSelf: 'center'}]}>choose image</Text>
                         </Pressable>
                         <TextInput 
                             placeholder='note'
@@ -180,15 +179,15 @@ const DoctorMeetItem = ({navigation, route}) => {
                             style={[styles.button, styles.buttonSummit, {opacity: enable ? 1 : 0.5}]}
                             onPress={updateNote}
                             >
-                            <Text style={[styles.textStyle, {color: 'white', alignSelf: 'center'}]}>ตกลง</Text>
+                            <Text style={[styles.textStyle, {color: 'white', alignSelf: 'center'}]}>submit</Text>
                         </Pressable>
                     </View>
                     </KeyboardAwareScrollView>
                 </Modal>
                 <View style={styles.content}>
                     <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
-                    <Text style={styles.textStyle}>รายละเอียด: {data.description}</Text>
-                    <Text style={[styles.textStyle, {color : (data.note.length > 0) ? "black" : "red"}]}>note ของแพทย์: {(data.note.length > 0) ? data.note : "ยังไม่ได้ประเมิณ"}</Text>
+                    <Text style={styles.textStyle}>description: {data.description}</Text>
+                    <Text style={[styles.textStyle, {color : (data.note.length > 0) ? "black" : "red"}]}>doctor's note: {(data.note.length > 0) ? data.note : "not yet evaluated"}</Text>
                     {route.params.data.noteUrl != "" ? 
                         <Pressable 
                                 onPress={() => setUrlPreview(route.params.data.noteUrl)}>
@@ -215,7 +214,7 @@ const DoctorMeetItem = ({navigation, route}) => {
                                 justifyContent: 'center'
                             }}
                         > 
-                            <Text style={[styles.textStyle, {alignSelf: 'center', color: 'white'}]}>ไม่มีภาพ note</Text>
+                            <Text style={[styles.textStyle, {alignSelf: 'center', color: 'white'}]}>No Image note</Text>
                         </View>
                     }
                 </View>

@@ -82,8 +82,8 @@ export default function Game() {
 
   return (
     <View isSafe style={styles.container}>
-      <Text style={styles.header}>เกมเรียงรูปภาพ</Text>
-      <Text style={{fontSize: 20, fontWeight: 'bold'}}>ภาพที่ {index + 1}</Text>
+      <Text style={styles.header}>picture sorting game</Text>
+      <Text style={{fontSize: 20, fontWeight: 'bold'}}>picture {index + 1}</Text>
       <Image source={source} style={{width: 50, height: 50}}/>
       <View style={{justifyContent: "center", height: height, width: width}}>
         <PicturePuzzle
@@ -98,18 +98,18 @@ export default function Game() {
         <View style={[styles.row]}>
           <TouchableOpacity onPress={retry} style={styles.btn}>
             <Text style={{color: 'white', fontSize: 20}}>
-              เล่นอีกรอบ
+              play again
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={solve} style={styles.btn}>
             <Text style={{color: 'white', fontSize: 20}}>
-              เฉลย
+              answer
             </Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={RandomImg} style={[styles.btn, {marginBottom: height * 0.3, alignSelf: 'center'}]}>
             <Text style={{color: 'white', fontSize: 20}}>
-              สุ่มภาพใหม่
+              random new pictures
             </Text>
           </TouchableOpacity>
       </View>

@@ -30,7 +30,6 @@ export default function ChatScreen({navigation}) {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
             if (status !== 'granted') {
             Alert.alert(
-                "การเข้าถึงรูปภาพ",
                 "Sorry, we need camera roll permissions to make pick the photo",
             [
                 { text: "OK", onPress: () => console.log("OK Pressed") }
@@ -206,7 +205,7 @@ export default function ChatScreen({navigation}) {
                     <Text style={{
                         alignSelf: 'center',
                         fontSize: 16 
-                    }}>{item.sender_type === 'patient'  ? "ผู้ป่วย" : (item.sender_type === 'doctor' ? "แททย์" : "ผู้ดูแล")} {item.sender_name}</Text>
+                    }}>{item.sender_type === 'patient'  ? "patient" : (item.sender_type === 'doctor' ? "doctor" : "caretaker")} {item.sender_name}</Text>
                 </View>
                 {item.type === 'text' ? <View style={{
                         width: 'auto',
@@ -260,7 +259,7 @@ export default function ChatScreen({navigation}) {
                     <Pressable onPress={() => navigation.goBack()}>
                         <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
                     </Pressable>
-                    <Text style={styles.textHeader}>ห้อง chat กับหมอ</Text>
+                    <Text style={styles.textHeader}>chat room with doctor</Text>
                 </View>
                 <Modal 
                     visible={(urlpreview) ? true : false}
@@ -295,7 +294,7 @@ export default function ChatScreen({navigation}) {
                         style={styles.titleInput} 
                         value={message} 
                         onChangeText={setMessage}
-                        placeholder='พิมข้อความ'
+                        placeholder='type a message'
                         multiline={true}
                     />
                     <Pressable onPress={uploadMessage}>
@@ -304,7 +303,7 @@ export default function ChatScreen({navigation}) {
                 </View>
             </KeyboardAvoidingView>
             {imageUrl ? <View style={{width: width, height: 'auto', paddingBottom: 10, alignItems: 'center'}}>
-                <Text style={{paddingBottom: 10}}>ภาพที่เลือกจะส่ง</Text>
+                <Text style={{paddingBottom: 10}}>The selected image will be sent.</Text>
                 <View style={{flexDirection: 'row', width: width, justifyContent: 'space-evenly'}}>
                     <Pressable onPress={() => setImage('')}>
                         <Ionicons name={'close'} size={30} color={Colors.red} />
