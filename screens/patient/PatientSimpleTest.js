@@ -129,7 +129,7 @@ const TestItem = ({item, clickChioce}) => {
     return (
         <View style={{flex: 1, width: width, alignItems: 'center'}} key={item.id}>
             <View style={{alignItems: 'center', width: width * 0.9}}>
-                <Text style={styles.title}>คำถามข้อที่ {item.id} จากทั้งหมด 14 ข้อ</Text>
+                <Text style={styles.title}>question {item.id}</Text>
                 <Text style={styles.title}>{item.title}</Text>
             </View>
             {answer_type.map((value, index) => 
@@ -187,7 +187,7 @@ const Intro = ({item, goNext}) => {
                     }} 
                     onPress={goNext}
                 >
-                    <Text>เริ่มกันเลย</Text>
+                    <Text>Let's start</Text>
                 </TouchableOpacity>
             </View>
         </View>

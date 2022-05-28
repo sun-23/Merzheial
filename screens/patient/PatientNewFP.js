@@ -26,7 +26,6 @@ export default function PatientNewFP({navigation}) {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
             if (status !== 'granted') {
             Alert.alert(
-                "การเข้าถึงรูปภาพ",
                 "Sorry, we need camera roll permissions to make pick the photo",
             [
                 { text: "OK", onPress: () => console.log("OK Pressed") }
@@ -84,7 +83,7 @@ export default function PatientNewFP({navigation}) {
     const uploadItemList = () => {
         setEnable(false)
         if (!name || !lastname) {
-            alert('กรุณาระบุรายละเอียด')
+            alert('Please specify details')
             setEnable(true)
             return
         }
@@ -117,7 +116,7 @@ export default function PatientNewFP({navigation}) {
                     >
                         <View style={{flex: 1 ,justifyContent: 'center', alignItems: 'center'}}>
                             <View style={styles.modalView}>
-                                <Text style={[styles.textStyle, {color: 'black'}]}>อัพโหลดแล้ว{percentUp}%</Text>
+                                <Text style={[styles.textStyle, {color: 'black'}]}>uploaded{percentUp}%</Text>
                             </View>
                         </View>
                     </Modal>
@@ -125,7 +124,7 @@ export default function PatientNewFP({navigation}) {
                         <Pressable onPress={() => navigation.goBack()}>
                             <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
                         </Pressable>
-                        <Text style={styles.textHeader}>เพิ่มคนรู้จัก</Text>
+                        <Text style={styles.textHeader}>add acquaintance</Text>
                     </View>
                     <TextInput 
                         placeholder='first name'

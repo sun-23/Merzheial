@@ -111,7 +111,7 @@ const DoctorMeetItem = ({navigation, route}) => {
                     <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                         <Button
                             style={{paddingRight: 5}} 
-                            title='อัพเดต note'
+                            title='update note'
                             borderless
                             onPress={() => setModalVisible(true)}
                             // ทำ screen list all test

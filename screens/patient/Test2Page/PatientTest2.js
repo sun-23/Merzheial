@@ -255,7 +255,7 @@ export const PatientTest2 = ({ navigation, firstTest }) => {
         console.log(c1IntersectionAnsAndKey, c1answer, c1answerKey);
         score += c1IntersectionAnsAndKey.length
 
-        if (choice[2].user_answer.toLowerCase() === 'dog' || choice[2].user_answer === 'หมา') {
+        if (choice[2].user_answer.toLowerCase() === 'dog' || choice[2].user_answer === 'หมา' || choice[2].user_answer === 'สุนัข') {
             score += 1
             // console.log('dog t');
         }

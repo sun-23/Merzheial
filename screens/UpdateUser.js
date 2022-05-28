@@ -35,7 +35,6 @@ export const UpdateUser = ({ navigation }) => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
           Alert.alert(
-            "การเข้าถึงรูปภาพ",
             "Sorry, we need camera roll permissions to make pick the photo",
           [
               { text: "OK", onPress: () => console.log("OK Pressed") }
@@ -131,8 +130,8 @@ export const UpdateUser = ({ navigation }) => {
       await setDoc(docRef, payload, { merge: true }).then(() => {
         setBtnEnable(true);
         Alert.alert(
-        "เปลี่ยนแปลงข้อมูล",
-        "เปลี่ยนแปลงข้อมูลผู้ใช้สำเร็จ",
+        "change information",
+        "The user information has been changed successfully.",
         [
             { text: "OK", onPress: () => {
               console.log("OK Pressed");
