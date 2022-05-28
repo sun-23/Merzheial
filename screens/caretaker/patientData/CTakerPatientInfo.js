@@ -59,7 +59,7 @@ const CTakerPatientInfo = ({navigation, route}) => {
                     />
                     <Button
                         style={{paddingRight: 5}} 
-                        title='chat room with patient'
+                        title='chat'
                         borderless
                         onPress={() => navigation.navigate("Chat", { patientInfo: patientInfo })}
                         // ทำ screen list all test
@@ -119,8 +119,8 @@ const CTakerPatientInfo = ({navigation, route}) => {
                             onPress={() => navigation.navigate("MeetInfo", { data: data })}
                         >
                             <Text style={styles.itemTitle}>{data.title}</Text>
-                            {/* (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.item.time.seconds * 1000)))).toString() */}
-                            <Text style={styles.itemTime}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
+                            {/* (new Intl.DateTimeFormat("en-US",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.item.time.seconds * 1000)))).toString() */}
+                            <Text style={styles.itemTime}>{(new Intl.DateTimeFormat("en-US",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
                         </Pressable>
                 })}
             </ScrollView>

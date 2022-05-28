@@ -124,18 +124,18 @@ const PatientInfo = ({navigation, route}) => {
                 </Pressable>
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                     <Button
-                        style={{paddingRight: 5}} 
+                        style={{paddingHorizontal: 5}} 
                         title='test results'
                         borderless
                         onPress={() => navigation.navigate("Tests", { patientInfo: patientInfo })}
                         // ทำ screen list all test
                         // ทำ test info
                     />
-                    <Button 
+                    <Button
                         style={{paddingHorizontal: 5}} 
-                        title='update patient information'
+                        title='chat'
                         borderless
-                        onPress={() => setModalAl(true)}
+                        onPress={() => navigation.navigate("Chat", { patientInfo: patientInfo })}
                     />
                     <Button 
                         style={{paddingHorizontal: 5}} 
@@ -146,23 +146,21 @@ const PatientInfo = ({navigation, route}) => {
                 </View>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-                <Button
-                    style={{paddingRight: 5}} 
-                    title='chat room with patient'
+                <Button 
+                    style={{paddingHorizontal: 5}} 
+                    title='update patient information'
                     borderless
-                    onPress={() => navigation.navigate("Chat", { patientInfo: patientInfo })}
-                    // ทำ screen list all test
-                    // ทำ test info
+                    onPress={() => setModalAl(true)}
                 />
                 <Button
-                    style={{paddingRight: 5}} 
+                    style={{paddingHorizontal: 5}} 
                     title='activity'
                     borderless
                     onPress={() => navigation.navigate("List", { patientInfo: patientFireInfo })}
                 />
                 <Button
-                    style={{paddingRight: 5}} 
-                    title='Statistic'
+                    style={{paddingHorizontal: 5}} 
+                    title='statistic'
                     borderless
                     onPress={() => navigation.navigate("Stat", { patientInfo: patientFireInfo })}
                 />
@@ -337,8 +335,8 @@ const PatientInfo = ({navigation, route}) => {
                             onPress={() => navigation.navigate("MeetInfo", { data: data })}
                         >
                             <Text style={styles.itemTitle}>{data.title}</Text>
-                            {/* (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.item.time.seconds * 1000)))).toString() */}
-                            <Text style={styles.itemTime}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
+                            {/* (new Intl.DateTimeFormat("en-US",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.item.time.seconds * 1000)))).toString() */}
+                            <Text style={styles.itemTime}>{(new Intl.DateTimeFormat("en-US",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
                         </Pressable>
                 })}
             </ScrollView>

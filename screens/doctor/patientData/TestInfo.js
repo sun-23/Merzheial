@@ -145,7 +145,7 @@ const TestInfo = ({navigation, route}) => {
                 <Text style={styles.textHeader}>test results</Text>
             </View>
             <View style={styles.content}>
-                <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.user_time.seconds * 1000)))).toString()}</Text>
+                <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("en-US",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.user_time.seconds * 1000)))).toString()}</Text>
                 {data.type === 'simple' ? <Text style={[styles.textStyle, {fontWeight: "bold", paddingBottom: 10}]}>result: {data.description}</Text> : null}
                 {data.type === 'test-v2' ? <Text style={[styles.textStyle, {fontWeight: "bold", paddingBottom: 10}]}>score: {data.total_score}/30</Text> : null}
                 <View style={{height: 4, width: width, backgroundColor: '#f0f0f0'}}></View>

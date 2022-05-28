@@ -76,9 +76,9 @@ export const PatientStatScreen = ({navigation}) => {
                     onPress={() => navigation.navigate("MeetDocDesc", { data: data })}
                 >
                     <Text style={styles.itemTitle}>{data.title}</Text>
-                    <Text style={styles.itemTime}>แพทย์: {data.doctor_name}</Text>
-                    {/* (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.item.time.seconds * 1000)))).toString() */}
-                    <Text style={styles.itemTime}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
+                    <Text style={styles.itemTime}>doctor: {data.doctor_name}</Text>
+                    {/* (new Intl.DateTimeFormat("en-US",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.item.time.seconds * 1000)))).toString() */}
+                    <Text style={styles.itemTime}>{(new Intl.DateTimeFormat("en-US",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
                 </TouchableOpacity>
         })}
       </ScrollView>

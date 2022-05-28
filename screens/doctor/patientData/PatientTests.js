@@ -51,7 +51,7 @@ const PatientTests = ({navigation, route}) => {
                             }}
                             onPress={() => navigation.navigate("TestInfo", { data: data })}
                         >
-                            <Text style={styles.itemTitle}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.user_time.seconds * 1000)))).toString()}</Text>
+                            <Text style={styles.itemTitle}>{(new Intl.DateTimeFormat("en-US",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.user_time.seconds * 1000)))).toString()}</Text>
                         </Pressable>
                 })}
             </ScrollView>

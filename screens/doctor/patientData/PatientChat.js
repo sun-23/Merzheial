@@ -129,7 +129,7 @@ export default function PatientChatScreen({navigation, route}) {
                 const colRef = collection(db, "Chat"+patientInfo.uid)
                 addDoc(colRef,{
                     time_milisecconds: time.getTime(),
-                    time_string: (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'medium', timeStyle: 'short' }).format(time.getTime())).toString(),
+                    time_string: (new Intl.DateTimeFormat("en-US",{ dateStyle: 'medium', timeStyle: 'short' }).format(time.getTime())).toString(),
                     image: url,
                     sender_uid: userInfo.uid,
                     sender_name: userInfo.firstname,
@@ -152,7 +152,7 @@ export default function PatientChatScreen({navigation, route}) {
         const colRef = collection(db, "Chat"+patientInfo.uid) //chat is Chat+patient uid
         addDoc(colRef,{
             time_milisecconds: time.getTime(),
-            time_string: (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'medium', timeStyle: 'short' }).format(time.getTime())).toString(),
+            time_string: (new Intl.DateTimeFormat("en-US",{ dateStyle: 'medium', timeStyle: 'short' }).format(time.getTime())).toString(),
             message: message,
             sender_uid: userInfo.uid,
             sender_name: userInfo.firstname,

@@ -32,7 +32,7 @@ const CTakerMeetItem = ({navigation, route}) => {
                     </View>
                 </Modal>  
                 <View style={styles.content}>
-                    <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
+                    <Text style={[styles.textStyle, {fontWeight: '300'}]}>{(new Intl.DateTimeFormat("en-US",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
                     <Text style={styles.textStyle}>description: {data.description}</Text>
                     <Text style={[styles.textStyle, {color : (data.note.length > 0) ? "black" : "red"}]}>doctor's note: {(data.note.length > 0) ? data.note : "Wait for the doctor to evaluate after the appointment."}</Text>
                     {route.params.data.noteUrl != "" ? 

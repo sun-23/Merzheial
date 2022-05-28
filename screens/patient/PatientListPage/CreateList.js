@@ -124,7 +124,7 @@ export default function CreateList({navigation}) {
         const payload = {
             day: date,
             date_millisecconds: date.getTime(),
-            day_string: (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format(date)).toString(),
+            day_string: (new Intl.DateTimeFormat("en-US",{ dateStyle: 'full', timeStyle: 'short' }).format(date)).toString(),
             title: title,
             description: description,
             id: id,

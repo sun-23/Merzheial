@@ -49,8 +49,8 @@ export const DoctorMeets = ({navigation}) => {
                 >
                     <Text style={styles.itemTitle}>{data.title}</Text>
                     <Text style={styles.itemTime}>patient: {data.patient_name}</Text>
-                    {/* (new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.item.time.seconds * 1000)))).toString() */}
-                    <Text style={styles.itemTime}>{(new Intl.DateTimeFormat("th-TH",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
+                    {/* (new Intl.DateTimeFormat("en-US",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.item.time.seconds * 1000)))).toString() */}
+                    <Text style={styles.itemTime}>{(new Intl.DateTimeFormat("en-US",{ dateStyle: 'full', timeStyle: 'short' }).format((new Date(data.time.seconds * 1000)))).toString()}</Text>
                 </TouchableOpacity>
         })}
       </ScrollView>

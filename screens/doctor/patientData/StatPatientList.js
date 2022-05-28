@@ -262,7 +262,7 @@ export default function StatPatientList({ navigation, route }) {
                 <Pressable onPress={() => navigation.goBack()}>
                     <Ionicons name={'arrow-back-circle'} size={30} color={Colors.blue} />
                 </Pressable>
-                <Text style={styles.textHeader}>Statisticของ {patientInfo.firstname} {patientInfo.lastname}</Text>
+                <Text style={styles.textHeader}>Statistic's {patientInfo.firstname} {patientInfo.lastname}</Text>
             </View>
             {/* modal percent */}
             <Modal
@@ -335,7 +335,7 @@ export default function StatPatientList({ navigation, route }) {
                 // onDataPointClick={onGraphClick}
                 hidePointsAtIndex={processdata.hideIndex}
             />
-            <Text>จุดบนกราฟคือวันที่มีกิจกรรม</Text>
+            <Text>The point on the graph is the day of the activity.</Text>
             <View style={[styles.textStyle, styles.stat]}>
                 <View style={{backgroundColor: '#65C18C', width: 'auto', padding: 5, paddingHorizontal:10, borderRadius: 5}}>
                     <Text style={styles.status_text}>{percent.percent_good}%</Text>
